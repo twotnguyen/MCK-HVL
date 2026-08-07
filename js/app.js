@@ -471,25 +471,32 @@
 
     el.addEventListener('pause', () => {
       if (el !== activeEl()) return;
+      // Desktop browsers keep a <video> playing fine in a background tab, so
+      // we never pause it ourselves — but mobile browsers do suspend <video>
+      // (even audio-only ones) once the app/screen is backgrounded, which we
+      // can only detect after the fact via this same 'pause' event. React to
+      // that by handing playback to a real <audio> element (goBackground),
+      // which browsers exempt from that suspension, instead of forcing a
+      // switch that would silence audio the browser was happy to keep going.
+      if (document.hidden && state.isPlaying) {
+        goBackground();
+        return;
+      }
       state.isPlaying = false;
       syncPlayUI();
     });
   }
 
   // ---------- Background playback ----------
-  // Mobile browsers suspend <video> elements (even audio-only ones) once the
-  // app/tab is backgrounded, which would silence playback entirely. Whichever
-  // tab is on screen (Audio or MV) when that happens, we hand its audio off to
-  // a real <audio> element that browsers exempt from that suspension, then
-  // hand it back when the app is foregrounded again — state.viewMode and the
-  // visible tab never change, so the user always comes back to what they left.
+  // See the 'pause' handler above for why this only ever reacts to a pause
+  // the browser itself decided to make — it never initiates one. viewMode and
+  // the visible tab are never touched, so the user always comes back to
+  // whichever tab (Audio or MV) they left.
   function goBackground() {
     if (bgActive) return;
     const el = state.viewMode === 'mv' ? els.video : els.audio;
-    if (el.paused) return;
     const t = el.currentTime || 0;
     bgActive = true;
-    el.pause();
     const src = el.currentSrc || el.src;
     if (els.bgAudio.src !== src) els.bgAudio.src = src;
     const resume = () => {
@@ -508,10 +515,6 @@
     const el = activeEl();
     el.currentTime = t;
     el.play().catch(() => {});
-  }
-
-  function handleHidden() {
-    if (document.hidden && state.isPlaying) goBackground();
   }
 
   function handleVisible() {
@@ -718,7 +721,6 @@
     });
 
     document.addEventListener('visibilitychange', () => {
-      handleHidden();
       handleVisible();
       if (document.hidden) saveState(true);
     });
