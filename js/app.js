@@ -5,7 +5,10 @@
   const STORAGE_KEY = 'mck_player_state_v2';
 
   function urlFor(folder, filename) {
-    return folder + '/' + encodeURIComponent(filename);
+    // Resolve to an absolute URL: relative url() values assigned via CSS custom
+    // properties resolve against the stylesheet's location, not the page's, so a
+    // plain relative path here would 404 (e.g. "css/images/..." for the ambient glow).
+    return new URL(folder + '/' + encodeURIComponent(filename), document.baseURI).href;
   }
 
   function escapeHtml(str) {
