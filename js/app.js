@@ -42,7 +42,6 @@
     viewHome: $('view-home'),
     viewWatch: $('view-watch'),
     btnBack: $('btn-back'),
-    watchTopTitle: $('watch-top-title'),
     stageEmpty: $('stage-empty'),
     stageTitle: $('stage-title'),
     stageSub: $('stage-sub'),
@@ -311,8 +310,8 @@
     updateVisualVisibility();
 
     els.stageTitle.textContent = song.title;
+    els.stageTitle.title = song.title;
     els.stageSub.textContent = 'MCK' + (song.mv ? ' · Có MV' : '');
-    els.watchTopTitle.textContent = song.title;
     els.pbTitle.textContent = song.title;
 
     document.querySelectorAll('.view-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === state.viewMode));
