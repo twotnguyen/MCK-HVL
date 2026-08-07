@@ -183,12 +183,13 @@
                     </svg>
                     <p>Chọn một bài hát để bắt đầu</p>
                   </div>
-                  <audio
+                  <video
                     id="audio-el"
                     class="audio-video"
+                    playsinline
                     preload="metadata"
                     hidden
-                  ></audio>
+                  ></video>
                   <video
                     id="mv-video"
                     class="mv-video"
@@ -196,6 +197,7 @@
                     preload="metadata"
                     hidden
                   ></video>
+                  <audio id="bg-audio" preload="none" hidden></audio>
                   <div class="stage-overlay">
                     <div class="progress-row">
                       <span id="time-current" class="time">0:00</span>

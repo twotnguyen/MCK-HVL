@@ -50,6 +50,7 @@
     stageSub: $('stage-sub'),
     video: $('mv-video'),
     audio: $('audio-el'),
+    bgAudio: $('bg-audio'),
     viewToggle: $('view-toggle'),
     mvBtn: $('mv-toggle-btn'),
     progress: $('progress'),
@@ -88,7 +89,16 @@
   let lastSaveTs = 0;
   let pendingHandoff = null;
 
-  function activeEl() { return state.viewMode === 'mv' ? els.video : els.audio; }
+  // While bgActive is true, els.bgAudio (a real <audio> element) stands in for
+  // whichever tab (Audio or MV) was already selected, so playback survives the
+  // app/screen being backgrounded without ever touching state.viewMode — the
+  // user's chosen tab stays exactly as it was when they come back.
+  let bgActive = false;
+
+  function activeEl() {
+    if (bgActive) return els.bgAudio;
+    return state.viewMode === 'mv' ? els.video : els.audio;
+  }
   function inactiveEl() { return state.viewMode === 'mv' ? els.audio : els.video; }
 
   // ---------- Ambient glow ----------
@@ -399,6 +409,7 @@
     state.volume = v;
     els.audio.volume = v;
     els.video.volume = v;
+    els.bgAudio.volume = v;
     if (els.pbVolume) els.pbVolume.value = v;
     saveState(false);
   }
@@ -460,39 +471,69 @@
 
     el.addEventListener('pause', () => {
       if (el !== activeEl()) return;
-      if (document.hidden && state.viewMode === 'mv') {
-        forceImageForBackground();
-        return;
-      }
       state.isPlaying = false;
       syncPlayUI();
     });
   }
 
   // ---------- Background playback ----------
-  // Switching to a hidden tab pauses/throttles the <video>, so we fall back to
-  // the audio element to keep the song playing. This is a temporary swap for
-  // background playback only — resumeMvOnVisible lets us restore the user's
-  // actual MV choice once the tab is visible again (or on reload), instead of
-  // permanently overwriting their preference with "Audio".
-  let resumeMvOnVisible = false;
+  // Mobile browsers suspend <video> elements (even audio-only ones) once the
+  // app/tab is backgrounded, which would silence playback entirely. Whichever
+  // tab is on screen (Audio or MV) when that happens, we hand its audio off to
+  // a real <audio> element that browsers exempt from that suspension, then
+  // hand it back when the app is foregrounded again — state.viewMode and the
+  // visible tab never change, so the user always comes back to what they left.
+  function goBackground() {
+    if (bgActive) return;
+    const el = state.viewMode === 'mv' ? els.video : els.audio;
+    if (el.paused) return;
+    const t = el.currentTime || 0;
+    bgActive = true;
+    el.pause();
+    const src = el.currentSrc || el.src;
+    if (els.bgAudio.src !== src) els.bgAudio.src = src;
+    const resume = () => {
+      els.bgAudio.currentTime = t;
+      els.bgAudio.play().catch(() => {});
+    };
+    if (els.bgAudio.readyState >= 1) resume();
+    else els.bgAudio.addEventListener('loadedmetadata', resume, { once: true });
+  }
 
-  function forceImageForBackground() {
-    resumeMvOnVisible = true;
-    setViewMode('image');
+  function returnFromBackground() {
+    if (!bgActive) return;
+    const t = els.bgAudio.currentTime || 0;
+    bgActive = false;
+    els.bgAudio.pause();
+    const el = activeEl();
+    el.currentTime = t;
+    el.play().catch(() => {});
   }
 
   function handleHidden() {
-    if (document.hidden && state.viewMode === 'mv' && state.isPlaying) {
-      forceImageForBackground();
-    }
+    if (document.hidden && state.isPlaying) goBackground();
   }
 
   function handleVisible() {
-    if (document.hidden || !resumeMvOnVisible) return;
-    resumeMvOnVisible = false;
-    const song = SONGS[state.current];
-    if (song && song.mv) setViewMode('mv');
+    if (!document.hidden) returnFromBackground();
+  }
+
+  function bindBgAudioEvents() {
+    els.bgAudio.addEventListener('play', () => {
+      state.isPlaying = true;
+      syncPlayUI();
+    });
+    els.bgAudio.addEventListener('pause', () => {
+      if (!bgActive) return;
+      state.isPlaying = false;
+      syncPlayUI();
+    });
+    els.bgAudio.addEventListener('ended', () => {
+      if (!bgActive) return;
+      bgActive = false;
+      playNext(false);
+      if (document.hidden) goBackground();
+    });
   }
 
   // ---------- Media Session (lock screen controls) ----------
@@ -531,7 +572,7 @@
       const el = state.current !== -1 ? activeEl() : null;
       const data = {
         current: state.current,
-        viewMode: resumeMvOnVisible ? 'mv' : state.viewMode,
+        viewMode: state.viewMode,
         volume: state.volume,
         shuffle: state.shuffle,
         repeat: state.repeat,
@@ -685,6 +726,7 @@
 
     bindMediaEvents(els.audio);
     bindMediaEvents(els.video);
+    bindBgAudioEvents();
   }
 
   // ---------- Init ----------
