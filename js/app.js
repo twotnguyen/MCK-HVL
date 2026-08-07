@@ -458,7 +458,7 @@
     el.addEventListener('pause', () => {
       if (el !== activeEl()) return;
       if (document.hidden && state.viewMode === 'mv') {
-        setViewMode('image');
+        forceImageForBackground();
         return;
       }
       state.isPlaying = false;
@@ -467,10 +467,29 @@
   }
 
   // ---------- Background playback ----------
+  // Switching to a hidden tab pauses/throttles the <video>, so we fall back to
+  // the audio element to keep the song playing. This is a temporary swap for
+  // background playback only — resumeMvOnVisible lets us restore the user's
+  // actual MV choice once the tab is visible again (or on reload), instead of
+  // permanently overwriting their preference with "Audio".
+  let resumeMvOnVisible = false;
+
+  function forceImageForBackground() {
+    resumeMvOnVisible = true;
+    setViewMode('image');
+  }
+
   function handleHidden() {
     if (document.hidden && state.viewMode === 'mv' && state.isPlaying) {
-      setViewMode('image');
+      forceImageForBackground();
     }
+  }
+
+  function handleVisible() {
+    if (document.hidden || !resumeMvOnVisible) return;
+    resumeMvOnVisible = false;
+    const song = SONGS[state.current];
+    if (song && song.mv) setViewMode('mv');
   }
 
   // ---------- Media Session (lock screen controls) ----------
@@ -509,7 +528,7 @@
       const el = state.current !== -1 ? activeEl() : null;
       const data = {
         current: state.current,
-        viewMode: state.viewMode,
+        viewMode: resumeMvOnVisible ? 'mv' : state.viewMode,
         volume: state.volume,
         shuffle: state.shuffle,
         repeat: state.repeat,
@@ -656,6 +675,7 @@
 
     document.addEventListener('visibilitychange', () => {
       handleHidden();
+      handleVisible();
       if (document.hidden) saveState(true);
     });
     window.addEventListener('pagehide', () => saveState(true));
