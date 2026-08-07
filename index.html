@@ -152,169 +152,158 @@
                     preload="metadata"
                     hidden
                   ></video>
+
+                  <!-- Lớp phủ điều khiển kiểu YouTube (Overlay controls) -->
+                  <div class="player-controls-overlay">
+                    <div class="progress-row">
+                      <input
+                        id="progress"
+                        class="progress"
+                        type="range"
+                        min="0"
+                        max="100"
+                        value="0"
+                        step="0.1"
+                        aria-label="Tiến trình bài hát"
+                      />
+                    </div>
+                    <div class="controls-row">
+                      <div class="controls-left">
+                        <button
+                          id="btn-prev"
+                          class="ctrl-btn"
+                          title="Bài trước"
+                          aria-label="Bài trước"
+                        >
+                          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                            <path d="M6 5h2v14H6zM20 5v14l-11-7z" />
+                          </svg>
+                        </button>
+                        <button
+                          id="btn-play"
+                          class="ctrl-btn play-btn"
+                          title="Phát / Tạm dừng"
+                          aria-label="Phát hoặc tạm dừng"
+                        >
+                          <svg id="icon-play" class="icon-play" viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                            <path d="M8 5.5v13l11-6.5-11-6.5z" />
+                          </svg>
+                          <svg id="icon-pause" class="icon-pause" viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+                            <path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" />
+                          </svg>
+                        </button>
+                        <button
+                          id="btn-next"
+                          class="ctrl-btn"
+                          title="Bài sau"
+                          aria-label="Bài sau"
+                        >
+                          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                            <path d="M16 5h2v14h-2zM4 5v14l11-7z" />
+                          </svg>
+                        </button>
+                        <div class="volume-container">
+                          <button id="btn-volume-mute" class="ctrl-btn" aria-label="Âm lượng">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                              <path d="M11 5 6 9H2v6h4l5 4z" />
+                              <path d="M15.5 8.5a5 5 0 0 1 0 7" />
+                            </svg>
+                          </button>
+                        </div>
+                        <div class="time-display">
+                          <span id="time-current">0:00</span>
+                          <span class="time-sep">/</span>
+                          <span id="time-duration">0:00</span>
+                        </div>
+                      </div>
+                      <div class="controls-right">
+                        <button
+                          id="btn-shuffle"
+                          class="ctrl-btn"
+                          title="Phát ngẫu nhiên"
+                          aria-label="Phát ngẫu nhiên"
+                        >
+                          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 7h4l10 10h4" />
+                            <path d="M17 7h4v4" />
+                            <path d="M3 17h4l2.5-2.5" />
+                            <path d="m14.5 9.5 2.5-2.5h4" />
+                          </svg>
+                        </button>
+                        <button
+                          id="btn-repeat"
+                          class="ctrl-btn"
+                          title="Lặp lại"
+                          aria-label="Lặp lại"
+                        >
+                          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m17 2 4 4-4 4" />
+                            <path d="M3 11V9a4 4 0 0 1 4-4h14" />
+                            <path d="m7 22-4-4 4-4" />
+                            <path d="M21 13v2a4 4 0 0 1-4 4H3" />
+                          </svg>
+                        </button>
+                        <div class="view-toggle" id="view-toggle">
+                          <button type="button" class="view-btn active" data-mode="image">
+                            <span>Audio</span>
+                          </button>
+                          <button type="button" class="view-btn" data-mode="mv" id="mv-toggle-btn" disabled>
+                            <span>MV</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div class="view-toggle" id="view-toggle">
-                  <button
-                    type="button"
-                    class="view-btn active"
-                    data-mode="image"
-                  >
-                    <svg
-                      viewBox="0 0 24 24"
-                      width="16"
-                      height="16"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <path d="M9 18V5l12-2v13" />
-                      <circle cx="6" cy="18" r="3" />
-                      <circle cx="18" cy="16" r="3" />
-                    </svg>
-                    <span>Audio</span>
-                  </button>
-                  <button
-                    type="button"
-                    class="view-btn"
-                    data-mode="mv"
-                    id="mv-toggle-btn"
-                    disabled
-                  >
-                    <svg
-                      viewBox="0 0 24 24"
-                      width="16"
-                      height="16"
-                      fill="currentColor"
-                    >
-                      <path d="M8 5.5v13l11-6.5-11-6.5z" />
-                    </svg>
-                    <span>MV</span>
-                  </button>
-                </div>
+
                 <div class="track-info">
-                  <h2 id="stage-title" class="stage-title">
-                    Chưa phát bài nào
-                  </h2>
-                  <p id="stage-sub" class="stage-sub">MCK</p>
+                  <h2 id="stage-title" class="stage-title">Chưa phát bài nào</h2>
+                  <p id="stage-sub" class="stage-sub" hidden>MCK</p>
                 </div>
-                <div class="progress-row">
-                  <span id="time-current" class="time">0:00</span>
-                  <input
-                    id="progress"
-                    class="progress"
-                    type="range"
-                    min="0"
-                    max="100"
-                    value="0"
-                    step="0.1"
-                    aria-label="Tiến trình bài hát"
-                  />
-                  <span id="time-duration" class="time">0:00</span>
-                </div>
-                <div class="controls-row">
-                  <button
-                    id="btn-shuffle"
-                    class="ctrl-btn"
-                    title="Phát ngẫu nhiên"
-                    aria-label="Phát ngẫu nhiên"
-                  >
-                    <svg
-                      viewBox="0 0 24 24"
-                      width="20"
-                      height="20"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <path d="M3 7h4l10 10h4" />
-                      <path d="M17 7h4v4" />
-                      <path d="M3 17h4l2.5-2.5" />
-                      <path d="m14.5 9.5 2.5-2.5h4" />
-                    </svg>
-                  </button>
-                  <button
-                    id="btn-prev"
-                    class="ctrl-btn"
-                    title="Bài trước"
-                    aria-label="Bài trước"
-                  >
-                    <svg
-                      viewBox="0 0 24 24"
-                      width="22"
-                      height="22"
-                      fill="currentColor"
-                    >
-                      <path d="M6 5h2v14H6zM20 5v14l-11-7z" />
-                    </svg>
-                  </button>
-                  <button
-                    id="btn-play"
-                    class="ctrl-btn play-btn"
-                    title="Phát / Tạm dừng"
-                    aria-label="Phát hoặc tạm dừng"
-                  >
-                    <svg
-                      id="icon-play"
-                      class="icon-play"
-                      viewBox="0 0 24 24"
-                      width="26"
-                      height="26"
-                      fill="currentColor"
-                    >
-                      <path d="M8 5.5v13l11-6.5-11-6.5z" />
-                    </svg>
-                    <svg
-                      id="icon-pause"
-                      class="icon-pause"
-                      viewBox="0 0 24 24"
-                      width="26"
-                      height="26"
-                      fill="currentColor"
-                    >
-                      <path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" />
-                    </svg>
-                  </button>
-                  <button
-                    id="btn-next"
-                    class="ctrl-btn"
-                    title="Bài sau"
-                    aria-label="Bài sau"
-                  >
-                    <svg
-                      viewBox="0 0 24 24"
-                      width="22"
-                      height="22"
-                      fill="currentColor"
-                    >
-                      <path d="M16 5h2v14h-2zM4 5v14l11-7z" />
-                    </svg>
-                  </button>
-                  <button
-                    id="btn-repeat"
-                    class="ctrl-btn"
-                    title="Lặp lại"
-                    aria-label="Lặp lại"
-                  >
-                    <svg
-                      viewBox="0 0 24 24"
-                      width="20"
-                      height="20"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <path d="m17 2 4 4-4 4" />
-                      <path d="M3 11V9a4 4 0 0 1 4-4h14" />
-                      <path d="m7 22-4-4 4-4" />
-                      <path d="M21 13v2a4 4 0 0 1-4 4H3" />
-                    </svg>
-                  </button>
+
+                <!-- Khối thông tin Kênh và các nút tương tác kiểu YouTube -->
+                <div class="channel-actions-row">
+                  <div class="channel-info">
+                    <span class="channel-avatar">MCK</span>
+                    <div class="channel-meta">
+                      <div class="channel-name">MCK <span class="verified-badge">✓</span></div>
+                      <div class="sub-count">1.2 Tr người đăng ký</div>
+                    </div>
+                    <button class="sub-btn">Đăng ký</button>
+                  </div>
+                  <div class="action-buttons">
+                    <div class="like-dislike-group">
+                      <button class="action-btn like-btn">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                          <path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/>
+                        </svg>
+                        <span>25 N</span>
+                      </button>
+                      <button class="action-btn dislike-btn" aria-label="Không thích">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                          <path d="M19 3h-4v12h4V3zm-9 12c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L13.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2h-9c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2z"/>
+                        </svg>
+                      </button>
+                    </div>
+                    <button class="action-btn share-btn">
+                      <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                        <path d="M14 9V5l7 7-7 7v-4.1c-5 0-8.5 1.6-11 5.1 1-5 4-10 11-11z"/>
+                      </svg>
+                      <span>Chia sẻ</span>
+                    </button>
+                    <button class="action-btn download-btn">
+                      <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                        <path d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2v9.67z"/>
+                      </svg>
+                      <span>Tải xuống</span>
+                    </button>
+                    <button class="action-btn save-btn">
+                      <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                        <path d="M14 10H2v2h12v-2zm0-4H2v2h12V6zm4 8v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM2 16h8v-2H2v2z"/>
+                      </svg>
+                      <span>Lưu</span>
+                    </button>
+                  </div>
                 </div>
               </div>
               <aside class="watch-list" aria-label="Danh sách phát">
