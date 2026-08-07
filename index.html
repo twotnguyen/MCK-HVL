@@ -188,6 +188,7 @@
                     class="audio-video"
                     playsinline
                     preload="metadata"
+                    muted
                     hidden
                   ></video>
                   <video
@@ -195,9 +196,14 @@
                     class="mv-video"
                     playsinline
                     preload="metadata"
+                    muted
                     hidden
                   ></video>
-                  <audio id="bg-audio" preload="none" hidden></audio>
+                  <!--
+                    The real, always-audible sound source. audio-el/mv-video above are
+                    muted decorative pictures only — see js/app.js for why.
+                  -->
+                  <audio id="sound-el" preload="metadata" hidden></audio>
                   <div class="stage-overlay">
                     <div class="progress-row">
                       <span id="time-current" class="time">0:00</span>

@@ -50,7 +50,7 @@
     stageSub: $('stage-sub'),
     video: $('mv-video'),
     audio: $('audio-el'),
-    bgAudio: $('bg-audio'),
+    sound: $('sound-el'),
     viewToggle: $('view-toggle'),
     mvBtn: $('mv-toggle-btn'),
     progress: $('progress'),
@@ -87,19 +87,16 @@
   };
 
   let lastSaveTs = 0;
-  let pendingHandoff = null;
 
-  // While bgActive is true, els.bgAudio (a real <audio> element) stands in for
-  // whichever tab (Audio or MV) was already selected, so playback survives the
-  // app/screen being backgrounded without ever touching state.viewMode — the
-  // user's chosen tab stays exactly as it was when they come back.
-  let bgActive = false;
-
-  function activeEl() {
-    if (bgActive) return els.bgAudio;
-    return state.viewMode === 'mv' ? els.video : els.audio;
-  }
-  function inactiveEl() { return state.viewMode === 'mv' ? els.audio : els.video; }
+  // els.sound is a real <audio> element and the ONLY thing that ever makes
+  // sound. It always receives the same play()/pause() call as the visible tab
+  // (Audio or MV), so it's gesture-backed from the very start — that's what
+  // lets it keep playing when the app/screen is backgrounded on mobile,
+  // without ever needing to start a *new*, ungestured play() call later (that
+  // approach kept getting silently blocked by autoplay policy). els.video and
+  // els.audio are muted decorative pictures only; see visualEl()/play()/pause().
+  function activeEl() { return els.sound; }
+  function visualEl() { return state.viewMode === 'mv' ? els.video : els.audio; }
 
   // ---------- Ambient glow ----------
   function setAmbient(src) {
@@ -238,62 +235,39 @@
     els.playerBar.hidden = !(state.view === 'home' && state.current !== -1);
   }
 
-  // ---------- Handoff: seamless Image <-> MV ----------
-  function cancelHandoff() {
-    if (pendingHandoff) { clearTimeout(pendingHandoff.timeout); pendingHandoff = null; }
-  }
-
-  function handoff(fromEl, toEl, wasPlaying, token, onFail) {
-    if (!wasPlaying) {
-      fromEl.pause();
-      toEl.currentTime = 0;
-      return;
-    }
-    const t = fromEl.currentTime || 0;
-    const done = () => {
-      if (pendingHandoff !== token) return;
-      pendingHandoff = null;
-      fromEl.pause();
-      toEl.currentTime = t;
-      toEl.play().catch(() => {});
-    };
-    const onReady = () => {
-      if (pendingHandoff !== token) return;
-      toEl.removeEventListener('canplay', onReady);
-      done();
-    };
-    pendingHandoff = token;
-    token.timeout = setTimeout(() => {
-      if (pendingHandoff === token) {
-        pendingHandoff = null;
-        if (onFail) onFail();
-      }
-    }, 4000);
-    if (toEl.readyState >= 1) done();
-    else toEl.addEventListener('canplay', onReady);
-  }
-
+  // ---------- Switching Audio <-> MV ----------
+  // Both tabs share the one real sound element (els.sound); switching tabs
+  // just points it at the other file and re-seeks it to the same position,
+  // which is always a direct response to the user clicking the toggle (a real
+  // gesture), so autoplay policy never gets in the way here.
   function setViewMode(mode) {
     const song = SONGS[state.current];
     if (!song || mode === state.viewMode) return;
     if (mode === 'mv' && !song.mv) return;
 
-    const fromMode = state.viewMode;
-    const oldEl = activeEl();
     const wasPlaying = state.isPlaying;
-    cancelHandoff();
+    const t = els.sound.currentTime || 0;
 
     state.viewMode = mode;
     updateVisualVisibility();
     document.querySelectorAll('.view-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === mode));
 
-    const token = {};
-    const onFail = () => {
-      state.viewMode = fromMode;
-      updateVisualVisibility();
-      document.querySelectorAll('.view-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === fromMode));
+    els.sound.src = mode === 'mv' ? urlFor(FOLDER.mv, song.mv) : urlFor(FOLDER.audio, song.audio);
+    const resume = () => {
+      els.sound.currentTime = t;
+      if (wasPlaying) els.sound.play().catch(() => {});
     };
-    handoff(oldEl, activeEl(), wasPlaying, token, onFail);
+    if (els.sound.readyState >= 1) resume();
+    else els.sound.addEventListener('loadedmetadata', resume, { once: true });
+
+    const newVisual = visualEl();
+    const oldVisual = mode === 'mv' ? els.audio : els.video;
+    oldVisual.pause();
+    if (wasPlaying && newVisual.src) {
+      newVisual.currentTime = t;
+      newVisual.play().catch(() => {});
+    }
+
     saveState(true);
   }
 
@@ -301,7 +275,6 @@
   function loadSong(index, autoplay) {
     const song = SONGS[index];
     if (!song) return;
-    cancelHandoff();
     state.current = index;
     state.history = state.history.filter(i => i !== index);
 
@@ -318,6 +291,8 @@
       els.mvBtn.disabled = true;
       state.viewMode = 'image';
     }
+
+    els.sound.src = (state.viewMode === 'mv' && song.mv) ? urlFor(FOLDER.mv, song.mv) : urlFor(FOLDER.audio, song.audio);
 
     els.stageEmpty.hidden = true;
     updateVisualVisibility();
@@ -347,13 +322,26 @@
   }
 
   // ---------- Transport ----------
+  // els.sound carries the real audio; the visible tab's video/audio element
+  // just mirrors it silently for the picture, best-effort (resynced here and
+  // in the timeupdate handler if it drifts).
   function play() {
-    const el = activeEl();
-    if (!el.src) { if (SONGS.length) { loadSong(0, true); return; } return; }
-    const p = el.play();
+    if (!els.sound.src) { if (SONGS.length) { loadSong(0, true); return; } return; }
+    const p = els.sound.play();
     if (p && p.catch) p.catch(() => {});
+    const vEl = visualEl();
+    if (vEl.src) {
+      if (Math.abs((vEl.currentTime || 0) - (els.sound.currentTime || 0)) > 0.3) {
+        vEl.currentTime = els.sound.currentTime || 0;
+      }
+      const vp = vEl.play();
+      if (vp && vp.catch) vp.catch(() => {});
+    }
   }
-  function pause() { activeEl().pause(); }
+  function pause() {
+    els.sound.pause();
+    visualEl().pause();
+  }
   function togglePlay() {
     if (state.current === -1) { if (SONGS.length) loadSong(0, true); return; }
     state.isPlaying ? pause() : play();
@@ -394,22 +382,21 @@
   }
 
   function seek(time) {
-    const el = activeEl();
+    const el = els.sound;
     if (!isFinite(el.duration)) return;
     el.currentTime = Math.max(0, Math.min(el.duration, time));
     updateProgressUI(el.currentTime, el.duration);
+    const vEl = visualEl();
+    if (vEl.src) vEl.currentTime = el.currentTime;
   }
   function seekBy(delta) {
-    const el = activeEl();
-    seek((el.currentTime || 0) + delta);
+    seek((els.sound.currentTime || 0) + delta);
   }
 
   function setVolume(v) {
     v = Math.max(0, Math.min(1, v));
     state.volume = v;
-    els.audio.volume = v;
-    els.video.volume = v;
-    els.bgAudio.volume = v;
+    els.sound.volume = v;
     if (els.pbVolume) els.pbVolume.value = v;
     saveState(false);
   }
@@ -439,10 +426,14 @@
     els.pbProgressFill.style.width = pct + '%';
   }
 
-  // ---------- Media element events ----------
-  function bindMediaEvents(el) {
+  // ---------- Sound events ----------
+  // els.sound is the single source of truth for playback state — it's a real
+  // <audio> element that browsers don't suspend in the background, so this is
+  // also what keeps the song going when the app/screen is backgrounded.
+  function bindSoundEvents() {
+    const el = els.sound;
+
     el.addEventListener('timeupdate', () => {
-      if (el !== activeEl()) return;
       updateProgressUI(el.currentTime, el.duration);
       const now = Date.now();
       if (now - lastSaveTs > 3000) { saveState(false); lastSaveTs = now; }
@@ -451,91 +442,27 @@
           navigator.mediaSession.setPositionState({ duration: el.duration, playbackRate: 1, position: el.currentTime });
         }
       } catch (e) {}
+      // Keep the decorative picture from drifting out of sync with the audio.
+      const vEl = visualEl();
+      if (!document.hidden && vEl.src && Math.abs((vEl.currentTime || 0) - el.currentTime) > 1) {
+        vEl.currentTime = el.currentTime;
+      }
     });
 
     el.addEventListener('loadedmetadata', () => {
-      if (el !== activeEl()) return;
       updateProgressUI(el.currentTime, el.duration);
     });
 
-    el.addEventListener('ended', () => {
-      if (el !== activeEl()) return;
-      playNext(false);
-    });
+    el.addEventListener('ended', () => playNext(false));
 
     el.addEventListener('play', () => {
-      if (el !== activeEl()) return;
       state.isPlaying = true;
       syncPlayUI();
     });
 
     el.addEventListener('pause', () => {
-      if (el !== activeEl()) return;
-      // Desktop browsers keep a <video> playing fine in a background tab, so
-      // we never pause it ourselves — but mobile browsers do suspend <video>
-      // (even audio-only ones) once the app/screen is backgrounded, which we
-      // can only detect after the fact via this same 'pause' event. React to
-      // that by handing playback to a real <audio> element (goBackground),
-      // which browsers exempt from that suspension, instead of forcing a
-      // switch that would silence audio the browser was happy to keep going.
-      if (document.hidden && state.isPlaying) {
-        goBackground();
-        return;
-      }
       state.isPlaying = false;
       syncPlayUI();
-    });
-  }
-
-  // ---------- Background playback ----------
-  // See the 'pause' handler above for why this only ever reacts to a pause
-  // the browser itself decided to make — it never initiates one. viewMode and
-  // the visible tab are never touched, so the user always comes back to
-  // whichever tab (Audio or MV) they left.
-  function goBackground() {
-    if (bgActive) return;
-    const el = state.viewMode === 'mv' ? els.video : els.audio;
-    const t = el.currentTime || 0;
-    bgActive = true;
-    const src = el.currentSrc || el.src;
-    if (els.bgAudio.src !== src) els.bgAudio.src = src;
-    const resume = () => {
-      els.bgAudio.currentTime = t;
-      els.bgAudio.play().catch(() => {});
-    };
-    if (els.bgAudio.readyState >= 1) resume();
-    else els.bgAudio.addEventListener('loadedmetadata', resume, { once: true });
-  }
-
-  function returnFromBackground() {
-    if (!bgActive) return;
-    const t = els.bgAudio.currentTime || 0;
-    bgActive = false;
-    els.bgAudio.pause();
-    const el = activeEl();
-    el.currentTime = t;
-    el.play().catch(() => {});
-  }
-
-  function handleVisible() {
-    if (!document.hidden) returnFromBackground();
-  }
-
-  function bindBgAudioEvents() {
-    els.bgAudio.addEventListener('play', () => {
-      state.isPlaying = true;
-      syncPlayUI();
-    });
-    els.bgAudio.addEventListener('pause', () => {
-      if (!bgActive) return;
-      state.isPlaying = false;
-      syncPlayUI();
-    });
-    els.bgAudio.addEventListener('ended', () => {
-      if (!bgActive) return;
-      bgActive = false;
-      playNext(false);
-      if (document.hidden) goBackground();
     });
   }
 
@@ -704,8 +631,7 @@
     els.pbVolume.addEventListener('input', (e) => setVolume(parseFloat(e.target.value)));
 
     els.progress.addEventListener('input', () => {
-      const el = activeEl();
-      if (isFinite(el.duration)) el.currentTime = (els.progress.value / 100) * el.duration;
+      if (isFinite(els.sound.duration)) seek((els.progress.value / 100) * els.sound.duration);
     });
 
     document.addEventListener('keydown', (e) => {
@@ -721,14 +647,11 @@
     });
 
     document.addEventListener('visibilitychange', () => {
-      handleVisible();
       if (document.hidden) saveState(true);
     });
     window.addEventListener('pagehide', () => saveState(true));
 
-    bindMediaEvents(els.audio);
-    bindMediaEvents(els.video);
-    bindBgAudioEvents();
+    bindSoundEvents();
   }
 
   // ---------- Init ----------
