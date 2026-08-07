@@ -268,7 +268,7 @@ body.playing .play-btn .icon-pause { display: block; }
 .volume-row svg { color: var(--text-faint); flex: 0 0 auto; }
 
 /* ============ Watch: playlist column ============ */
-.watch-list { flex: 0 0 360px; width: 360px; }
+.watch-list { flex: 0 0 400px; width: 400px; }
 .watch-list-title { font-size: 15px; font-weight: 700; margin-bottom: 10px; }
 .song-list { display: flex; flex-direction: column; gap: 2px; }
 .song-item {
