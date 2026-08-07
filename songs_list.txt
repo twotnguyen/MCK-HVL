@@ -1,0 +1,92 @@
+# ============================================================
+#  DANH SÁCH 30 BÀI HÁT - BỘ SƯU TẬP MCK
+#  Thư mục gốc: d:/Documents/CODE/HVL
+#  Ngày tạo: 2026-08-07
+# ============================================================
+
+## 🎵 THƯ MỤC MP4 (Audio gốc)
+
+ 1. Elegie.mp4
+ 2. IDK - MCK.mp4
+ 3. Wtf Bby I_m Lit - MCK.mp4
+ 4. Anh Không Muốn Nó Dễ Dàng - MCK.mp4
+ 5. Baby - MCK (ft. marzuz).mp4
+ 6. Yêu Anh Giết Anh - MCK.mp4
+ 7. Mắt Môi Tay Chân - MCK (ft. Tage).mp4
+ 8. Đao Của Anh Vừa - MCK.mp4
+ 9. Là Gì Của Nhau - MCK.mp4
+10. Night In Prague - MCK.mp4
+11. Một Cái Ôm - MCK.mp4
+12. Ai Mới Là Kẻ Xấu Xa - MCK (1).mp4
+13. Liệm - MCK.mp4
+14. Nếu Như Ta Chẳng Còn - MCK (ft. A$AP Ướt Mi).mp4
+15. Slippery - MCK (ft. TÙNG DƯƠNG).mp4
+16. Intenpol.mp4
+17. Tây Thi - MCK.mp4
+18. Dưa Chua - MCK.mp4
+19. Hút và Hút - MCK.mp4
+20. Xa Xôi - MCK (ft. Obito).mp4
+21. Che Phủ - MCK.mp4
+22. Oanh M = Thuoc - MCK.mp4
+23. Ghet Xog Lai Thik - MCK.mp4
+24. Nhìn Kẻ Thù Của Tao - MCK.mp4
+25. Envy - MCK (ft. THANHDRAW).mp4
+26. Cảm Ơn - MCK.mp4
+27. Huh - MCK (ft. RPT ORIJINN & THANHDRAW).mp4
+28. Không Cần Lo Cho Tao - MCK.mp4
+29. Nguyễn Văn Mười - MCK.mp4
+30. Thịt Lợn - MCK.mp4
+
+## 🎬 THƯ MỤC MV (Official Music Video)
+
+ 1. IDK - MCK (0FFICIAL MUSIK VIDEO).mp4
+ 2. SLIPPERY - MCK ft. TÙNG DƯƠNG (OFFICIAL MUSIC VIDEO).mp4
+ 3. NHÌN KẺ THÙ CỦA TAO - MCK (OFFICIAL MUSIC VIDEO).mp4
+ 4. MẮT MÔI TAY CHÂN - MCK ft. TAGE (OFFICIAL MUSIC VIDEO).mp4
+ 5. XA XÔI - MCK ft. OBITO (OFFICIAL MUSIC VIDEO).mp4
+ 6. OANH M = THUOC - MCK.mp4
+
+## 🖼️ THƯ MỤC IMAGES (Cover art)
+
+ 1. Elegie.jpg
+ 2. IDK - MCK.jpg
+ 3. Wtf Bby I_m Lit - MCK.jpg
+ 4. Anh Không Muốn Nó Dễ Dàng - MCK.jpg
+ 5. Baby - MCK (ft. marzuz).jpg
+ 6. Yêu Anh Giết Anh - MCK.jpg
+ 7. Mắt Môi Tay Chân - MCK (ft. Tage).jpg
+ 8. Đao Của Anh Vừa - MCK.jpg
+ 9. Là Gì Của Nhau - MCK.jpg
+10. Night In Prague - MCK.jpg
+11. Một Cái Ôm - MCK.jpg
+12. Ai Mới Là Kẻ Xấu Xa - MCK (1).jpg
+13. Liệm - MCK.jpg
+14. Nếu Như Ta Chẳng Còn - MCK (ft. A$AP Ướt Mi).jpg
+15. Slippery - MCK (ft. TÙNG DƯƠNG).jpg
+16. Intenpol.jpg
+17. Tây Thi - MCK.jpg
+18. Dưa Chua - MCK.jpg
+19. Hút và Hút - MCK.jpg
+20. Xa Xôi - MCK (ft. Obito).jpg
+21. Che Phủ - MCK.jpg
+22. Oanh M = Thuoc - MCK.jpg
+23. Ghet Xog Lai Thik - MCK.jpg
+24. Nhìn Kẻ Thù Của Tao - MCK.jpg
+25. Envy - MCK (ft. THANHDRAW).jpg
+26. Cảm Ơn - MCK.jpg
+27. Huh - MCK (ft. RPT ORIJINN & THANHDRAW).jpg
+28. Không Cần Lo Cho Tao - MCK.jpg
+29. Nguyễn Văn Mười - MCK.jpg
+30. Thịt Lợn - MCK.jpg
+
+## 📌 GHI CHÚ
+
+- Bài #1 "Elegie" và #16 "Intenpol": không có hậu tố " - MCK" trong tên file gốc
+- Bài #12 "Ai Mới Là Kẻ Xấu Xa": có đuôi "(1)" trong tên file MP4
+- Có 6 bài có cả audio (MP4) lẫn MV chính thức (MV):
+    • IDK            (#2)
+    • Slippery       (#15)
+    • Nhìn Kẻ Thù    (#24)
+    • Mắt Môi Tay Chân (#7)
+    • Xa Xôi         (#20)
+    • Oanh M = Thuoc (#22)
