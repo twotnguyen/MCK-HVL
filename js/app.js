@@ -58,7 +58,6 @@
     playBtn: $('btn-play'),
     nextBtn: $('btn-next'),
     repeatBtn: $('btn-repeat'),
-    volume: $('volume'),
     pbVolume: $('pb-volume'),
     playerBar: $('player-bar'),
     pbCover: $('pb-cover'),
@@ -100,7 +99,7 @@
 
   function cardTemplate(s) {
     return `
-      <li class="card-item" data-id="${s.id}">
+      <li class="card-item" data-id="${s.id}" tabindex="0" role="button" aria-label="Phát ${escapeHtml(s.title)}">
         <div class="card-thumb">
           <img class="card-img" src="${urlFor(FOLDER.img, s.img)}" alt="" loading="lazy">
           ${s.mv ? MV_BADGE : ''}
@@ -119,7 +118,7 @@
 
   function songTemplate(s) {
     return `
-      <li class="song-item" data-id="${s.id}">
+      <li class="song-item" data-id="${s.id}" tabindex="0" role="button" aria-label="Phát ${escapeHtml(s.title)}">
         <span class="song-idx">${s.id}</span>
         <img class="song-thumb" src="${urlFor(FOLDER.img, s.img)}" alt="" loading="lazy">
         <div class="song-meta">
@@ -143,17 +142,36 @@
 
   function loadDurations() {
     const seen = new Set();
+    const queue = [];
     SONGS.forEach(song => {
       if (seen.has(song.audio)) return;
       seen.add(song.audio);
+      queue.push(song);
+    });
+
+    const CONCURRENCY = 4;
+    let cursor = 0;
+    function runNext() {
+      if (cursor >= queue.length) return;
+      const song = queue[cursor++];
       const probe = new Audio();
       probe.preload = 'metadata';
-      probe.addEventListener('loadedmetadata', () => {
-        if (!isFinite(probe.duration)) return;
-        document.querySelectorAll(`[data-dur="${song.id}"]`).forEach(el => { el.textContent = formatTime(probe.duration); });
-      });
+      const finish = () => {
+        probe.removeEventListener('loadedmetadata', onLoaded);
+        probe.removeEventListener('error', finish);
+        runNext();
+      };
+      const onLoaded = () => {
+        if (isFinite(probe.duration)) {
+          document.querySelectorAll(`[data-dur="${song.id}"]`).forEach(el => { el.textContent = formatTime(probe.duration); });
+        }
+        finish();
+      };
+      probe.addEventListener('loadedmetadata', onLoaded);
+      probe.addEventListener('error', finish);
       probe.src = urlFor(FOLDER.audio, song.audio);
-    });
+    }
+    for (let i = 0; i < CONCURRENCY; i++) runNext();
   }
 
   function updatePlayingHighlight() {
@@ -379,7 +397,6 @@
     state.volume = v;
     els.audio.volume = v;
     els.video.volume = v;
-    if (els.volume) els.volume.value = v;
     if (els.pbVolume) els.pbVolume.value = v;
     saveState(false);
   }
@@ -553,9 +570,7 @@
   }
 
   // ---------- Event wiring ----------
-  function onPickSong(e) {
-    const li = e.target.closest('.card-item, .song-item');
-    if (!li) return;
+  function activateItem(li) {
     const id = Number(li.dataset.id);
     const idx = SONGS.findIndex(s => s.id === id);
     if (idx === -1) return;
@@ -564,9 +579,26 @@
     showView('watch');
   }
 
+  function onPickSong(e) {
+    const li = e.target.closest('.card-item, .song-item');
+    if (!li) return;
+    activateItem(li);
+  }
+
+  function onKeySong(e) {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    const li = e.target.closest('.card-item, .song-item');
+    if (!li) return;
+    e.preventDefault();
+    e.stopPropagation();
+    activateItem(li);
+  }
+
   function initEvents() {
     els.cardGrid.addEventListener('click', onPickSong);
     els.songList.addEventListener('click', onPickSong);
+    els.cardGrid.addEventListener('keydown', onKeySong);
+    els.songList.addEventListener('keydown', onKeySong);
 
     els.searchInput.addEventListener('input', () => applyFilters());
 
@@ -604,9 +636,6 @@
       updateRepeatUI();
       saveState(true);
     });
-    if (els.volume) {
-      els.volume.addEventListener('input', (e) => setVolume(parseFloat(e.target.value)));
-    }
     els.pbVolume.addEventListener('input', (e) => setVolume(parseFloat(e.target.value)));
 
     els.progress.addEventListener('input', () => {
