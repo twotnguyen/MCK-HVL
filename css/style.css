@@ -177,8 +177,8 @@ ul { list-style: none; }
 .no-results { padding: 40px 20px; text-align: center; color: var(--text-faint); }
 
 /* ============ Watch page ============ */
-.watch-cols { display: flex; align-items: flex-start; gap: 26px; max-width: 1280px; margin: 0 auto; }
-.watch-player { flex: 1 1 auto; min-width: 0; }
+.watch-cols { display: flex; align-items: flex-start; gap: 26px; max-width: 100%; margin: 0; }
+.watch-player { flex: 1 1 auto; min-width: 0; max-width: 960px; margin: 0 auto; }
 .watch-top { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
 .watch-top-title { font-size: 16px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
