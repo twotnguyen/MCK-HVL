@@ -32,11 +32,8 @@
   // ---------- DOM refs ----------
   const els = {
     app: $('app'),
-    menuBtn: $('menu-btn'),
-    sidebar: $('sidebar'),
-    sideNav: $('side-nav'),
-    sideBackdrop: $('side-backdrop'),
     homeTitle: $('home-title'),
+    filterGroup: $('filter-group'),
     cardGrid: $('card-grid'),
     songList: $('song-list'),
     noResults: $('no-results'),
@@ -49,8 +46,6 @@
     stageEmpty: $('stage-empty'),
     stageTitle: $('stage-title'),
     stageSub: $('stage-sub'),
-    cover: $('cover-img'),
-    discArt: $('disc-art'),
     video: $('mv-video'),
     audio: $('audio-el'),
     viewToggle: $('view-toggle'),
@@ -191,32 +186,23 @@
     els.viewHome.hidden = view !== 'home';
     els.viewWatch.hidden = view !== 'watch';
     document.body.classList.toggle('watch-view', view === 'watch');
-    closeSidebar();
-    updateSidebarUI();
     showPlayerBar();
-  }
-
-  function isSideActive(btn) {
-    const side = btn.dataset.side;
-    if (side === 'home') return state.view === 'home' && state.filter === 'all';
-    if (side === 'mv') return state.view === 'home' && state.filter === 'mv';
-    if (side === 'watch') return state.view === 'watch';
-    return false;
-  }
-
-  function updateSidebarUI() {
-    els.sideNav.querySelectorAll('.side-item').forEach(b => b.classList.toggle('active', isSideActive(b)));
   }
 
   function setFilter(filter) {
     state.filter = filter;
     els.homeTitle.textContent = filter === 'mv' ? 'Có MV' : 'Trang chủ';
     applyFilters();
-    updateSidebarUI();
+    updateFilterPillsUI();
   }
 
-  function openSidebar() { els.app.classList.add('side-open'); }
-  function closeSidebar() { els.app.classList.remove('side-open'); }
+  function updateFilterPillsUI() {
+    if (els.filterGroup) {
+      els.filterGroup.querySelectorAll('.filter-pill').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.filter === state.filter);
+      });
+    }
+  }
 
   function showPlayerBar() {
     els.playerBar.hidden = !(state.view === 'home' && state.current !== -1);
@@ -290,9 +276,9 @@
     state.history = state.history.filter(i => i !== index);
 
     els.audio.src = urlFor(FOLDER.audio, song.audio);
-    els.cover.src = urlFor(FOLDER.img, song.img);
-    els.pbCover.src = els.cover.src;
-    setAmbient(els.cover.src);
+    const coverUrl = urlFor(FOLDER.img, song.img);
+    els.pbCover.src = coverUrl;
+    setAmbient(coverUrl);
 
     if (song.mv) {
       els.video.src = urlFor(FOLDER.mv, song.mv);
@@ -327,7 +313,7 @@
   function updateVisualVisibility() {
     const isMv = state.viewMode === 'mv';
     els.video.hidden = !isMv;
-    els.discArt.hidden = isMv;
+    els.audio.hidden = isMv;
   }
 
   // ---------- Transport ----------
@@ -393,7 +379,7 @@
     state.volume = v;
     els.audio.volume = v;
     els.video.volume = v;
-    els.volume.value = v;
+    if (els.volume) els.volume.value = v;
     if (els.pbVolume) els.pbVolume.value = v;
     saveState(false);
   }
@@ -584,20 +570,13 @@
 
     els.searchInput.addEventListener('input', () => applyFilters());
 
-    els.sideNav.addEventListener('click', (e) => {
-      const btn = e.target.closest('.side-item');
-      if (!btn) return;
-      const side = btn.dataset.side;
-      if (side === 'home') setFilter('all');
-      else if (side === 'mv') setFilter('mv');
-      else if (side === 'watch') {
-        closeSidebar();
-        if (state.current !== -1) showView('watch');
-      }
-    });
-
-    els.menuBtn.addEventListener('click', openSidebar);
-    els.sideBackdrop.addEventListener('click', closeSidebar);
+    if (els.filterGroup) {
+      els.filterGroup.addEventListener('click', (e) => {
+        const btn = e.target.closest('.filter-pill');
+        if (!btn) return;
+        setFilter(btn.dataset.filter);
+      });
+    }
 
     els.btnBack.addEventListener('click', () => showView('home'));
 
@@ -625,7 +604,9 @@
       updateRepeatUI();
       saveState(true);
     });
-    els.volume.addEventListener('input', (e) => setVolume(parseFloat(e.target.value)));
+    if (els.volume) {
+      els.volume.addEventListener('input', (e) => setVolume(parseFloat(e.target.value)));
+    }
     els.pbVolume.addEventListener('input', (e) => setVolume(parseFloat(e.target.value)));
 
     els.progress.addEventListener('input', () => {
