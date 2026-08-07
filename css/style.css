@@ -196,12 +196,12 @@ ul { list-style: none; }
 
 /* ============ Watch page ============ */
 .watch-cols { display: flex; align-items: flex-start; gap: 26px; max-width: 100%; margin: 0; }
-.watch-player { flex: 1 1 auto; min-width: 0; max-width: 1300px; margin: 0 auto; }
+.watch-player { flex: 1 1 auto; min-width: 0; max-width: 1450px; margin: 0 auto; }
 .watch-top { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
 .watch-top-info { flex: 1 1 auto; min-width: 0; text-align: center; }
 
 .stage-visual {
-  position: relative; width: 100%; aspect-ratio: 16 / 9; max-width: 1300px; max-height: 85vh;
+  position: relative; width: 100%; aspect-ratio: 16 / 9; max-width: 1450px; max-height: 86vh;
   margin: 0 auto;
   border-radius: var(--radius-lg); overflow: hidden;
   background: var(--bg-elevated);
@@ -363,7 +363,6 @@ body.playing .pb-play .icon-pause { display: block; }
 
 @media (max-width: 767px) {
   .topbar-meta { display: none; }
-  .stage-visual { max-height: 95vh; }
   .main { padding: 14px 14px calc(var(--playerbar-h) + 28px); }
   body.watch-view .topbar { display: none; }
 }
