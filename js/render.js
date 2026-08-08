@@ -124,6 +124,7 @@ function showView(view) {
   els.viewHome.hidden = view !== 'home';
   els.viewWatch.hidden = view !== 'watch';
   document.body.classList.toggle('watch-view', view === 'watch');
+  syncFooterClone();
   showPlayerBar();
   if (view === 'watch') {
     requestAnimationFrame(positionBackButton);

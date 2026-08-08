@@ -190,6 +190,49 @@ function initEvents() {
   window.addEventListener('pagehide', () => saveState(true));
 
   bindSoundEvents();
+  initFooterTabs();
+}
+
+// Footer tabs on phones: 3 equal tabs, tap to expand its content, tap the
+// active tab again to collapse. Only one panel is open at a time. Uses event
+// delegation so the cloned footer in the watch playlist works too.
+function initFooterTabs() {
+  document.addEventListener('click', (e) => {
+    const tab = e.target.closest('.footer-tab');
+    if (!tab) return;
+    const section = tab.closest('.footer-section');
+    if (!section) return;
+    const isOpen = section.classList.contains('open');
+    document.querySelectorAll('.footer-section').forEach((s) => {
+      s.classList.remove('open');
+      const t = s.querySelector('.footer-tab');
+      if (t) t.setAttribute('aria-expanded', 'false');
+    });
+    if (!isOpen) {
+      section.classList.add('open');
+      tab.setAttribute('aria-expanded', 'true');
+    }
+  });
+}
+
+// On phones the watch page is a full-screen player, so the footer (a child of
+// <main>) can't scroll with the page. Clone it into the end of the playlist —
+// the scrollable column — so it is reachable at the very bottom.
+function syncFooterClone() {
+  const list = document.querySelector('.watch-list');
+  if (!list || !window.matchMedia('(max-width: 767px)').matches) return;
+  const original = document.querySelector('.site-footer');
+  if (!original) return;
+  let clone = list.querySelector('.site-footer-clone');
+  if (state.view === 'watch') {
+    if (!clone) {
+      clone = original.cloneNode(true);
+      clone.classList.add('site-footer-clone');
+      list.appendChild(clone);
+    }
+  } else if (clone) {
+    clone.remove();
+  }
 }
 
 // ---------- Init ----------

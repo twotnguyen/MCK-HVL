@@ -281,6 +281,18 @@ ul { list-style: none; }
   border-bottom: 1px solid var(--border);
   position: relative;
 }
+.footer-tab {
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  width: 100%;
+  text-align: left;
+  cursor: default;
+}
 .footer-heading::after {
   content: "";
   position: absolute; left: 0; bottom: -1px;
@@ -543,7 +555,13 @@ body.playing .play-btn .icon-pause { display: block; }
 
 /* ============ Watch: playlist column ============ */
 .watch-list { flex: 0 0 400px; width: 400px; }
-.watch-list-title { font-size: 15px; font-weight: 700; margin-bottom: 10px; }
+.watch-list-title {
+  font-size: 15px; font-weight: 700; margin-bottom: 10px;
+  position: sticky; top: 0; z-index: 5;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 8px 0;
+}
 .song-list { display: flex; flex-direction: column; gap: 2px; }
 .song-item {
   display: flex; align-items: center; gap: 12px;
@@ -658,12 +676,28 @@ body.playing .pb-play .icon-pause { display: block; }
   .view-head { margin-bottom: 12px; }
   .view-title { font-size: 20px; }
   body.watch-view .topbar { display: none; }
+  /* On phones the watch page is a full-screen player: video and song info
+     stay pinned, the playlist scrolls with its title stuck to the top, and a
+     copy of the footer sits at the very bottom of the playlist so it is
+     reachable by scrolling down. The original footer stays in <main> for the
+     home page only. */
+  body.watch-view .site-footer:not(.site-footer-clone) { display: none; }
+  .watch-list-title {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 10px 0 8px;
+    margin-bottom: 6px;
+  }
+  .site-footer-clone { margin-top: 18px; }
   /* Watch page on phones: full-bleed video with the back button floating
      inside the frame. The video and song info stay fixed at the top while
      only the playlist scrolls in its own container — like a native player,
      so the playing frame can never scroll off screen. */
   body.watch-view .main {
-    padding-left: 0; padding-right: 0; padding-top: 0;
+    padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;
     display: flex; flex-direction: column; overflow: hidden;
   }
   body.watch-view .view { display: flex; flex-direction: column; flex: 1 1 auto; min-height: 0; }
@@ -682,25 +716,44 @@ body.playing .pb-play .icon-pause { display: block; }
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     z-index: 15;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity .2s ease;
   }
-  /* The back button follows the same show/hide lifecycle as the transport
-     overlay (shown on tap/focus/hover, hidden when controls go idle). */
-  .watch-player:has(.stage-visual:hover) #btn-back,
-  .watch-player:has(.stage-visual:focus-within) #btn-back,
-  .watch-player:has(.stage-visual.overlay-visible) #btn-back {
-    opacity: 1;
-    pointer-events: auto;
-  }
-  .watch-player:has(.stage-visual.controls-idle) #btn-back {
-    opacity: 0 !important;
-    pointer-events: none !important;
-  }
-  .watch-top-info, .watch-list { padding: 0 14px; }
+  .watch-top-info { padding: 0 14px; }
+  .watch-list { padding: 0 14px calc(24px + env(safe-area-inset-bottom, 0px)); }
   .site-footer { margin-top: 38px; padding: 22px 18px; }
-  .footer-cols { grid-template-columns: 1fr; gap: 22px; }
+  /* Footer on phones becomes 3 equal tabs: tap to expand its content,
+     tap the active tab again to collapse it. */
+  .footer-cols { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px 10px; }
+  .footer-section { display: contents; }
+  .footer-heading { margin: 0; padding: 0; border-bottom: 0; }
+  .footer-heading::after { display: none; }
+  .footer-tab {
+    width: 100%;
+    padding: 11px 4px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-align: center;
+    color: var(--text-dim);
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: color .15s, border-color .15s, background .15s, box-shadow .15s;
+  }
+  .footer-tab:hover { color: var(--text); border-color: rgba(167,139,250,0.45); }
+  .footer-tab[aria-expanded="true"] {
+    color: #fff;
+    background: var(--accent-grad);
+    border-color: transparent;
+    box-shadow: 0 6px 16px -8px rgba(236,72,153,0.8);
+  }
+  .footer-section > :not(.footer-heading) { display: none; }
+  .footer-section.open > :not(.footer-heading) {
+    display: block;
+    grid-column: 1 / -1;
+    order: 99;
+    animation: view-in .18s ease;
+  }
   .footer-bottom { grid-template-columns: 1fr; gap: 10px; }
   .footer-copyright, .footer-made { grid-column: 1; justify-self: center; }
 
@@ -755,19 +808,6 @@ body.playing .pb-play .icon-pause { display: block; }
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     z-index: 15;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity .2s ease;
-  }
-  .watch-player:has(.stage-visual:hover) #btn-back,
-  .watch-player:has(.stage-visual:focus-within) #btn-back,
-  .watch-player:has(.stage-visual.overlay-visible) #btn-back {
-    opacity: 1;
-    pointer-events: auto;
-  }
-  .watch-player:has(.stage-visual.controls-idle) #btn-back {
-    opacity: 0 !important;
-    pointer-events: none !important;
   }
 }
 

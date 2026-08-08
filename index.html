@@ -419,8 +419,12 @@
 
               <div class="footer-cols">
                 <section class="footer-section" aria-labelledby="footer-about-title">
-                  <h2 id="footer-about-title" class="footer-heading">Về trang web</h2>
-                  <ul class="footer-list">
+                  <h2 class="footer-heading">
+                    <button type="button" class="footer-tab" id="footer-about-title" aria-expanded="false" aria-controls="footer-about-panel">
+                      Về trang web
+                    </button>
+                  </h2>
+                  <ul class="footer-list" id="footer-about-panel">
                     <li>Đầy đủ 30 track và 6 MV từ album</li>
                     <li>Phát nền &amp; điều khiển bằng phím tắt</li>
                     <li>Tìm kiếm không dấu</li>
@@ -429,21 +433,26 @@
                 </section>
 
                 <section class="footer-section" aria-labelledby="footer-author-title">
-                  <h2 id="footer-author-title" class="footer-heading">Người xây dựng</h2>
-                  <div class="footer-author">
-                    <img
-                      class="footer-avt"
-                      src="images/my_avt.png"
-                      alt="Avatar Twot"
-                      loading="lazy"
-                    />
-                    <p class="footer-text">
-                      Thiết kế &amp; phát triển bởi
-                      <strong>Twot</strong> — được tạo nên từ niềm đam mê
-                      âm nhạc và coding.
-                    </p>
-                  </div>
-                  <ul class="footer-contact" aria-label="Liên hệ">
+                  <h2 class="footer-heading">
+                    <button type="button" class="footer-tab" id="footer-author-title" aria-expanded="false" aria-controls="footer-author-panel">
+                      Người xây dựng
+                    </button>
+                  </h2>
+                  <div id="footer-author-panel">
+                    <div class="footer-author">
+                      <img
+                        class="footer-avt"
+                        src="images/my_avt.png"
+                        alt="Avatar Twot"
+                        loading="lazy"
+                      />
+                      <p class="footer-text">
+                        Thiết kế &amp; phát triển bởi
+                        <strong>Twot</strong> — được tạo nên từ niềm đam mê
+                        âm nhạc và coding.
+                      </p>
+                    </div>
+                    <ul class="footer-contact" aria-label="Liên hệ">
                     <li>
                       <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <rect x="2" y="4" width="20" height="16" rx="2" />
@@ -470,11 +479,16 @@
                       <a href="https://www.instagram.com/ybtwot/?hl=en" target="_blank" rel="noopener">ybtwot</a>
                     </li>
                   </ul>
+                  </div>
                 </section>
 
                 <section class="footer-section" aria-labelledby="footer-tech-title">
-                  <h2 id="footer-tech-title" class="footer-heading">Công nghệ</h2>
-                  <ul class="footer-tech" aria-label="Công nghệ sử dụng">
+                  <h2 class="footer-heading">
+                    <button type="button" class="footer-tab" id="footer-tech-title" aria-expanded="false" aria-controls="footer-tech-panel">
+                      Công nghệ
+                    </button>
+                  </h2>
+                  <ul class="footer-tech" aria-label="Công nghệ sử dụng" id="footer-tech-panel">
                     <li><span class="dot dot-html"></span>HTML5</li>
                     <li><span class="dot dot-css"></span>CSS3</li>
                     <li><span class="dot dot-js"></span>JavaScript</li>
