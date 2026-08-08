@@ -152,10 +152,8 @@ function positionBackButton() {
   if (isLandscapePhone()) {
     const wrapRect = wrap.getBoundingClientRect();
     const stageRect = els.stageVisual.getBoundingClientRect();
-    const picW = Math.min(stageRect.width, stageRect.height * (16 / 9));
-    const picLeft = stageRect.left + (stageRect.width - picW) / 2;
     const safeL = parseFloat(getComputedStyle(wrap).getPropertyValue('--safe-l')) || 0;
-    els.btnBack.style.left = Math.max(10, picLeft - wrapRect.left + 10 + safeL) + 'px';
+    els.btnBack.style.left = Math.max(10, stageRect.left - wrapRect.left + 10 + safeL) + 'px';
     return;
   }
   if (!window.matchMedia('(min-width: 1101px)').matches) {
