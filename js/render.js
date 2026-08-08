@@ -119,7 +119,10 @@ function isLandscapePhone() {
   return window.matchMedia('(orientation: landscape) and (max-height: 500px)').matches;
 }
 
+let homeScrollTop = 0;
+
 function showView(view) {
+  const main = document.querySelector('.main');
   state.view = view;
   els.viewHome.hidden = view !== 'home';
   els.viewWatch.hidden = view !== 'watch';
@@ -127,13 +130,18 @@ function showView(view) {
   syncFooterClone();
   showPlayerBar();
   if (view === 'watch') {
+    homeScrollTop = main.scrollTop;
+    main.scrollTop = 0;
     requestAnimationFrame(positionBackButton);
     // Landscape phones are short, so open the player directly in
     // fullscreen — the stage fills the whole screen right away.
     if (isLandscapePhone() && !isFullscreen()) toggleFullscreen();
-  } else if (isFullscreen()) {
-    // Never leave the page sitting behind a fullscreen stage.
-    (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+  } else {
+    main.scrollTop = homeScrollTop;
+    if (isFullscreen()) {
+      // Never leave the page sitting behind a fullscreen stage.
+      (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+    }
   }
 }
 
