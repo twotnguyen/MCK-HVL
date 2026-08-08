@@ -29,7 +29,7 @@
 - Consumes: cấu trúc file hiện tại, `SONGS`, `state`, DOM media và chiến lược cache trong Service Worker.
 - Produces: một README độc lập, chứa hướng dẫn chạy, kiến trúc, tính năng, giới hạn và kiểm tra phát triển.
 
-- [ ] **Step 1: Thay nội dung README bằng cấu trúc đã duyệt**
+- [x] **Step 1: Thay nội dung README bằng cấu trúc đã duyệt**
 
 README phải có các mục theo thứ tự:
 
@@ -51,7 +51,7 @@ README phải có các mục theo thứ tự:
 
 Nội dung phải ghi đúng các dữ kiện: 30 bài audio, 30 ảnh, 6 MV; không có build step; `sound-el` là nguồn âm thanh duy nhất; media được cache khi tải; tổng media lớn nên cache có thể bị trình duyệt thu hồi; Service Worker cần secure context; test cú pháp dùng `node --check`.
 
-- [ ] **Step 2: Xác nhận mọi file được README nhắc tới đều tồn tại**
+- [x] **Step 2: Xác nhận mọi file được README nhắc tới đều tồn tại**
 
 Run:
 
@@ -61,7 +61,7 @@ $readmePaths = @('index.html','css/style.css','js/data.js','js/state.js','js/ren
 
 Expected: `All documented paths exist.`
 
-- [ ] **Step 3: Kiểm tra các mô tả lỗi thời đã bị loại bỏ**
+- [x] **Step 3: Kiểm tra các mô tả lỗi thời đã bị loại bỏ**
 
 Run:
 
@@ -71,7 +71,7 @@ $readmeText = Get-Content -Raw -Encoding UTF8 README.md; if ($readmeText -match 
 
 Expected: `No obsolete behavior found.`
 
-- [ ] **Step 4: Kiểm tra cú pháp mã nguồn được README mô tả**
+- [x] **Step 4: Kiểm tra cú pháp mã nguồn được README mô tả**
 
 Run:
 
@@ -81,7 +81,7 @@ Get-ChildItem js -Filter *.js | ForEach-Object { node --check $_.FullName }; nod
 
 Expected: exit code `0` và không có lỗi cú pháp.
 
-- [ ] **Step 5: Rà soát diff và phạm vi thay đổi**
+- [x] **Step 5: Rà soát diff và phạm vi thay đổi**
 
 Run:
 
@@ -93,7 +93,7 @@ git status --short
 
 Expected: README không có lỗi whitespace; diff chỉ chứa nội dung tài liệu dự kiến. Các thay đổi có sẵn trong `css/style.css`, `index.html`, `js/data.js` và `image.png` không được đưa vào thay đổi README.
 
-- [ ] **Step 6: Commit riêng README và kế hoạch**
+- [x] **Step 6: Commit riêng README và kế hoạch**
 
 Run:
 
