@@ -355,6 +355,26 @@ body.playing .pb-play .icon-pause { display: block; }
   .topbar-meta { display: flex; }
 }
 
+@media (min-width: 1024px) {
+  .player-bar {
+    left: 50%;
+    right: auto;
+    width: 640px;
+    max-width: calc(100vw - 48px);
+    transform: translateX(-50%);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 24px 60px -18px rgba(0,0,0,0.9), 0 0 32px -8px rgba(167,139,250,0.3);
+  }
+  .player-bar:hover {
+    box-shadow: 0 28px 70px -16px rgba(0,0,0,0.95), 0 0 40px -6px rgba(167,139,250,0.45);
+  }
+  .pb-row { padding: 10px 16px; gap: 14px; }
+  .pb-cover { width: 52px; height: 52px; }
+  .pb-title { font-size: 15px; }
+  .pb-btn { width: 44px; height: 44px; }
+  .pb-volume .volume { width: 110px; }
+}
+
 @media (max-width: 1100px) {
   .watch-cols { flex-direction: column; }
   .watch-player { width: 100%; }
