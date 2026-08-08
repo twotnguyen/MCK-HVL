@@ -1,6 +1,6 @@
 {
-  "name": "MCK Player",
-  "short_name": "MCK Player",
+  "name": "HVL-MCK",
+  "short_name": "HVL-MCK",
   "description": "Trình nghe nhạc offline cho bộ sưu tập 30 bài hát MCK",
   "start_url": "./index.html",
   "scope": "./",

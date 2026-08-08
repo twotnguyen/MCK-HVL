@@ -220,7 +220,7 @@ function updateMediaSession(song) {
     navigator.mediaSession.metadata = new MediaMetadata({
       title: song.title,
       artist: 'MCK',
-      album: 'MCK Player',
+      album: 'HVL-MCK',
       artwork: [{ src: urlFor(FOLDER.img, song.img), sizes: '512x512', type: 'image/jpeg' }],
     });
   } catch (e) {}

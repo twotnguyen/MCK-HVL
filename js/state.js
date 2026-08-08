@@ -40,6 +40,7 @@ const $ = (id) => document.getElementById(id);
 // ---------- DOM refs ----------
 const els = {
   app: $('app'),
+  brandHome: $('brand-home'),
   homeTitle: $('home-title'),
   filterGroup: $('filter-group'),
   cardGrid: $('card-grid'),

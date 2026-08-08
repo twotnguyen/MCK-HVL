@@ -71,6 +71,13 @@ function initEvents() {
 
   els.btnBack.addEventListener('click', () => showView('home'));
 
+  els.brandHome.addEventListener('click', () => showView('home'));
+  els.brandHome.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    e.preventDefault();
+    showView('home');
+  });
+
   els.stageVisual.addEventListener('click', (e) => {
     if (e.target.closest('.stage-overlay') || e.target.closest('#btn-back')) return;
     els.stageVisual.classList.toggle('overlay-visible');

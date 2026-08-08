@@ -1,8 +1,8 @@
-# MCK Player
+# HVL-MCK
 
 ## Tổng quan
 
-MCK Player là trình nghe nhạc web dành cho bộ sưu tập 30 bài hát MCK. Ứng dụng chạy hoàn toàn ở phía trình duyệt, không có backend, framework, package manager hoặc bước build.
+HVL-MCK là trình nghe nhạc web dành cho bộ sưu tập 30 bài hát MCK. Ứng dụng chạy hoàn toàn ở phía trình duyệt, không có backend, framework, package manager hoặc bước build.
 
 Dự án được viết bằng HTML, CSS và JavaScript thuần, có giao diện tối responsive và hỗ trợ cài đặt dạng Progressive Web App (PWA) trong môi trường phù hợp.
 

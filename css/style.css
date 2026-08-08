@@ -82,6 +82,14 @@ ul { list-style: none; }
   transition: background .12s, color .12s;
 }
 .icon-btn:hover { background: var(--bg-hover); color: var(--text); }
+#btn-back {
+  margin-left: -6px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--glass-border);
+  color: var(--text);
+  box-shadow: var(--shadow-panel);
+}
+#btn-back:hover { background: var(--bg-hover); color: #fff; }
 
 /* ============ Topbar ============ */
 .topbar {
@@ -94,7 +102,8 @@ ul { list-style: none; }
   border-bottom: 1px solid var(--glass-border);
   z-index: 30;
 }
-.brand { display: flex; align-items: center; gap: 9px; white-space: nowrap; font-weight: 700; font-size: 17px; letter-spacing: 0.2px; }
+.brand { display: flex; align-items: center; gap: 9px; white-space: nowrap; font-weight: 700; font-size: 17px; letter-spacing: 0.2px; cursor: pointer; transition: opacity .12s; }
+.brand:hover { opacity: 0.85; }
 .brand-mark { display: flex; color: var(--accent-a); filter: drop-shadow(0 0 8px rgba(167,139,250,0.55)); }
 .brand-name em { font-style: normal; background: var(--accent-grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
 
@@ -117,7 +126,9 @@ ul { list-style: none; }
   width: 34px; height: 34px; border-radius: 50%;
   background: var(--accent-grad); color: #fff; font-size: 12px; font-weight: 700;
   box-shadow: 0 4px 14px -6px rgba(236,72,153,0.7);
+  overflow: hidden;
 }
+.topbar-avatar img { width: 100%; height: 100%; object-fit: cover; }
 
 /* ============ Body: sidebar + main ============ */
 .yt-body { flex: 1 1 auto; min-height: 0; display: flex; position: relative; overflow: hidden; }
@@ -306,14 +317,14 @@ input[type="range"]::-moz-range-thumb { width: 14px; height: 14px; border-radius
 .repeat-one-badge {
   display: none;
   position: absolute;
-  top: 2px; right: 2px;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
   min-width: 13px; height: 13px; padding: 0 2px;
   border-radius: 50%;
-  background: var(--accent-grad);
+  background: transparent;
   color: #fff;
   font-size: 9px; font-weight: 800; line-height: 13px;
   text-align: center;
-  box-shadow: 0 0 0 2px var(--bg-elevated);
 }
 #btn-repeat.repeat-one .repeat-one-badge { display: block; }
 .play-btn {
