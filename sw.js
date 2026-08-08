@@ -1,14 +1,17 @@
-const SHELL_CACHE = 'mck-shell-v14';
+const SHELL_CACHE = 'mck-shell-v15';
 
 const SHELL_ASSETS = [
   './',
   './index.html',
+  './donate.html',
   './css/style.css',
+  './css/donate.css',
   './js/data.js',
   './js/state.js',
   './js/render.js',
   './js/player.js',
   './js/events.js',
+  './js/donate.js',
   './manifest.json',
   './images/logo.jpg',
 ];

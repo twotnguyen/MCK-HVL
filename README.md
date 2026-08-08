@@ -79,6 +79,25 @@ http://localhost:8000
 
 Không có bước cài dependency hoặc build.
 
+## Cấu hình trang Donate
+
+Nút `Donate` trên header mở `donate.html` trong tab mới để trình phát nhạc hiện tại không bị gián đoạn. Trang hỗ trợ chọn mức ủng hộ, nhập số tiền tùy chỉnh, thêm lời nhắn và tạo email liên hệ đã điền sẵn nội dung.
+
+Thông tin nhận donate được khai báo tập trung trong `DONATE_CONFIG` ở đầu file `js/donate.js`:
+
+```javascript
+const DONATE_CONFIG = {
+  bankName: 'Tên ngân hàng',
+  accountNumber: 'Số tài khoản',
+  accountHolder: 'TÊN CHỦ TÀI KHOẢN',
+  transferNote: 'HVL MCK DONATE',
+  qrImage: 'images/donate-qr.png',
+  contactEmail: 'email@example.com',
+};
+```
+
+Khi `bankName` và `accountNumber` còn trống, trang chủ động hiển thị trạng thái chưa cấu hình và hướng người dùng liên hệ qua email. Để bật QR, thêm ảnh QR vào thư mục `images/` rồi cập nhật `qrImage`; nếu muốn ảnh này có sẵn khi offline, thêm đường dẫn tương ứng vào `SHELL_ASSETS` trong `sw.js` và tăng phiên bản `SHELL_CACHE`.
+
 ## Truy cập từ điện thoại
 
 Để thử giao diện và phát media trên điện thoại trong cùng mạng Wi-Fi:
@@ -130,14 +149,17 @@ Khi focus không nằm trong ô nhập liệu:
 ```text
 HVL/
 ├── index.html             Giao diện và các phần tử media
+├── donate.html            Trang ủng hộ dự án
 ├── css/
-│   └── style.css          Theme, layout và responsive styles
+│   ├── style.css          Theme, layout và responsive styles của trình phát
+│   └── donate.css         Giao diện responsive của trang Donate
 ├── js/
 │   ├── data.js            Manifest 30 bài hát
 │   ├── state.js           Helper, DOM references và state
 │   ├── render.js          Render và đồng bộ UI
 │   ├── player.js          Playback engine và persistence
-│   └── events.js          Event wiring và bootstrap
+│   ├── events.js          Event wiring và bootstrap
+│   └── donate.js          Cấu hình và tương tác của trang Donate
 ├── images/                30 ảnh bài hát
 ├── MP4/                   30 file media dùng cho chế độ Audio/Ảnh
 ├── MV/                    6 video MV

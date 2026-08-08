@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Donate — Ủng hộ HVL-MCK</title>
+    <meta name="theme-color" content="#07070a" />
+    <meta
+      name="description"
+      content="Ủng hộ người xây dựng HVL-MCK tiếp tục duy trì và hoàn thiện trải nghiệm nghe nhạc."
+    />
+    <link rel="icon" href="images/logo.jpg" type="image/jpeg" />
+    <link rel="apple-touch-icon" href="images/logo.jpg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/donate.css" />
+  </head>
+  <body>
+    <div class="donate-ambient" aria-hidden="true"></div>
+
+    <header class="donate-topbar">
+      <a class="donate-brand" href="index.html" aria-label="Về HVL-MCK">
+        <img src="images/logo.jpg" alt="" />
+        <span>HVL-<em>MCK</em></span>
+      </a>
+      <a class="back-link" href="index.html">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="m15 18-6-6 6-6" />
+        </svg>
+        <span>Về trình phát</span>
+      </a>
+    </header>
+
+    <main class="donate-main">
+      <section class="donate-hero" aria-labelledby="donate-title">
+        <div class="hero-copy">
+          <p class="eyebrow">
+            <span class="eyebrow-heart" aria-hidden="true">♥</span>
+            Ủng hộ hoàn toàn tự nguyện
+          </p>
+          <h1 id="donate-title">Giúp những giai điệu này<br /><span>tiếp tục vang lên.</span></h1>
+          <p class="hero-lead">
+            HVL-MCK được xây dựng và duy trì như một dự án cá nhân. Một lời động viên
+            hay khoản ủng hộ nhỏ từ bạn đều là năng lượng để Twot tiếp tục hoàn thiện nó.
+          </p>
+          <div class="hero-stats" aria-label="Thông tin dự án">
+            <div><strong>30</strong><span>ca khúc</span></div>
+            <div><strong>6</strong><span>MV</span></div>
+            <div><strong>100%</strong><span>miễn phí</span></div>
+          </div>
+        </div>
+
+        <div class="hero-art" aria-hidden="true">
+          <div class="vinyl">
+            <div class="vinyl-ring"></div>
+            <img src="images/logo.jpg" alt="" />
+          </div>
+          <span class="note note-one">♪</span>
+          <span class="note note-two">♫</span>
+          <span class="note note-three">♪</span>
+        </div>
+      </section>
+
+      <section class="donate-layout" aria-label="Thông tin donate">
+        <div class="donate-card contribution-card">
+          <div class="section-heading">
+            <span class="step">01</span>
+            <div>
+              <h2>Chọn một lời ủng hộ</h2>
+              <p>Không có mức tối thiểu — điều quan trọng nhất là sự đồng hành của bạn.</p>
+            </div>
+          </div>
+
+          <div class="amount-grid" role="group" aria-label="Chọn số tiền donate">
+            <button type="button" class="amount-option" data-amount="20000" aria-pressed="false">
+              <strong>20.000đ</strong>
+              <span>Một ly cà phê</span>
+            </button>
+            <button type="button" class="amount-option active" data-amount="50000" aria-pressed="true">
+              <span class="popular">Phổ biến</span>
+              <strong>50.000đ</strong>
+              <span>Tiếp sức coding</span>
+            </button>
+            <button type="button" class="amount-option" data-amount="100000" aria-pressed="false">
+              <strong>100.000đ</strong>
+              <span>Fan cứng HVL</span>
+            </button>
+          </div>
+
+          <label class="field-label" for="custom-amount">Hoặc nhập số tiền khác</label>
+          <div class="amount-input-wrap">
+            <input
+              id="custom-amount"
+              type="text"
+              inputmode="numeric"
+              autocomplete="off"
+              placeholder="Ví dụ: 200.000"
+              aria-describedby="amount-hint"
+            />
+            <span>VND</span>
+          </div>
+          <p id="amount-hint" class="field-hint">Chỉ nhập chữ số, không cần nhập dấu chấm.</p>
+
+          <label class="field-label" for="donate-message">Lời nhắn cho Twot <span>(không bắt buộc)</span></label>
+          <textarea
+            id="donate-message"
+            rows="3"
+            maxlength="240"
+            placeholder="Viết vài lời động viên..."
+          ></textarea>
+
+          <div class="donate-summary" aria-live="polite">
+            <div>
+              <span>Bạn đang chọn</span>
+              <strong id="selected-amount">50.000 ₫</strong>
+            </div>
+            <span class="summary-heart" aria-hidden="true">♥</span>
+          </div>
+        </div>
+
+        <div class="donate-card payment-card">
+          <div class="section-heading">
+            <span class="step">02</span>
+            <div>
+              <h2>Hoàn tất donate</h2>
+              <p>Quét QR hoặc dùng thông tin chuyển khoản khi chủ dự án đã cấu hình.</p>
+            </div>
+          </div>
+
+          <div class="payment-body">
+            <div class="qr-frame">
+              <img id="donate-qr" alt="Mã QR chuyển khoản" hidden />
+              <div id="qr-placeholder" class="qr-placeholder">
+                <svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="3" y="3" width="7" height="7" rx="1" />
+                  <rect x="14" y="3" width="7" height="7" rx="1" />
+                  <rect x="3" y="14" width="7" height="7" rx="1" />
+                  <path d="M14 14h3v3h-3zM18 18h3v3h-3zM18 14h3M14 18v3" />
+                </svg>
+                <strong>QR đang cập nhật</strong>
+                <span>Liên hệ Twot để nhận thông tin</span>
+              </div>
+            </div>
+
+            <div class="bank-panel">
+              <div class="config-status" id="config-status">
+                <span></span> Chưa cấu hình tài khoản nhận donate
+              </div>
+              <dl class="bank-details">
+                <div><dt>Ngân hàng</dt><dd id="bank-name">Đang cập nhật</dd></div>
+                <div><dt>Số tài khoản</dt><dd id="bank-account">Đang cập nhật</dd></div>
+                <div><dt>Chủ tài khoản</dt><dd id="bank-holder">TWOT</dd></div>
+                <div><dt>Nội dung</dt><dd id="transfer-note">HVL MCK DONATE</dd></div>
+              </dl>
+              <button id="copy-account" class="secondary-btn" type="button" disabled>
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="9" y="9" width="11" height="11" rx="2" />
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                </svg>
+                Sao chép số tài khoản
+              </button>
+            </div>
+          </div>
+
+          <a id="contact-donate" class="primary-btn" href="mailto:nguyenngoctinh011258@gmail.com">
+            <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="2" y="4" width="20" height="16" rx="2" />
+              <path d="m22 7-10 6L2 7" />
+            </svg>
+            <span>Liên hệ để hoàn tất donate</span>
+          </a>
+          <p class="privacy-note">Trang không thu thập hay lưu trữ thông tin thanh toán của bạn.</p>
+        </div>
+      </section>
+
+      <section class="impact-section" aria-labelledby="impact-title">
+        <div class="impact-heading">
+          <p class="eyebrow">Minh bạch &amp; chân thành</p>
+          <h2 id="impact-title">Sự ủng hộ của bạn giúp ích điều gì?</h2>
+          <p>Donate không mở khóa tính năng và cũng không phải nghĩa vụ. HVL-MCK vẫn luôn miễn phí.</p>
+        </div>
+        <div class="impact-grid">
+          <article>
+            <span class="impact-icon">01</span>
+            <h3>Duy trì dự án</h3>
+            <p>Chi phí lưu trữ, tên miền và thời gian bảo trì để website luôn hoạt động ổn định.</p>
+          </article>
+          <article>
+            <span class="impact-icon">02</span>
+            <h3>Hoàn thiện trải nghiệm</h3>
+            <p>Tối ưu giao diện, khả năng phát nền, PWA và hỗ trợ tốt hơn trên nhiều thiết bị.</p>
+          </article>
+          <article>
+            <span class="impact-icon">03</span>
+            <h3>Tiếp thêm động lực</h3>
+            <p>Mỗi sự đồng hành là một lời nhắc rằng dự án nhỏ này đang có ý nghĩa với ai đó.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="thank-you">
+        <span aria-hidden="true">♥</span>
+        <div>
+          <h2>Cảm ơn bạn đã ghé nghe.</h2>
+          <p>Chỉ riêng việc bạn dành thời gian cho HVL-MCK đã là một sự ủng hộ đáng quý.</p>
+        </div>
+        <a href="index.html">Tiếp tục nghe nhạc</a>
+      </section>
+    </main>
+
+    <footer class="donate-footer">
+      <p>&copy; <span id="donate-year">2026</span> Twot · HVL-MCK</p>
+      <div>
+        <a href="mailto:nguyenngoctinh011258@gmail.com">Email</a>
+        <a href="https://github.com/twotnguyen" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://www.facebook.com/nguyen.tinh.754402" target="_blank" rel="noopener">Facebook</a>
+      </div>
+    </footer>
+
+    <div id="donate-toast" class="donate-toast" role="status" aria-live="polite"></div>
+    <script src="js/donate.js"></script>
+  </body>
+</html>
