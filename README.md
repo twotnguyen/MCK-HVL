@@ -1,97 +1,148 @@
 # HVL-MCK
 
-## Tổng quan
+<p align="center">
+  <img src="images/logo.jpg" width="112" height="112" alt="Logo HVL-MCK" />
+</p>
 
-HVL-MCK là trình nghe nhạc web dành cho bộ sưu tập 30 bài hát MCK. Ứng dụng chạy hoàn toàn ở phía trình duyệt, không có backend, framework, package manager hoặc bước build.
+<p align="center">
+  Trình phát nhạc web dành cho bộ sưu tập 30 ca khúc của MCK, xây dựng hoàn toàn bằng HTML, CSS và JavaScript thuần.
+</p>
 
-Dự án được viết bằng HTML, CSS và JavaScript thuần, có giao diện tối responsive và hỗ trợ cài đặt dạng Progressive Web App (PWA) trong môi trường phù hợp.
+<p align="center">
+  <img alt="HTML5" src="https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white" />
+  <img alt="CSS3" src="https://img.shields.io/badge/CSS3-1572B6?logo=css&logoColor=white" />
+  <img alt="JavaScript" src="https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=111" />
+  <img alt="PWA" src="https://img.shields.io/badge/PWA-5A0FC8?logo=pwa&logoColor=white" />
+  <img alt="No build" src="https://img.shields.io/badge/build-không_cần-22c55e" />
+</p>
 
-## Tính năng
+## Giới thiệu
 
-- Danh sách 30 bài hát, 30 ảnh và 6 bài có MV.
-- Trang chủ dạng lưới và màn hình đang phát kèm danh sách phát.
-- Tìm kiếm tiếng Việt không phân biệt dấu; có bộ lọc chỉ hiển thị bài có MV.
-- Phát/tạm dừng, bài trước/sau, tua, âm lượng, shuffle và repeat (`off`, `all`, `one`).
-- Chuyển giữa chế độ Ảnh và MV đối với các bài có video.
-- Ghi nhớ bài hiện tại, vị trí phát, âm lượng, shuffle, repeat và chế độ hiển thị bằng `localStorage`.
-- Media Session API cung cấp metadata và các nút điều khiển trên màn hình khóa khi trình duyệt hỗ trợ.
-- Service Worker cache app shell và những media đã được tải, đồng thời xử lý HTTP Range để hỗ trợ tua khi phát từ cache.
-- Giao diện responsive cho desktop và mobile, có hỗ trợ `prefers-reduced-motion`.
+HVL-MCK là một ứng dụng nghe nhạc tĩnh, responsive và có khả năng cài đặt dưới dạng Progressive Web App (PWA) trên trình duyệt hỗ trợ. Dự án không sử dụng framework, backend, package manager hoặc quy trình build: chỉ cần một HTTP server là có thể chạy.
 
-## Kiến trúc
+Ngoài trình phát nhạc, dự án còn có trang Donate độc lập với hai hình thức hỗ trợ:
 
-Đây là ứng dụng web tĩnh. Các file JavaScript được nạp bằng thẻ `<script>` truyền thống và dùng chung các biến global; không có bundler hoặc module loader.
+- Đăng ký dịch vụ nâng cấp Google AI Pro theo gói cá nhân hoặc gia đình.
+- Ủng hộ trực tiếp qua MoMo hoặc ngân hàng ACB với QR thay đổi theo mệnh giá.
 
-### Thứ tự nạp module
+## Tính năng nổi bật
 
-```text
-js/data.js
-    ↓
-js/state.js
-    ↓
-js/render.js
-    ↓
-js/player.js
-    ↓
-js/events.js
-```
+### Trình phát nhạc
 
-- `data.js`: khai báo manifest `SONGS` cho 30 bài hát.
-- `state.js`: hằng số, helper, DOM references và state dùng chung.
-- `render.js`: render lưới bài hát, playlist, bộ lọc và đồng bộ trạng thái giao diện.
-- `player.js`: engine phát nhạc, chuyển Ảnh/MV, transport controls, Media Session và persistence.
-- `events.js`: gắn sự kiện, phím tắt, khôi phục state và khởi động ứng dụng.
+- Bộ sưu tập 30 bài hát, trong đó có 6 bài kèm MV.
+- Giao diện lưới bài hát và màn hình đang phát có danh sách phát riêng.
+- Tìm kiếm tiếng Việt không phân biệt dấu và lọc nhanh các bài có MV.
+- Điều khiển phát/tạm dừng, bài trước/sau, tua, âm lượng, shuffle và repeat.
+- Chuyển đổi giữa chế độ ảnh và MV mà không phát chồng nhiều nguồn âm thanh.
+- Ghi nhớ bài đang nghe, thời điểm phát, âm lượng, chế độ lặp, shuffle và giao diện bằng `localStorage`.
+- Hỗ trợ Media Session API để hiển thị metadata và điều khiển trên màn hình khóa khi thiết bị cho phép.
+- Hỗ trợ bàn phím, giao diện mobile và `prefers-reduced-motion`.
 
-Thứ tự này phải được giữ nguyên vì các file phía sau sử dụng global được khai báo bởi các file phía trước.
+### PWA và media
 
-### Kiến trúc media
+- Web App Manifest cho phép cài ứng dụng ở chế độ standalone.
+- Service Worker cache app shell theo chiến lược cache-first kết hợp cập nhật từ mạng.
+- Audio, MV và ảnh nội dung được stream trực tiếp, không lưu lâu dài vào Cache Storage.
+- Hỗ trợ phản hồi `206 Partial Content` khi server cục bộ không xử lý tốt HTTP Range.
+- Tối đa ba media đầy đủ được giữ tạm trong bộ nhớ để hỗ trợ tua; dữ liệu này mất khi phiên trình duyệt kết thúc.
 
-Ứng dụng sử dụng một nguồn âm thanh duy nhất:
+### Trang Donate
 
-- `<audio id="sound-el">` là phần tử duy nhất phát âm thanh.
-- `<video id="audio-el">` và `<video id="mv-video">` đều bị tắt tiếng, chỉ cung cấp phần hình ảnh tương ứng với chế độ đang chọn.
-- Khi đổi Ảnh/MV, `sound-el` đổi nguồn và tiếp tục từ vị trí gần nhất; phần video hiển thị được đồng bộ theo nguồn âm thanh.
+- Hai gói Google AI Pro: tài khoản chính chủ và chủ nhóm gia đình.
+- Không chọn sẵn dịch vụ khi mở trang; phần đăng ký chỉ hiện sau khi người dùng chọn gói.
+- Có thể bấm lại dịch vụ đang chọn để bỏ chọn và thu gọn trang.
+- Quyền lợi, giá, QR MoMo và QR ACB tự cập nhật theo gói 50.000đ hoặc 250.000đ.
+- Nút sao chép riêng cho số MoMo và từng trường thông tin chuyển khoản ACB.
+- Ba mức ủng hộ trực tiếp: 10.000đ, 20.000đ và 30.000đ.
+- QR MoMo/ACB thay đổi theo mệnh giá, kèm nút tải ảnh và kênh gửi minh chứng qua Zalo/Facebook.
 
-Cách tổ chức này giúp tránh nhiều phần tử cùng phát tiếng và cải thiện khả năng tiếp tục phát khi ứng dụng chuyển sang nền. Hành vi phát nền cuối cùng vẫn phụ thuộc trình duyệt, hệ điều hành và chính sách tiết kiệm pin của thiết bị.
+## Bắt đầu nhanh
 
-## Chạy trên máy tính
+### Yêu cầu
 
-Không nên mở trực tiếp `index.html` bằng `file://`, vì Service Worker và một số API trình duyệt sẽ không hoạt động đúng.
+- Một trình duyệt hiện đại.
+- Python 3 hoặc một HTTP server tĩnh tương đương.
+- Node.js chỉ cần thiết khi muốn chạy kiểm tra cú pháp JavaScript.
 
-Tại thư mục dự án, chạy một HTTP server cục bộ:
+### Chạy dự án
 
 ```powershell
-cd D:\Documents\CODE\HVL
+git clone https://github.com/twotnguyen/MCK-HVL.git
+cd MCK-HVL
 python -m http.server 8000
 ```
 
-Nếu Windows chỉ có Python Launcher, dùng:
+Nếu Windows chỉ có Python Launcher:
 
 ```powershell
 py -m http.server 8000
 ```
 
-Sau đó mở:
+Mở `http://localhost:8000` trong trình duyệt.
+
+> Không nên mở trực tiếp `index.html` bằng giao thức `file://`, vì Service Worker và một số API trình duyệt sẽ không hoạt động đúng.
+
+## Kiến trúc
+
+Dự án dùng các thẻ `<script>` truyền thống. Các file JavaScript chia sẻ state qua phạm vi global, vì vậy thứ tự nạp trong `index.html` phải được giữ nguyên:
 
 ```text
-http://localhost:8000
+data.js → state.js → render.js → player.js → events.js
 ```
 
-Không có bước cài dependency hoặc build.
+| File | Trách nhiệm |
+| --- | --- |
+| `js/data.js` | Khai báo manifest `SONGS` và đường dẫn media cho 30 bài hát. |
+| `js/state.js` | Hằng số, helper, DOM reference và state dùng chung. |
+| `js/render.js` | Render lưới bài hát, playlist, bộ lọc và trạng thái UI. |
+| `js/player.js` | Playback engine, đồng bộ ảnh/MV, Media Session và persistence. |
+| `js/events.js` | Gắn sự kiện, phím tắt, khôi phục state và khởi động ứng dụng. |
+| `js/donate.js` | Cấu hình thanh toán, chọn dịch vụ, đổi QR và thao tác sao chép. |
+| `sw.js` | Cache app shell, stream media và xử lý HTTP Range. |
 
-## Cấu hình trang Donate
+### Luồng phát media
 
-Nút `Donate` trên header mở `donate.html` trong tab mới để trình phát nhạc hiện tại không bị gián đoạn. Trang ưu tiên hai dịch vụ nâng cấp Google AI Pro, trình bày dịch vụ đã chọn, các tiện ích đi kèm và khối thanh toán riêng ngay trong phần đăng ký. Phía dưới là khu vực thanh toán độc lập chỉ dành cho ba gói ủng hộ trực tiếp 10k, 20k và 30k.
+Ứng dụng sử dụng một nguồn âm thanh chính:
 
-Tên, giá và mã chuyển khoản của từng dịch vụ được khai báo bằng các thuộc tính `data-title`, `data-price` và `data-code` trên `.service-option` trong `donate.html`.
+- `<audio id="sound-el">` phát toàn bộ âm thanh.
+- Các phần tử video được tắt tiếng và chỉ cung cấp hình ảnh cho chế độ Audio/MV.
+- Khi đổi chế độ, nguồn âm thanh tiếp tục ở vị trí gần nhất và video được đồng bộ theo thời gian phát.
 
-Thông tin nhận donate được khai báo tập trung trong `DONATE_CONFIG` ở đầu file `js/donate.js`:
+Cách tổ chức này tránh phát chồng âm thanh. Khả năng phát nền vẫn phụ thuộc trình duyệt, hệ điều hành và chính sách tiết kiệm pin của thiết bị.
+
+## Cấu hình nội dung
+
+### Danh sách bài hát
+
+Mỗi bài hát được khai báo trong mảng `SONGS` tại `js/data.js`:
+
+```javascript
+{
+  id: 1,
+  title: "Elegie",
+  artist: "MCK",
+  image: "1_Elegie.jpg",
+  audio: "1_Elegie.mp4",
+  mv: null,
+}
+```
+
+- `image` trỏ tới file trong `images/`.
+- `audio` trỏ tới file trong `MP4/`.
+- `mv` trỏ tới file trong `MV/`; dùng `null` nếu bài hát không có MV.
+
+Không đổi tên media nếu chưa cập nhật đường dẫn tương ứng trong `js/data.js`.
+
+### Trang Donate
+
+Thông tin nhận thanh toán nằm trong `DONATE_CONFIG` ở đầu `js/donate.js`:
 
 ```javascript
 const DONATE_CONFIG = {
   bankName: 'ACB',
   accountNumber: '23992227',
   accountHolder: 'Nguyễn Ngọc Tình',
+  momoPhone: '0369861439',
   transferNote: 'HVL MCK DONATE',
   bankQrByAmount: {
     10000: 'images/10k_ACB.jpg',
@@ -103,111 +154,114 @@ const DONATE_CONFIG = {
     20000: 'images/20k-momo.jpg',
     30000: 'images/30k_momo.jpg',
   },
-  contactEmail: 'email@example.com',
-  zaloUrl: 'https://zalo.me/so-dien-thoai',
-  facebookUrl: 'https://www.facebook.com/ten-tai-khoan',
+  serviceQrByAmount: {
+    50000: {
+      momo: 'images/50k_momo.jpg',
+      bank: 'images/50k_ACB.jpg',
+    },
+    250000: {
+      momo: 'images/250k_momo.jpg',
+      bank: 'images/250k_ACB.jpg',
+    },
+  },
 };
 ```
 
-Hai tab MoMo và Ngân hàng dùng `momoQrByAmount` và `bankQrByAmount` để tự đổi QR theo gói 10k, 20k hoặc 30k. Phần thanh toán dịch vụ dùng `serviceQrByAmount` để đổi đồng thời QR MoMo và ACB theo gói 50k hoặc 250k đang chọn. Nếu thêm ảnh mới cần dùng offline, thêm đường dẫn tương ứng vào `SHELL_ASSETS` trong `sw.js` và tăng phiên bản `SHELL_CACHE`.
+Tên, giá và mã của từng dịch vụ được khai báo bằng `data-title`, `data-price` và `data-code` trên các nút `.service-option` trong `donate.html`.
 
-## Truy cập từ điện thoại
-
-Để thử giao diện và phát media trên điện thoại trong cùng mạng Wi-Fi:
-
-1. Chạy server để lắng nghe trên mạng nội bộ:
-
-   ```powershell
-   python -m http.server 8000 --bind 0.0.0.0
-   ```
-
-2. Chạy `ipconfig` và tìm địa chỉ IPv4 của máy tính, ví dụ `192.168.1.20`.
-3. Trên điện thoại, mở `http://192.168.1.20:8000`.
-4. Nếu không kết nối được, kiểm tra Windows Firewall và xác nhận hai thiết bị đang dùng cùng mạng.
-
-Địa chỉ HTTP qua IP LAN phù hợp để kiểm tra giao diện và media, nhưng không phải secure context. Trình duyệt yêu cầu Service Worker chạy trên một origin được xem là đáng tin cậy, chẳng hạn HTTPS hoặc `localhost`; vì vậy cài PWA và cache offline thường không hoạt động qua địa chỉ LAN này. Xem thêm tài liệu về [`ServiceWorkerContainer.register()`](https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerContainer/register). Muốn kiểm thử đầy đủ trên điện thoại, hãy phục vụ dự án qua HTTPS với chứng chỉ được thiết bị tin cậy.
-
-## PWA và nghe offline
-
-Service Worker trong `sw.js` sử dụng hai cache:
-
-- App shell: HTML, CSS, JavaScript, manifest và icon được cache để tải giao diện.
-- Media: ảnh, file trong `MP4/` và `MV/` được ghi vào cache khi request nhận phản hồi đầy đủ với status `200`.
-
-Khi media đã có trong cache, Service Worker có thể tạo phản hồi `206 Partial Content` từ dữ liệu đầy đủ để tua và khôi phục vị trí phát.
-
-Lưu ý:
-
-- Thư viện media không nằm trong danh sách precache khi cài Service Worker. Tuy nhiên, giao diện có đọc metadata của các file audio để hiển thị thời lượng, nên dữ liệu thực tế được tải/cache còn phụ thuộc cách trình duyệt và HTTP server xử lý request Range.
-- Chỉ những media đã được lưu thành công mới có khả năng dùng lại khi offline.
-- Tổng dung lượng audio và MV hiện khoảng 582 MB, chưa tính ảnh và app shell.
-- Hạn mức lưu trữ do trình duyệt quản lý; cache có thể bị thu hồi khi thiết bị thiếu dung lượng.
-- Font Be Vietnam Pro được tải từ Google Fonts. Khi offline và font chưa được cache bởi trình duyệt, ứng dụng dùng font hệ thống dự phòng.
+Khi thay đổi file thuộc app shell, hãy tăng phiên bản `SHELL_CACHE` trong `sw.js` để thiết bị nhận bản mới.
 
 ## Phím tắt
 
-Khi focus không nằm trong ô nhập liệu:
+Các phím tắt hoạt động khi focus không nằm trong ô nhập liệu:
 
 | Phím | Hành động |
 | --- | --- |
-| `Space` | Phát hoặc tạm dừng |
-| `ArrowLeft` | Lùi 5 giây |
-| `ArrowRight` | Tiến 5 giây |
-| `ArrowUp` | Tăng âm lượng 5% |
-| `ArrowDown` | Giảm âm lượng 5% |
-| `Escape` | Từ màn hình đang phát quay về trang chủ |
+| `Space` | Phát hoặc tạm dừng. |
+| `ArrowLeft` | Lùi 5 giây. |
+| `ArrowRight` | Tiến 5 giây. |
+| `ArrowUp` | Tăng âm lượng 5%. |
+| `ArrowDown` | Giảm âm lượng 5%. |
+| `Escape` | Quay từ màn hình đang phát về trang chủ. |
 
 ## Cấu trúc thư mục
 
 ```text
-HVL/
-├── index.html             Giao diện và các phần tử media
-├── donate.html            Trang ủng hộ dự án
+MCK-HVL/
+├── index.html              Trang trình phát nhạc
+├── donate.html             Trang dịch vụ và ủng hộ dự án
 ├── css/
-│   ├── style.css          Theme, layout và responsive styles của trình phát
-│   └── donate.css         Giao diện responsive của trang Donate
+│   ├── style.css           Giao diện trình phát
+│   └── donate.css          Giao diện trang Donate
 ├── js/
-│   ├── data.js            Manifest 30 bài hát
-│   ├── state.js           Helper, DOM references và state
-│   ├── render.js          Render và đồng bộ UI
-│   ├── player.js          Playback engine và persistence
-│   ├── events.js          Event wiring và bootstrap
-│   └── donate.js          Cấu hình và tương tác của trang Donate
-├── images/                30 ảnh bài hát
-├── MP4/                   30 file media dùng cho chế độ Audio/Ảnh
-├── MV/                    6 video MV
-├── icons/
-│   └── icon.svg           Icon ứng dụng
-├── manifest.json          Web App Manifest
-├── sw.js                  Service Worker và HTTP Range cache
-├── songs_list.txt         Danh sách tên bài hát nguồn
-└── docs/                  Đặc tả và kế hoạch phát triển
+│   ├── data.js             Danh sách 30 bài hát
+│   ├── state.js            State và DOM reference
+│   ├── render.js           Render và đồng bộ UI
+│   ├── player.js           Playback engine
+│   ├── events.js           Event wiring và bootstrap
+│   └── donate.js           Logic dịch vụ và thanh toán
+├── images/                 Ảnh bìa, logo và QR thanh toán
+├── MP4/                    30 file audio đóng gói MP4
+├── MV/                     6 video MV
+├── manifest.json           Web App Manifest
+├── sw.js                   Service Worker
+└── songs_list.txt          Danh sách tên bài hát nguồn
 ```
 
-Không đổi tên file trong `images/`, `MP4/` hoặc `MV/` mà không cập nhật trường tương ứng trong `js/data.js`.
+## Truy cập từ điện thoại
 
-## Giới hạn đã biết
+Để kiểm tra trong cùng mạng Wi-Fi:
 
-- PWA, Service Worker và offline cache cần secure context; HTTP qua IP LAN thường không đáp ứng điều kiện này.
-- Phát nền và điều khiển màn hình khóa phụ thuộc hỗ trợ [Media Session API](https://developer.mozilla.org/en-US/docs/Web/API/Media_Session_API) cũng như chính sách của trình duyệt/hệ điều hành.
-- Cache media không có giao diện quản lý hoặc giới hạn dung lượng riêng.
-- Repository chưa có test suite tự động hay kiểm thử trình duyệt được check-in.
-- SVG là icon duy nhất trong manifest; khả năng hiển thị/cài đặt có thể khác nhau giữa các nền tảng.
+```powershell
+python -m http.server 8000 --bind 0.0.0.0
+ipconfig
+```
+
+Tìm IPv4 của máy tính, sau đó mở `http://<IPv4>:8000` trên điện thoại.
+
+HTTP qua địa chỉ LAN phù hợp để thử giao diện và media nhưng không phải secure context. Việc cài PWA và đăng ký Service Worker ổn định cần HTTPS hoặc `localhost`.
+
+## Triển khai
+
+Đây là website tĩnh nên có thể triển khai trực tiếp lên GitHub Pages, Netlify, Vercel hoặc bất kỳ máy chủ hỗ trợ HTTPS và HTTP Range.
+
+Khi triển khai cần bảo đảm:
+
+- Giữ nguyên cấu trúc và chữ hoa/thường của đường dẫn media.
+- Máy chủ trả đúng MIME type cho HTML, CSS, JavaScript, ảnh và MP4.
+- Máy chủ hỗ trợ byte-range request để tua media hiệu quả.
+- Service Worker được phục vụ cùng origin và trong phạm vi chứa ứng dụng.
+- HTTPS được bật trên môi trường production.
 
 ## Kiểm tra dành cho lập trình viên
 
-Kiểm tra cú pháp toàn bộ JavaScript bằng PowerShell:
+Kiểm tra cú pháp JavaScript bằng PowerShell:
 
 ```powershell
 Get-ChildItem js -Filter *.js | ForEach-Object { node --check $_.FullName }
 node --check sw.js
+git diff --check
 ```
 
-Sau đó chạy server và kiểm tra thủ công trên desktop lẫn mobile:
+Checklist kiểm tra thủ công:
 
-- Render đủ 30 bài và lọc đúng 6 bài có MV.
-- Phát, tạm dừng, seek, shuffle và ba trạng thái repeat.
-- Chuyển Ảnh/MV mà không phát chồng âm thanh.
-- Tải lại trang và xác nhận bài/vị trí/âm lượng được khôi phục.
-- Kiểm tra Media Session và phát nền trên thiết bị thật.
-- Sau khi một bài đã tải qua Service Worker, thử lại bài đó khi offline.
+- Hiển thị đủ 30 bài và lọc đúng 6 bài có MV.
+- Tìm kiếm hoạt động với từ khóa tiếng Việt có hoặc không dấu.
+- Phát, tạm dừng, tua, đổi bài, shuffle và ba trạng thái repeat hoạt động đúng.
+- Chuyển Ảnh/MV không gây phát chồng âm thanh.
+- Tải lại trang vẫn khôi phục trạng thái phát đã lưu.
+- Chọn, đổi và bỏ chọn dịch vụ Donate hoạt động đúng.
+- QR và số tiền đổi đúng theo từng gói; các nút sao chép và tải QR hoạt động.
+- Giao diện không tràn ở kích thước desktop và mobile phổ biến.
+
+## Giới hạn hiện tại
+
+- Chưa có backend hoặc cổng thanh toán tự động; người dùng cần gửi minh chứng giao dịch.
+- Media không được lưu offline lâu dài và cần kết nối mạng để phát trong phiên mới.
+- Hỗ trợ Media Session và phát nền khác nhau giữa các trình duyệt/hệ điều hành.
+- Chưa có test suite tự động hoặc pipeline CI được lưu trong repository.
+- Dự án chưa khai báo giấy phép mã nguồn riêng.
+
+## Ghi chú nội dung
+
+Các tên nghệ sĩ, bài hát, hình ảnh và video thuộc quyền sở hữu của chủ sở hữu tương ứng. Dự án này không tuyên bố quyền sở hữu đối với các nội dung media đó.
