@@ -67,7 +67,7 @@ function setIosPip(active) {
 }
 function armControlsIdleTimer() {
   clearTimeout(controlsIdleTimer);
-  controlsIdleTimer = setTimeout(() => els.stageVisual.classList.add('controls-idle'), 1000);
+  controlsIdleTimer = setTimeout(() => els.stageVisual.classList.add('controls-idle'), 3000);
 }
 function handleStagePointerActivity() {
   els.stageVisual.classList.remove('controls-idle');
@@ -117,9 +117,12 @@ function initEvents() {
   });
 
   els.stageVisual.addEventListener('click', (e) => {
-    if (e.target.closest('.stage-overlay') || e.target.closest('#btn-back') || e.target.closest('#btn-fs-back')) return;
-    els.stageVisual.classList.toggle('overlay-visible');
+    if (e.target.closest('#btn-back') || e.target.closest('#btn-fs-back')) return;
+    if (e.target.closest('button, input[type="range"], .view-toggle')) return;
+    els.stageVisual.classList.remove('controls-idle');
+    els.stageVisual.classList.add('overlay-visible');
     togglePlay();
+    if (state.isPlaying) armControlsIdleTimer();
   });
   document.addEventListener('click', (e) => {
     if (!els.stageVisual.classList.contains('overlay-visible')) return;
@@ -146,7 +149,7 @@ function initEvents() {
     setViewMode(btn.dataset.mode);
   });
 
-  els.playBtn.addEventListener('click', togglePlay);
+  els.playBtn.addEventListener('click', (e) => { e.stopPropagation(); togglePlay(); if (state.isPlaying) armControlsIdleTimer(); });
   els.prevBtn.addEventListener('click', () => playPrev());
   els.nextBtn.addEventListener('click', () => playNext(true));
   els.shuffleBtn.addEventListener('click', toggleShuffle);

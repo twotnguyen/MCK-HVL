@@ -130,6 +130,27 @@ ul { list-style: none; }
 }
 .search input::placeholder { color: var(--text-faint); }
 .search input:focus { border-color: rgba(167,139,250,0.6); background: var(--bg-hover); box-shadow: 0 0 0 3px rgba(167,139,250,0.15); }
+.donate-btn {
+  flex: 0 0 auto;
+  min-height: 36px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+  padding: 0 14px;
+  border: 1px solid rgba(244,114,182,0.42);
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(167,139,250,0.2), rgba(244,114,182,0.2));
+  color: #fff;
+  font-size: 12.5px; font-weight: 700;
+  box-shadow: 0 6px 18px -10px rgba(244,114,182,0.9);
+  transition: transform .15s, border-color .15s, background .15s, box-shadow .15s;
+}
+.donate-btn svg { color: var(--accent-b); filter: drop-shadow(0 0 5px rgba(244,114,182,0.55)); }
+.donate-btn:hover {
+  transform: translateY(-1px);
+  border-color: rgba(244,114,182,0.72);
+  background: linear-gradient(135deg, rgba(167,139,250,0.32), rgba(244,114,182,0.32));
+  box-shadow: 0 9px 22px -10px rgba(244,114,182,0.95);
+}
+.donate-btn:active { transform: scale(0.96); }
 .topbar-meta { margin-left: auto; display: flex; align-items: center; gap: 12px; color: var(--text-faint); font-size: 13px; white-space: nowrap; }
 .topbar-avatar {
   display: inline-flex; align-items: center; justify-content: center;
@@ -457,11 +478,16 @@ ul { list-style: none; }
   pointer-events: none;
   transition: opacity .2s ease;
 }
-.stage-visual:hover .stage-overlay,
-.stage-visual:focus-within .stage-overlay,
 .stage-visual.overlay-visible .stage-overlay {
   opacity: 1;
   pointer-events: auto;
+}
+@media (hover: hover) {
+  .stage-visual:hover .stage-overlay,
+  .stage-visual:focus-within .stage-overlay {
+    opacity: 1;
+    pointer-events: auto;
+  }
 }
 .stage-empty:not([hidden]) ~ .stage-overlay {
   display: none !important;
@@ -515,11 +541,16 @@ input[type="range"]::-moz-range-thumb { width: 14px; height: 14px; border-radius
 .stage-visual:fullscreen .fs-back-btn,
 .stage-visual:-webkit-full-screen .fs-back-btn,
 .stage-visual.is-fullscreen .fs-back-btn { display: flex; }
-.stage-visual:hover .fs-back-btn,
-.stage-visual:focus-within .fs-back-btn,
 .stage-visual.overlay-visible .fs-back-btn {
   opacity: 1;
   pointer-events: auto;
+}
+@media (hover: hover) {
+  .stage-visual:hover .fs-back-btn,
+  .stage-visual:focus-within .fs-back-btn {
+    opacity: 1;
+    pointer-events: auto;
+  }
 }
 .stage-visual.controls-idle .fs-back-btn {
   opacity: 0 !important;
@@ -671,6 +702,11 @@ body.playing .pb-play .icon-pause { display: block; }
     padding-bottom: 0;
   }
   .topbar-meta { display: none; }
+  .donate-btn { width: 38px; min-height: 36px; padding: 0; }
+  .donate-btn span {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+  }
   .main {
     padding: calc(14px + env(safe-area-inset-top, 0px)) 14px calc(var(--playerbar-h) + 28px + var(--safe-b));
   }
