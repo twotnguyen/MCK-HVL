@@ -94,7 +94,7 @@ a { color: inherit; }
 @keyframes spin { to { transform: rotate(360deg); } }
 @keyframes float { 50% { transform: translateY(-12px) rotate(8deg); } }
 
-.donate-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+.donate-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; align-items: stretch; }
 .donate-card {
   padding: 30px; border: 1px solid var(--border); border-radius: var(--radius-lg);
   background: linear-gradient(145deg, rgba(255,255,255,.055), rgba(255,255,255,.025)), var(--panel);
@@ -235,8 +235,7 @@ a { color: inherit; }
 .direct-section { padding-top: 100px; scroll-margin-top: 85px; }
 .compact-heading { margin-left: auto; margin-right: auto; text-align: center; }
 .payment-card { scroll-margin-top: 85px; }
-.payment-contacts { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-top: 20px; }
-.email-contact { display: block; margin-top: 11px; color: var(--purple); font-size: 10px; text-align: center; text-underline-offset: 3px; }
+.email-contact { display: block; margin-top: 20px; color: var(--purple); font-size: 10px; text-align: center; text-underline-offset: 3px; }
 
 .amount-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
 .amount-option {
@@ -321,7 +320,7 @@ a { color: inherit; }
   .benefit-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .contact-strip { grid-template-columns: 1fr 1fr; }
   .contact-strip > div { grid-column: 1 / -1; }
-  .donate-layout { grid-template-columns: 1fr; }
+  .donate-layout { grid-template-columns: 1fr; align-items: start; }
 }
 @media (max-width: 600px) {
   .donate-main { width: min(100% - 24px, 1180px); }
@@ -361,7 +360,6 @@ a { color: inherit; }
   .amount-grid { grid-template-columns: 1fr; }
   .amount-option { min-height: 72px; }
   .payment-body { grid-template-columns: 1fr; }
-  .payment-contacts { grid-template-columns: 1fr; }
   .qr-frame { width: min(230px, 100%); margin: 0 auto; }
   .impact-section { padding: 70px 0 60px; }
   .impact-heading h2 { font-size: clamp(14px, 4.3vw, 25px); letter-spacing: -.7px; }
