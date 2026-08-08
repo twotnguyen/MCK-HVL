@@ -2,6 +2,7 @@
   "name": "HVL-MCK",
   "short_name": "HVL-MCK",
   "description": "Trình nghe nhạc offline cho bộ sưu tập 30 bài hát MCK",
+  "id": "./",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
@@ -10,7 +11,7 @@
   "theme_color": "#0a0a0c",
   "lang": "vi",
   "icons": [
-    { "src": "images/logo.jpg", "sizes": "512x512", "type": "image/jpeg", "purpose": "any" },
-    { "src": "images/logo.jpg", "sizes": "192x192", "type": "image/jpeg", "purpose": "maskable" }
+    { "src": "images/logo-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "images/logo-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
   ]
 }

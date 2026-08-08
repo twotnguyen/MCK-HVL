@@ -1,4 +1,4 @@
-const SHELL_CACHE = 'mck-shell-v30';
+const SHELL_CACHE = 'mck-shell-v31';
 
 const SHELL_ASSETS = [
   './',
@@ -14,6 +14,8 @@ const SHELL_ASSETS = [
   './js/donate.js',
   './manifest.json',
   './images/logo.jpg',
+  './images/logo-192.png',
+  './images/logo-512.png',
   './images/10k_momo.jpg',
   './images/20k-momo.jpg',
   './images/30k_momo.jpg',
@@ -46,7 +48,9 @@ self.addEventListener('activate', (event) => {
 });
 
 function isMediaRequest(url) {
-  return /\/(images|MP4|MV)\//.test(url.pathname) && !/logo\.jpg$/.test(url.pathname);
+  const isContentAsset = /\/(images|MP4|MV)\//.test(url.pathname);
+  const isAppIcon = /\/images\/logo(?:-\d+)?\.(?:jpg|png)$/i.test(url.pathname);
+  return isContentAsset && !isAppIcon;
 }
 
 // Build a 206 Partial Content response for an HTTP Range header from a full body.
