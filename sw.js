@@ -1,4 +1,4 @@
-const SHELL_CACHE = 'mck-shell-v31';
+const SHELL_CACHE = 'mck-shell-v35';
 
 const SHELL_ASSETS = [
   './',

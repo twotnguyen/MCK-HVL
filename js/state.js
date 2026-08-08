@@ -6,10 +6,20 @@
 // there's no bundler here, so these files rely on classic <script> tags
 // sharing one top-level scope, the same way data.js's SONGS already does.
 
+const RELEASE_MEDIA_BASE = 'https://github.com/twotnguyen/MCK-HVL/releases/download/media-v1';
 const FOLDER = { img: 'images', audio: 'MP4', mv: 'MV' };
 const STORAGE_KEY = 'mck_player_state_v2';
 
 function urlFor(folder, filename) {
+  if (folder === FOLDER.audio || folder === FOLDER.mv) {
+    const songId = Number.parseInt(filename, 10);
+    if (!Number.isInteger(songId)) {
+      throw new Error(`Không xác định được ID media: ${filename}`);
+    }
+    const assetType = folder === FOLDER.mv ? 'mv' : 'audio';
+    return `${RELEASE_MEDIA_BASE}/${assetType}-${String(songId).padStart(2, '0')}.mp4`;
+  }
+
   // Resolve to an absolute URL: relative url() values assigned via CSS custom
   // properties resolve against the stylesheet's location, not the page's, so a
   // plain relative path here would 404 (e.g. "css/images/..." for the ambient glow).
