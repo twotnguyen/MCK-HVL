@@ -170,7 +170,6 @@ function setVolume(v) {
   v = Math.max(0, Math.min(1, v));
   state.volume = v;
   els.sound.volume = v;
-  if (els.pbVolume) els.pbVolume.value = v;
   saveState(false);
 }
 

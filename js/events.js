@@ -45,6 +45,16 @@ function initEvents() {
 
   els.btnBack.addEventListener('click', () => showView('home'));
 
+  els.stageVisual.addEventListener('click', (e) => {
+    if (e.target.closest('.stage-overlay')) return;
+    els.stageVisual.classList.toggle('overlay-visible');
+  });
+  document.addEventListener('click', (e) => {
+    if (!els.stageVisual.classList.contains('overlay-visible')) return;
+    if (els.stageVisual.contains(e.target)) return;
+    els.stageVisual.classList.remove('overlay-visible');
+  });
+
   els.playerBar.addEventListener('click', (e) => {
     if (e.target.closest('.pb-btn')) return;
     if (state.current !== -1) showView('watch');
@@ -69,8 +79,6 @@ function initEvents() {
     updateRepeatUI();
     saveState(true);
   });
-  els.pbVolume.addEventListener('input', (e) => setVolume(parseFloat(e.target.value)));
-
   els.progress.addEventListener('input', () => {
     if (isFinite(els.sound.duration)) seek((els.progress.value / 100) * els.sound.duration);
   });
