@@ -126,6 +126,10 @@ function showView(view) {
 
 function positionBackButton() {
   if (state.view !== 'watch') return;
+  if (!window.matchMedia('(min-width: 1101px)').matches) {
+    els.btnBack.style.left = '';
+    return;
+  }
   const wrap = els.btnBack.offsetParent;
   if (!wrap) return;
   const wrapRect = wrap.getBoundingClientRect();

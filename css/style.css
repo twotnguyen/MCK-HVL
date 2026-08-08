@@ -626,6 +626,23 @@ body.playing .pb-play .icon-pause { display: block; }
   .view-head { margin-bottom: 12px; }
   .view-title { font-size: 20px; }
   body.watch-view .topbar { display: none; }
+  /* Watch page on phones: full-bleed video with the back button floating
+     inside the frame, so no screen space is wasted beside the player. */
+  body.watch-view .main { padding-left: 0; padding-right: 0; padding-top: 0; }
+  .watch-player { display: block; position: relative; }
+  .watch-stage .stage-visual { border-radius: 0; }
+  #btn-back {
+    position: absolute;
+    top: calc(10px + env(safe-area-inset-top, 0px));
+    left: 10px;
+    margin: 0;
+    background: rgba(0,0,0,0.55);
+    border-color: rgba(255,255,255,0.15);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 15;
+  }
+  .watch-top-info, .watch-list { padding: 0 14px; }
   .site-footer { margin-top: 38px; padding: 22px 18px; }
   .footer-cols { grid-template-columns: 1fr; gap: 22px; }
   .footer-bottom { grid-template-columns: 1fr; gap: 10px; }
