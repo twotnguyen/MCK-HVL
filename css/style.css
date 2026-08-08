@@ -711,6 +711,38 @@ body.playing .pb-play .icon-pause { display: block; }
   #btn-fullscreen.fullscreen-btn { position: static; width: 30px; height: 30px; }
 }
 
+/* Phones in landscape (short screens): the back button also floats inside
+   the video frame. The frame is horizontally centered with empty space
+   beside it, so positionBackButton() computes its real left edge against
+   the stage rect and a CSS var carries the notch inset. */
+@media (orientation: landscape) and (max-height: 500px) {
+  .watch-player { position: relative; --safe-l: env(safe-area-inset-left, 0px); }
+  #btn-back {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    margin: 0;
+    background: rgba(0,0,0,0.55);
+    border-color: rgba(255,255,255,0.15);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 15;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s ease;
+  }
+  .watch-player:has(.stage-visual:hover) #btn-back,
+  .watch-player:has(.stage-visual:focus-within) #btn-back,
+  .watch-player:has(.stage-visual.overlay-visible) #btn-back {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .watch-player:has(.stage-visual.controls-idle) #btn-back {
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+}
+
 @media (max-width: 360px) {
   .brand-name { font-size: 15px; }
   .card-grid { grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); }
