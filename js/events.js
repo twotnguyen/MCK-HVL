@@ -190,6 +190,14 @@ function init() {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('sw.js').catch(() => {});
     });
+    // Refresh once when a new service worker takes over, so an update lands
+    // on the very next open instead of the one after. The first takeover
+    // (initial install) only controls the page, no reload needed.
+    let firstControlChange = !navigator.serviceWorker.controller;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (firstControlChange) { firstControlChange = false; return; }
+      window.location.reload();
+    });
   }
 }
 

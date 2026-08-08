@@ -1,5 +1,4 @@
 const SHELL_CACHE = 'mck-shell-v10';
-const MEDIA_CACHE = 'mck-media-v1';
 
 const SHELL_ASSETS = [
   './',
@@ -24,21 +23,10 @@ self.addEventListener('install', (event) => {
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) =>
-      Promise.all(
-        keys
-          .filter((k) => k !== SHELL_CACHE && k !== MEDIA_CACHE)
-          .map((k) => caches.delete(k))
-      ).then(() =>
-        caches.open(MEDIA_CACHE).then((media) =>
-          media.keys().then((requests) =>
-            Promise.all(
-              requests
-                .filter((r) => /logo\.jpg$/.test(r.url))
-                .map((r) => media.delete(r))
-            )
-          )
-        )
-      )
+      // Drop every cache except the shell — including the old media cache,
+      // so devices that stored the full library before stream-only mode
+      // free that disk space on this update.
+      Promise.all(keys.filter((k) => k !== SHELL_CACHE).map((k) => caches.delete(k)))
     )
   );
   self.clients.claim();
@@ -79,37 +67,43 @@ function rangeResponse(buffer, rangeHeader, contentType) {
   });
 }
 
-async function serveRange(res, range) {
-  const contentType = res.headers.get('Content-Type') || 'application/octet-stream';
-  try {
-    const buffer = await res.arrayBuffer();
-    const partial = rangeResponse(buffer, range, contentType);
-    if (partial) return partial;
-  } catch (e) {}
-  return res;
+// Media is streamed, never stored on the device. Some static hosts (e.g.
+// python -m http.server) ignore Range headers and answer 200 with the full
+// body; to keep seeking usable there, remember a handful of full bodies in
+// memory only — bounded and lost when the browser closes.
+const MEMORY_MEDIA_LIMIT = 3;
+const memoryMedia = new Map();
+
+function rememberMedia(url, buffer, type) {
+  memoryMedia.set(url, { buffer, type, at: Date.now() });
+  while (memoryMedia.size > MEMORY_MEDIA_LIMIT) {
+    let oldestKey = null;
+    let oldestAt = Infinity;
+    for (const [key, entry] of memoryMedia) {
+      if (entry.at < oldestAt) { oldestAt = entry.at; oldestKey = key; }
+    }
+    memoryMedia.delete(oldestKey);
+  }
 }
 
-async function mediaFetch(req, url) {
+async function streamMedia(req, url) {
   const range = req.headers.get('range');
-  const cache = await caches.open(MEDIA_CACHE);
-  const cached = await cache.match(url);
-
-  if (cached) {
-    if (range) return serveRange(cached, range);
-    return cached;
+  const mem = memoryMedia.get(url);
+  if (mem && range) {
+    const partial = rangeResponse(mem.buffer, range, mem.type);
+    if (partial) return partial;
   }
-
   try {
     const res = await fetch(req);
-    if (res && res.status === 200) {
-      await cache.put(url, res.clone());
-      if (range) return serveRange(res, range);
-      return res;
+    if (res.status === 200 && range) {
+      const type = res.headers.get('Content-Type') || 'application/octet-stream';
+      const buffer = await res.arrayBuffer();
+      rememberMedia(url, buffer, type);
+      const partial = rangeResponse(buffer, range, type);
+      if (partial) return partial;
     }
-    return res || Response.error();
+    return res;
   } catch (e) {
-    const fallback = await cache.match(url);
-    if (fallback) return range ? serveRange(fallback, range) : fallback;
     return Response.error();
   }
 }
@@ -121,9 +115,7 @@ self.addEventListener('fetch', (event) => {
   if (url.origin !== self.location.origin) return;
 
   if (isMediaRequest(url)) {
-    // Cache-first for media, with HTTP Range support so seeking works even when
-    // the origin server (e.g. python -m http.server) does not serve byte ranges.
-    event.respondWith(mediaFetch(req, url));
+    event.respondWith(streamMedia(req, url));
     return;
   }
 
