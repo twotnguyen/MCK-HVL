@@ -83,13 +83,22 @@ ul { list-style: none; }
 }
 .icon-btn:hover { background: var(--bg-hover); color: var(--text); }
 #btn-back {
-  margin-left: -6px;
   background: var(--bg-elevated);
   border: 1px solid var(--glass-border);
   color: var(--text);
   box-shadow: var(--shadow-panel);
 }
 #btn-back:hover { background: var(--bg-hover); color: #fff; }
+@media (min-width: 1101px) {
+  #btn-back {
+    position: absolute;
+    left: -10px;
+    top: 0;
+    margin: 0;
+    z-index: 5;
+  }
+  .watch-player { padding-left: 40px; }
+}
 
 /* ============ Topbar ============ */
 .topbar {
@@ -206,7 +215,7 @@ ul { list-style: none; }
 .no-results { padding: 40px 20px; text-align: center; color: var(--text-faint); }
 
 /* ============ Watch page ============ */
-.watch-cols { display: flex; align-items: flex-start; gap: 26px; max-width: 100%; margin: 0; }
+.watch-cols { display: flex; align-items: flex-start; gap: 26px; max-width: 100%; margin: 0; position: relative; }
 .watch-player { flex: 1 1 auto; min-width: 0; max-width: 1450px; margin: 0 auto; display: flex; align-items: flex-start; gap: 14px; }
 .watch-stage { flex: 1 1 auto; min-width: 0; }
 .watch-top-info {
@@ -388,7 +397,7 @@ body.playing .play-btn .icon-pause { display: block; }
   transition: border-color .15s ease, box-shadow .15s ease;
 }
 .player-bar:hover { border-color: rgba(167,139,250,0.4); box-shadow: 0 16px 38px -14px rgba(0,0,0,0.85); }
-.pb-progress { position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--bg-active); }
+.pb-progress { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: var(--bg-active); }
 .pb-progress-fill { height: 100%; width: 0%; background: var(--accent-grad); }
 .pb-row { flex: 1 1 auto; display: flex; align-items: center; gap: 12px; padding: 8px 12px; min-width: 0; }
 .pb-cover { width: 46px; height: 46px; border-radius: var(--radius-sm); object-fit: cover; flex: 0 0 auto; background: var(--bg-elevated); }

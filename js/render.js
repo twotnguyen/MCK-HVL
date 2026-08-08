@@ -121,6 +121,18 @@ function showView(view) {
   els.viewWatch.hidden = view !== 'watch';
   document.body.classList.toggle('watch-view', view === 'watch');
   showPlayerBar();
+  if (view === 'watch') requestAnimationFrame(positionBackButton);
+}
+
+function positionBackButton() {
+  if (state.view !== 'watch') return;
+  const wrap = els.btnBack.offsetParent;
+  if (!wrap) return;
+  const wrapRect = wrap.getBoundingClientRect();
+  const videoRect = els.stageVisual.getBoundingClientRect();
+  const targetCenter = videoRect.left / 2;
+  const left = targetCenter - wrapRect.left - els.btnBack.offsetWidth / 2;
+  els.btnBack.style.left = Math.max(0, left) + 'px';
 }
 
 function setFilter(filter) {

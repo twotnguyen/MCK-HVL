@@ -7,8 +7,7 @@ function activateItem(li) {
   const id = Number(li.dataset.id);
   const idx = SONGS.findIndex(s => s.id === id);
   if (idx === -1) return;
-  if (idx === state.current) { togglePlay(); }
-  else { loadSong(idx, true); }
+  if (idx !== state.current) { loadSong(idx, true); }
   showView('watch');
 }
 
@@ -96,6 +95,7 @@ function initEvents() {
   }
 
   els.btnBack.addEventListener('click', () => showView('home'));
+  window.addEventListener('resize', () => positionBackButton());
 
   els.brandHome.addEventListener('click', () => showView('home'));
   els.brandHome.addEventListener('keydown', (e) => {
