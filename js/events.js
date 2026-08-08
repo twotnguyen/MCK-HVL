@@ -40,6 +40,19 @@ function cycleRepeat() {
   saveState(true);
 }
 
+function toggleFullscreen() {
+  try {
+    if (document.fullscreenElement || document.webkitFullscreenElement) {
+      (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+    } else {
+      const el = els.stageVisual;
+      const req = el.requestFullscreen || el.webkitRequestFullscreen;
+      const result = req.call(el);
+      if (result && result.catch) result.catch(() => {});
+    }
+  } catch (err) {}
+}
+
 function initEvents() {
   els.cardGrid.addEventListener('click', onPickSong);
   els.songList.addEventListener('click', onPickSong);
@@ -61,6 +74,7 @@ function initEvents() {
   els.stageVisual.addEventListener('click', (e) => {
     if (e.target.closest('.stage-overlay') || e.target.closest('#btn-back')) return;
     els.stageVisual.classList.toggle('overlay-visible');
+    togglePlay();
   });
   document.addEventListener('click', (e) => {
     if (!els.stageVisual.classList.contains('overlay-visible')) return;
@@ -87,6 +101,10 @@ function initEvents() {
   els.nextBtn.addEventListener('click', () => playNext(true));
   els.shuffleBtn.addEventListener('click', toggleShuffle);
   els.repeatBtn.addEventListener('click', cycleRepeat);
+  els.fullscreenBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleFullscreen();
+  });
   els.progress.addEventListener('input', () => {
     if (isFinite(els.sound.duration)) seek((els.progress.value / 100) * els.sound.duration);
   });
@@ -104,6 +122,7 @@ function initEvents() {
       case 'KeyP': playPrev(); break;
       case 'KeyS': toggleShuffle(); break;
       case 'KeyR': cycleRepeat(); break;
+      case 'KeyF': toggleFullscreen(); break;
     }
   });
 

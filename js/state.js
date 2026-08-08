@@ -67,6 +67,7 @@ const els = {
   playBtn: $('btn-play'),
   nextBtn: $('btn-next'),
   repeatBtn: $('btn-repeat'),
+  fullscreenBtn: $('btn-fullscreen'),
   playerBar: $('player-bar'),
   pbCover: $('pb-cover'),
   pbTitle: $('pb-title'),

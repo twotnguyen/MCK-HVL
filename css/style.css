@@ -290,6 +290,14 @@ input[type="range"]::-moz-range-thumb { width: 14px; height: 14px; border-radius
 .progress { flex: 1 1 auto; background: linear-gradient(to right, var(--accent-a) 0%, var(--accent-a) var(--pct,0%), rgba(255,255,255,0.25) var(--pct,0%)); }
 
 .controls-row { display: flex; align-items: center; justify-content: center; gap: 6px; }
+#btn-fullscreen.fullscreen-btn { position: absolute; right: 20px; bottom: 16px; width: 36px; height: 36px; }
+.icon-fs-collapse { display: none; }
+.stage-visual:fullscreen { width: 100vw; height: 100vh; max-height: none; aspect-ratio: auto; border-radius: 0; }
+.stage-visual:-webkit-full-screen { width: 100vw; height: 100vh; max-height: none; aspect-ratio: auto; border-radius: 0; }
+.stage-visual:fullscreen .icon-fs-expand,
+.stage-visual:-webkit-full-screen .icon-fs-expand { display: none; }
+.stage-visual:fullscreen .icon-fs-collapse,
+.stage-visual:-webkit-full-screen .icon-fs-collapse { display: block; }
 .ctrl-btn { position: relative; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; color: #fff; transition: background .12s, color .12s, transform .1s; }
 .ctrl-btn:active { transform: scale(0.92); }
 .ctrl-btn:hover { background: rgba(255,255,255,0.15); color: #fff; }
