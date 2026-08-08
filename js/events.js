@@ -77,6 +77,7 @@ function handleFullscreenChange() {
   els.stageVisual.classList.remove('controls-idle');
   els.stageVisual.classList.toggle('is-fullscreen', isFullscreen());
   if (isFullscreen()) armControlsIdleTimer();
+  positionBackButton();
 }
 
 function initEvents() {

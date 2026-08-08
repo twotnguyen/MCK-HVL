@@ -115,20 +115,32 @@ function applyFilters() {
 }
 
 // ---------- View routing ----------
+function isLandscapePhone() {
+  return window.matchMedia('(orientation: landscape) and (max-height: 500px)').matches;
+}
+
 function showView(view) {
   state.view = view;
   els.viewHome.hidden = view !== 'home';
   els.viewWatch.hidden = view !== 'watch';
   document.body.classList.toggle('watch-view', view === 'watch');
   showPlayerBar();
-  if (view === 'watch') requestAnimationFrame(positionBackButton);
+  if (view === 'watch') {
+    requestAnimationFrame(positionBackButton);
+    // Landscape phones are short, so open the player directly in
+    // fullscreen — the stage fills the whole screen right away.
+    if (isLandscapePhone() && !isFullscreen()) toggleFullscreen();
+  } else if (isFullscreen()) {
+    // Never leave the page sitting behind a fullscreen stage.
+    (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+  }
 }
 
 function positionBackButton() {
   if (state.view !== 'watch') return;
   const wrap = els.btnBack.offsetParent;
   if (!wrap) return;
-  if (window.matchMedia('(orientation: landscape) and (max-height: 500px)').matches) {
+  if (isLandscapePhone()) {
     const wrapRect = wrap.getBoundingClientRect();
     const stageRect = els.stageVisual.getBoundingClientRect();
     const picW = Math.min(stageRect.width, stageRect.height * (16 / 9));
