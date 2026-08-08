@@ -81,7 +81,9 @@ Không có bước cài dependency hoặc build.
 
 ## Cấu hình trang Donate
 
-Nút `Donate` trên header mở `donate.html` trong tab mới để trình phát nhạc hiện tại không bị gián đoạn. Trang hỗ trợ chọn mức ủng hộ, nhập số tiền tùy chỉnh, thêm lời nhắn và tạo email liên hệ đã điền sẵn nội dung.
+Nút `Donate` trên header mở `donate.html` trong tab mới để trình phát nhạc hiện tại không bị gián đoạn. Trang ưu tiên hai dịch vụ nâng cấp Google AI Pro, hỗ trợ tạo nội dung đơn từ Gmail khách hàng và hướng dẫn gửi minh chứng qua Zalo/Facebook. Phía dưới vẫn có luồng ủng hộ trực tiếp với mức tiền tùy chỉnh.
+
+Tên, giá và mã chuyển khoản của từng dịch vụ được khai báo bằng các thuộc tính `data-title`, `data-price` và `data-code` trên `.service-option` trong `donate.html`.
 
 Thông tin nhận donate được khai báo tập trung trong `DONATE_CONFIG` ở đầu file `js/donate.js`:
 
@@ -93,6 +95,8 @@ const DONATE_CONFIG = {
   transferNote: 'HVL MCK DONATE',
   qrImage: 'images/donate-qr.png',
   contactEmail: 'email@example.com',
+  zaloUrl: 'https://zalo.me/so-dien-thoai',
+  facebookUrl: 'https://www.facebook.com/ten-tai-khoan',
 };
 ```
 
