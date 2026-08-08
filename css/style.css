@@ -286,6 +286,10 @@ ul { list-style: none; }
 .stage-empty:not([hidden]) ~ .stage-overlay {
   display: none !important;
 }
+.stage-visual.controls-idle .stage-overlay {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
 .progress-row { display: flex; align-items: center; gap: 10px; }
 .time { font-size: 11.5px; color: #fff; width: 40px; flex: 0 0 auto; font-variant-numeric: tabular-nums; }
 .time:last-child { text-align: right; }

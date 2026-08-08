@@ -53,6 +53,32 @@ function toggleFullscreen() {
   } catch (err) {}
 }
 
+let controlsIdleTimer = null;
+function isFullscreen() {
+  return !!(document.fullscreenElement || document.webkitFullscreenElement);
+}
+function armControlsIdleTimer() {
+  clearTimeout(controlsIdleTimer);
+  controlsIdleTimer = setTimeout(() => els.stageVisual.classList.add('controls-idle'), 1000);
+}
+function handleStagePointerActivity() {
+  els.stageVisual.classList.remove('controls-idle');
+  armControlsIdleTimer();
+}
+function handleStagePointerLeave() {
+  clearTimeout(controlsIdleTimer);
+  els.stageVisual.classList.remove('controls-idle');
+  els.stageVisual.classList.remove('overlay-visible');
+  if (els.stageVisual.contains(document.activeElement)) {
+    document.activeElement.blur();
+  }
+}
+function handleFullscreenChange() {
+  clearTimeout(controlsIdleTimer);
+  els.stageVisual.classList.remove('controls-idle');
+  if (isFullscreen()) armControlsIdleTimer();
+}
+
 function initEvents() {
   els.cardGrid.addEventListener('click', onPickSong);
   els.songList.addEventListener('click', onPickSong);
@@ -88,6 +114,11 @@ function initEvents() {
     if (els.stageVisual.contains(e.target)) return;
     els.stageVisual.classList.remove('overlay-visible');
   });
+
+  els.stageVisual.addEventListener('mousemove', handleStagePointerActivity);
+  els.stageVisual.addEventListener('mouseleave', handleStagePointerLeave);
+  document.addEventListener('fullscreenchange', handleFullscreenChange);
+  document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
 
   els.playerBar.addEventListener('click', (e) => {
     if (e.target.closest('.pb-btn')) return;
