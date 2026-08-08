@@ -11,6 +11,16 @@
 // without ever needing to start a *new*, ungestured play() call later (that
 // approach kept getting silently blocked by autoplay policy). els.video and
 // els.audio are muted decorative pictures only; see visualEl()/play()/pause().
+//
+// Exception: iOS suspends <audio> the moment the app is backgrounded, so on
+// iOS the audible element is inverted — the visible video (which shows the
+// same mp4, all of which carry a video track) becomes the real sound source
+// and is pushed into Picture-in-Picture when the app goes to the background,
+// the one way web video keeps playing on iPhone. els.sound stays muted and
+// only tracks time/state for the progress bar and Media Session.
+const IS_IOS = /iP(hone|ad|od)/.test(navigator.userAgent) ||
+  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
 function activeEl() { return els.sound; }
 function visualEl() { return state.viewMode === 'mv' ? els.video : els.audio; }
 
@@ -73,6 +83,14 @@ function loadSong(index, autoplay) {
 
   els.sound.src = (state.viewMode === 'mv' && song.mv) ? urlFor(FOLDER.mv, song.mv) : urlFor(FOLDER.audio, song.audio);
 
+  if (IS_IOS) {
+    // iOS background audio only survives inside a PiP'd video element, so the
+    // visible picture carries the sound there; the hidden <audio> stays muted.
+    els.sound.muted = true;
+    els.audio.muted = false;
+    els.video.muted = false;
+  }
+
   els.stageEmpty.hidden = true;
   updateVisualVisibility();
 
@@ -104,7 +122,12 @@ function play() {
   if (p && p.catch) p.catch(() => {});
   const vEl = visualEl();
   if (vEl.src) {
-    if (Math.abs((vEl.currentTime || 0) - (els.sound.currentTime || 0)) > 0.3) {
+    if (IS_IOS) {
+      vEl.volume = state.volume;
+      if (Math.abs((vEl.currentTime || 0) - (els.sound.currentTime || 0)) > 0.3) {
+        els.sound.currentTime = vEl.currentTime || 0;
+      }
+    } else if (Math.abs((vEl.currentTime || 0) - (els.sound.currentTime || 0)) > 0.3) {
       vEl.currentTime = els.sound.currentTime || 0;
     }
     const vp = vEl.play();
@@ -170,6 +193,7 @@ function setVolume(v) {
   v = Math.max(0, Math.min(1, v));
   state.volume = v;
   els.sound.volume = v;
+  visualEl().volume = v;
   saveState(false);
 }
 
@@ -190,9 +214,11 @@ function bindSoundEvents() {
       }
     } catch (e) {}
     // Keep the decorative picture from drifting out of sync with the audio.
+    // On iOS the visible video IS the sound, so the muted tracker follows it.
     const vEl = visualEl();
     if (!document.hidden && vEl.src && Math.abs((vEl.currentTime || 0) - el.currentTime) > 1) {
-      vEl.currentTime = el.currentTime;
+      if (IS_IOS) el.currentTime = vEl.currentTime;
+      else vEl.currentTime = el.currentTime;
     }
   });
 
@@ -211,6 +237,16 @@ function bindSoundEvents() {
     state.isPlaying = false;
     syncPlayUI();
   });
+
+  // On iOS the audible element is the visible video (it keeps playing via
+  // Picture-in-Picture), so its own play/pause — e.g. tapping the floating
+  // PiP window — must drive the muted tracker too, or the UI would lie.
+  if (IS_IOS) {
+    [els.audio, els.video].forEach((v) => {
+      v.addEventListener('play', () => { if (!state.isPlaying) el.play().catch(() => {}); });
+      v.addEventListener('pause', () => { if (state.isPlaying) el.pause(); });
+    });
+  }
 }
 
 // ---------- Media Session (lock screen controls) ----------

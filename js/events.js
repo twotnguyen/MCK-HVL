@@ -56,6 +56,15 @@ let controlsIdleTimer = null;
 function isFullscreen() {
   return !!(document.fullscreenElement || document.webkitFullscreenElement);
 }
+function setIosPip(active) {
+  const el = visualEl();
+  if (!el || !el.src) return;
+  try {
+    if (active && el.requestPictureInPicture) { el.requestPictureInPicture().catch(() => {}); return; }
+    if (!active && document.exitPictureInPicture) { document.exitPictureInPicture().catch(() => {}); return; }
+    el.webkitSetPresentationMode?.(active ? 'picture-in-picture' : 'inline');
+  } catch (e) {}
+}
 function armControlsIdleTimer() {
   clearTimeout(controlsIdleTimer);
   controlsIdleTimer = setTimeout(() => els.stageVisual.classList.add('controls-idle'), 1000);
@@ -168,7 +177,15 @@ function initEvents() {
   });
 
   document.addEventListener('visibilitychange', () => {
-    if (document.hidden) saveState(true);
+    if (document.hidden) {
+      saveState(true);
+      // iOS: the visible video is the sound source there (see player.js), so
+      // push it into Picture-in-Picture — the one way web media keeps playing
+      // audio when the app is backgrounded on iPhone/iPad.
+      if (IS_IOS && state.isPlaying) setIosPip(true);
+    } else if (IS_IOS) {
+      setIosPip(false);
+    }
   });
   window.addEventListener('pagehide', () => saveState(true));
 
