@@ -13,8 +13,8 @@
       content="Trình nghe nhạc offline cho bộ sưu tập 30 bài hát MCK"
     />
     <link rel="manifest" href="manifest.json" />
-    <link rel="icon" href="icons/icon.svg" type="image/svg+xml" />
-    <link rel="apple-touch-icon" href="icons/icon.svg" />
+    <link rel="icon" href="images/logo.jpg" type="image/jpeg" />
+    <link rel="apple-touch-icon" href="images/logo.jpg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -275,48 +275,48 @@
                         </svg>
                         <span id="repeat-one-badge" class="repeat-one-badge">1</span>
                       </button>
+                      <button
+                        id="btn-fullscreen"
+                        class="ctrl-btn fullscreen-btn"
+                        title="Toàn màn hình"
+                        aria-label="Xem toàn màn hình"
+                      >
+                        <svg
+                          id="icon-fs-expand"
+                          class="icon-fs-expand"
+                          viewBox="0 0 24 24"
+                          width="18"
+                          height="18"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        >
+                          <path d="M8 3H5a2 2 0 0 0-2 2v3" />
+                          <path d="M21 8V5a2 2 0 0 0-2-2h-3" />
+                          <path d="M3 16v3a2 2 0 0 0 2 2h3" />
+                          <path d="M16 21h3a2 2 0 0 0 2-2v-3" />
+                        </svg>
+                        <svg
+                          id="icon-fs-collapse"
+                          class="icon-fs-collapse"
+                          viewBox="0 0 24 24"
+                          width="18"
+                          height="18"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        >
+                          <path d="M8 3v3a2 2 0 0 1-2 2H3" />
+                          <path d="M21 8h-3a2 2 0 0 1-2-2V3" />
+                          <path d="M3 16h3a2 2 0 0 1 2 2v3" />
+                          <path d="M16 21v-3a2 2 0 0 1 2-2h3" />
+                        </svg>
+                      </button>
                     </div>
-                    <button
-                      id="btn-fullscreen"
-                      class="ctrl-btn fullscreen-btn"
-                      title="Toàn màn hình"
-                      aria-label="Xem toàn màn hình"
-                    >
-                      <svg
-                        id="icon-fs-expand"
-                        class="icon-fs-expand"
-                        viewBox="0 0 24 24"
-                        width="18"
-                        height="18"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      >
-                        <path d="M8 3H5a2 2 0 0 0-2 2v3" />
-                        <path d="M21 8V5a2 2 0 0 0-2-2h-3" />
-                        <path d="M3 16v3a2 2 0 0 0 2 2h3" />
-                        <path d="M16 21h3a2 2 0 0 0 2-2v-3" />
-                      </svg>
-                      <svg
-                        id="icon-fs-collapse"
-                        class="icon-fs-collapse"
-                        viewBox="0 0 24 24"
-                        width="18"
-                        height="18"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      >
-                        <path d="M8 3v3a2 2 0 0 1-2 2H3" />
-                        <path d="M21 8h-3a2 2 0 0 1-2-2V3" />
-                        <path d="M3 16h3a2 2 0 0 1 2 2v3" />
-                        <path d="M16 21v-3a2 2 0 0 1 2-2h3" />
-                      </svg>
-                    </button>
                   </div>
                 </div>
                 <div class="watch-top-info">
@@ -375,6 +375,104 @@
               </aside>
             </div>
           </section>
+
+          <footer class="site-footer" aria-label="Thông tin website">
+            <div class="footer-grid">
+              <div class="footer-brand-col">
+                <div class="footer-brand">
+                  <img
+                    class="footer-logo"
+                    src="images/logo.jpg"
+                    alt="Logo HVL-MCK"
+                    loading="lazy"
+                  />
+                  <div>
+                    <p class="footer-name">HVL-<span>MCK</span></p>
+                    <p class="footer-tagline">
+                      Không gian âm nhạc dành cho những người yêu MCK.
+                    </p>
+                  </div>
+                </div>
+                <p class="footer-note">
+                  Trình nghe nhạc nhẹ, nhanh và hoạt động ngoại tuyến —
+                  dành riêng cho bộ sưu tập 30 ca khúc của MCK.
+                </p>
+              </div>
+
+              <div class="footer-cols">
+                <section class="footer-section" aria-labelledby="footer-about-title">
+                  <h2 id="footer-about-title" class="footer-heading">Về trang web</h2>
+                  <ul class="footer-list">
+                    <li>Đầy đủ 30 track và 6 MV từ album</li>
+                    <li>Phát nền &amp; điều khiển bằng phím tắt</li>
+                    <li>Tìm kiếm không dấu</li>
+                    <li>PWA — cài đặt và dùng offline</li>
+                  </ul>
+                </section>
+
+                <section class="footer-section" aria-labelledby="footer-author-title">
+                  <h2 id="footer-author-title" class="footer-heading">Người xây dựng</h2>
+                  <div class="footer-author">
+                    <img
+                      class="footer-avt"
+                      src="images/my_avt.png"
+                      alt="Avatar Twot"
+                      loading="lazy"
+                    />
+                    <p class="footer-text">
+                      Thiết kế &amp; phát triển bởi
+                      <strong>Twot</strong> — được tạo nên từ niềm đam mê
+                      âm nhạc và coding.
+                    </p>
+                  </div>
+                  <ul class="footer-contact" aria-label="Liên hệ">
+                    <li>
+                      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <rect x="2" y="4" width="20" height="16" rx="2" />
+                        <path d="m22 7-10 6L2 7" />
+                      </svg>
+                      <a href="mailto:nguyenngoctinh011258@gmail.com">nguyenngoctinh011258@gmail.com</a>
+                    </li>
+                    <li>
+                      <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true">
+                        <path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1.1-.8.1-.8.1-.8 1.2.1 1.9 1.3 1.9 1.3 1.1 1.9 2.9 1.3 3.6 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.4-5.5-6 0-1.3.5-2.4 1.3-3.2-.1-.3-.6-1.6.1-3.2 0 0 1-.3 3.4 1.3a11.7 11.7 0 0 1 6.2 0c2.3-1.6 3.4-1.3 3.4-1.3.7 1.6.2 2.9.1 3.2.8.8 1.3 1.9 1.3 3.2 0 4.6-2.8 5.6-5.5 6 .4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3" />
+                      </svg>
+                      <a href="https://github.com/twotnguyen" target="_blank" rel="noopener">twotnguyen</a>
+                    </li>
+                    <li>
+                      <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true">
+                        <path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07c0 6.02 4.39 11.01 10.13 11.93v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.7 4.53-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.26h3.33l-.53 3.49h-2.8V24C19.61 23.08 24 18.09 24 12.07" />
+                      </svg>
+                      <a href="https://www.facebook.com/nguyen.tinh.754402" target="_blank" rel="noopener">Nguyen Tinh</a>
+                    </li>
+                    <li>
+                      <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true">
+                        <path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16M12 0C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.14.63c-.79.3-1.46.72-2.13 1.38A5.88 5.88 0 0 0 .63 4.14C.33 4.9.13 5.78.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.26 2.15.56 2.91.3.79.72 1.46 1.38 2.13a5.88 5.88 0 0 0 2.13 1.38c.76.3 1.64.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.27-.06 2.15-.26 2.91-.56a5.88 5.88 0 0 0 2.13-1.38 5.88 5.88 0 0 0 1.38-2.13c.3-.76.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.27-.26-2.15-.56-2.91a5.88 5.88 0 0 0-1.38-2.13A5.88 5.88 0 0 0 19.86.63c-.76-.3-1.64-.5-2.91-.56C15.67.01 15.26 0 12 0m0 5.84A6.16 6.16 0 1 0 18.16 12 6.16 6.16 0 0 0 12 5.84M12 16a4 4 0 1 1 4-4 4 4 0 0 1-4 4m7.85-10.4a1.44 1.44 0 1 1-1.44-1.44 1.44 1.44 0 0 1 1.44 1.44" />
+                      </svg>
+                      <a href="https://www.instagram.com/ybtwot/?hl=en" target="_blank" rel="noopener">ybtwot</a>
+                    </li>
+                  </ul>
+                </section>
+
+                <section class="footer-section" aria-labelledby="footer-tech-title">
+                  <h2 id="footer-tech-title" class="footer-heading">Công nghệ</h2>
+                  <ul class="footer-tech" aria-label="Công nghệ sử dụng">
+                    <li><span class="dot dot-html"></span>HTML5</li>
+                    <li><span class="dot dot-css"></span>CSS3</li>
+                    <li><span class="dot dot-js"></span>JavaScript</li>
+                    <li><span class="dot dot-pwa"></span>PWA</li>
+                  </ul>
+                </section>
+              </div>
+            </div>
+
+            <div class="footer-bottom">
+              <p class="footer-copyright">&copy; 2026 Twot. All rights reserved.</p>
+              <p class="footer-made">
+                Làm bằng <span class="heart" aria-hidden="true">&hearts;</span> và âm nhạc
+              </p>
+            </div>
+          </footer>
         </main>
       </div>
 

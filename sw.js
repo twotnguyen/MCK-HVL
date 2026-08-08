@@ -1,4 +1,4 @@
-const SHELL_CACHE = 'mck-shell-v7';
+const SHELL_CACHE = 'mck-shell-v10';
 const MEDIA_CACHE = 'mck-media-v1';
 
 const SHELL_ASSETS = [
@@ -11,7 +11,7 @@ const SHELL_ASSETS = [
   './js/player.js',
   './js/events.js',
   './manifest.json',
-  './icons/icon.svg',
+  './images/logo.jpg',
 ];
 
 self.addEventListener('install', (event) => {
@@ -28,6 +28,16 @@ self.addEventListener('activate', (event) => {
         keys
           .filter((k) => k !== SHELL_CACHE && k !== MEDIA_CACHE)
           .map((k) => caches.delete(k))
+      ).then(() =>
+        caches.open(MEDIA_CACHE).then((media) =>
+          media.keys().then((requests) =>
+            Promise.all(
+              requests
+                .filter((r) => /logo\.jpg$/.test(r.url))
+                .map((r) => media.delete(r))
+            )
+          )
+        )
       )
     )
   );
@@ -35,7 +45,7 @@ self.addEventListener('activate', (event) => {
 });
 
 function isMediaRequest(url) {
-  return /\/(images|MP4|MV)\//.test(url.pathname);
+  return /\/(images|MP4|MV)\//.test(url.pathname) && !/logo\.jpg$/.test(url.pathname);
 }
 
 // Build a 206 Partial Content response for an HTTP Range header from a full body.
