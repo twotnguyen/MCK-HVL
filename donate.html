@@ -81,12 +81,12 @@
         <div class="service-plans" role="group" aria-label="Chọn dịch vụ Google AI Pro">
           <button
             type="button"
-            class="service-option featured active"
+            class="service-option featured"
             data-service="personal"
             data-title="Google AI Pro — Tài khoản chính chủ"
             data-price="50000"
             data-code="AIPRO1"
-            aria-pressed="true"
+            aria-pressed="false"
           >
             <span class="service-ribbon">Đề xuất · Ưu đãi sớm</span>
             <span class="service-number">Dịch vụ 01</span>
@@ -158,51 +158,92 @@
           </p>
         </div>
 
-        <div class="order-card donate-card">
+        <div id="service-order-section" class="order-card donate-card" hidden>
           <div class="section-heading">
             <span class="step">01</span>
             <div>
               <h2>Đăng ký dịch vụ</h2>
-              <p>Kiểm tra lựa chọn, nhập Gmail cần nâng cấp rồi gửi thông tin cho Twot.</p>
+              <p>Kiểm tra dịch vụ, quyền lợi nhận được và thông tin thanh toán.</p>
             </div>
           </div>
 
-          <div class="order-layout">
-            <div class="order-form">
-              <label class="field-label" for="customer-email">Gmail cần nâng cấp</label>
-              <input
-                id="customer-email"
-                class="text-input"
-                type="email"
-                inputmode="email"
-                autocomplete="email"
-                placeholder="tenban@gmail.com"
-              />
-              <p class="field-hint">Chỉ cần địa chỉ Gmail. Không gửi mật khẩu, mã OTP hay mã khôi phục.</p>
+          <div class="service-summary" aria-live="polite">
+            <div>
+              <span>Dịch vụ đã chọn</span>
+              <strong id="selected-service-name">Google AI Pro — Tài khoản chính chủ</strong>
+            </div>
+            <strong id="selected-service-price">50.000 ₫</strong>
+          </div>
 
-              <div class="service-summary" aria-live="polite">
-                <div>
-                  <span>Dịch vụ đã chọn</span>
-                  <strong id="selected-service-name">Google AI Pro — Tài khoản chính chủ</strong>
+          <section class="selected-benefits" aria-labelledby="selected-benefits-title">
+            <div class="selected-benefits-head">
+              <span class="gemini-mark small" aria-hidden="true">✦</span>
+              <div><span class="eyebrow">Đi kèm dịch vụ</span><h3 id="selected-benefits-title">Tiện ích bạn sẽ nhận được</h3></div>
+            </div>
+            <ul class="selected-benefits-list">
+              <li id="selected-plan-benefit"><strong>Tài khoản chính chủ</strong><span>Nâng cấp trực tiếp trên Gmail của bạn trong thời hạn 1 năm.</span></li>
+              <li><strong>Gemini Pro trên web</strong><span>Hạn mức cao hơn, mô hình Pro và Deep Research.</span></li>
+              <li><strong>Dung lượng đến 5 TB</strong><span>Dùng cho Google Drive, Gmail và Google Photos theo điều kiện gói.</span></li>
+              <li><strong>Bộ công cụ AI mở rộng</strong><span>Gemini trong Workspace, Flow, NotebookLM và Google AI Studio.</span></li>
+            </ul>
+          </section>
+
+          <section id="service-payment-panel" class="service-payment-panel" aria-labelledby="service-payment-title">
+            <div class="service-payment-head">
+              <div>
+                <span class="eyebrow">Bước tiếp theo</span>
+                <h3 id="service-payment-title">Thông tin thanh toán</h3>
+              </div>
+            </div>
+
+            <div class="service-payment-methods">
+              <article class="service-method momo-method">
+                <div class="service-method-title"><span class="method-logo momo-logo">M</span><h4>Thanh toán MoMo</h4></div>
+                <p>Quét mã QR tương ứng với dịch vụ đang chọn để thanh toán qua MoMo.</p>
+                <figure class="service-qr momo-qr-frame">
+                  <img id="service-momo-qr" src="images/50k_momo.jpg" alt="Mã QR MoMo thanh toán dịch vụ Google AI Pro 50.000 đồng" />
+                  <figcaption>QR MoMo · Gói <span id="service-momo-caption">50.000 ₫</span></figcaption>
+                </figure>
+                <div class="momo-phone-row">
+                  <div><span>Số điện thoại MoMo</span><strong>0369861439</strong></div>
+                  <button id="copy-service-momo-phone" class="inline-copy-btn" type="button" aria-label="Sao chép số điện thoại MoMo 0369861439">Sao chép</button>
                 </div>
-                <strong id="selected-service-price">50.000 ₫</strong>
-              </div>
+                <div class="method-amount"><span>Cần thanh toán</span><strong id="service-momo-price">50.000 ₫</strong></div>
+                <a id="download-service-momo-qr" class="secondary-btn download-qr" href="images/50k_momo.jpg" download="HVL-MoMo-50000.jpg">Tải mã QR MoMo</a>
+              </article>
 
-              <div class="order-actions">
-                <a class="primary-btn compact" href="#payment-card">Xem thông tin chuyển khoản</a>
-                <button id="copy-order" class="secondary-btn compact" type="button">Sao chép nội dung đơn</button>
-              </div>
+              <article class="service-method bank-method">
+                <div class="service-method-title"><span class="method-logo bank-logo">₫</span><h4>Chuyển khoản ACB</h4></div>
+                <p>Quét mã QR tương ứng với dịch vụ đang chọn để chuyển khoản qua ACB.</p>
+                <figure class="service-qr bank-qr-frame">
+                  <img id="service-bank-qr" src="images/50k_ACB.jpg" alt="Mã QR ACB thanh toán dịch vụ Google AI Pro 50.000 đồng" />
+                  <figcaption>QR ACB · Gói <span id="service-bank-caption">50.000 ₫</span></figcaption>
+                </figure>
+                <dl class="bank-details service-bank-details">
+                  <div>
+                    <dt>Ngân hàng</dt>
+                    <dd><span id="service-bank-name">ACB</span><button class="inline-copy-btn compact-copy" type="button" data-copy-target="service-bank-name" aria-label="Sao chép tên ngân hàng">Sao chép</button></dd>
+                  </div>
+                  <div>
+                    <dt>Số tài khoản</dt>
+                    <dd><span id="service-bank-account">23992227</span><button class="inline-copy-btn compact-copy" type="button" data-copy-target="service-bank-account" aria-label="Sao chép số tài khoản">Sao chép</button></dd>
+                  </div>
+                  <div>
+                    <dt>Chủ tài khoản</dt>
+                    <dd><span id="service-bank-holder">Nguyễn Ngọc Tình</span><button class="inline-copy-btn compact-copy" type="button" data-copy-target="service-bank-holder" aria-label="Sao chép tên chủ tài khoản">Sao chép</button></dd>
+                  </div>
+                  <div>
+                    <dt>Số tiền</dt>
+                    <dd><span id="service-bank-price">50.000 ₫</span><button class="inline-copy-btn compact-copy" type="button" data-copy-target="service-bank-price" aria-label="Sao chép số tiền">Sao chép</button></dd>
+                  </div>
+                </dl>
+                <a id="download-service-bank-qr" class="secondary-btn download-qr bank-download" href="images/50k_ACB.jpg" download="HVL-ACB-50000.jpg">Tải mã QR ACB</a>
+              </article>
             </div>
-
-            <ol class="order-steps">
-              <li><span>1</span><div><strong>Chọn dịch vụ</strong><p>Chọn tài khoản chính chủ hoặc gói chủ nhóm gia đình.</p></div></li>
-              <li><span>2</span><div><strong>Chuyển khoản</strong><p>Chuyển đúng số tiền và ghi nội dung được tạo bên dưới.</p></div></li>
-              <li><span>3</span><div><strong>Gửi minh chứng</strong><p>Gửi ảnh giao dịch qua Zalo hoặc Facebook để được liên hệ nâng cấp.</p></div></li>
-            </ol>
-          </div>
+          </section>
 
           <div class="contact-strip">
-            <div><strong>Gửi minh chứng sau khi chuyển khoản</strong><span>Twot sẽ liên hệ để xác nhận Gmail và xử lý dịch vụ.</span></div>
+            <div><strong>Gửi minh chứng sau khi chuyển khoản</strong><span>Twot sẽ liên hệ để xác nhận đơn đăng ký và nhận Gmail cần nâng cấp.</span></div>
             <a class="contact-btn zalo" href="https://zalo.me/0369861439" target="_blank" rel="noopener">Zalo · 0369 861 439</a>
             <a class="contact-btn facebook" href="https://www.facebook.com/nguyen.tinh.754402" target="_blank" rel="noopener">Facebook</a>
           </div>
@@ -216,7 +257,7 @@
       <section class="direct-section" aria-labelledby="direct-title">
         <div class="services-heading compact-heading">
           <p class="eyebrow">Một lựa chọn khác</p>
-          <h2 id="direct-title">Ủng hộ trực tiếp cho HVL-MCK</h2>
+          <h2 id="direct-title">Ủng hộ trực tiếp cho dự án</h2>
           <p>Nếu không cần dịch vụ, bạn vẫn có thể gửi một khoản ủng hộ tùy ý qua chuyển khoản.</p>
         </div>
 
@@ -231,47 +272,25 @@
           </div>
 
           <div class="amount-grid" role="group" aria-label="Chọn số tiền donate">
-            <button type="button" class="amount-option" data-amount="20000" aria-pressed="false">
-              <strong>20.000đ</strong>
-              <span>Một ly cà phê</span>
+            <button type="button" class="amount-option" data-amount="10000" aria-pressed="false">
+              <strong>10.000đ</strong>
+              <span>Một lời cảm ơn — góp một phần nhỏ vào chi phí duy trì dự án.</span>
             </button>
-            <button type="button" class="amount-option active" data-amount="50000" aria-pressed="true">
+            <button type="button" class="amount-option active" data-amount="20000" aria-pressed="true">
               <span class="popular">Phổ biến</span>
-              <strong>50.000đ</strong>
-              <span>Tiếp sức coding</span>
+              <strong>20.000đ</strong>
+              <span>Một ly cà phê — tiếp thêm năng lượng để Twot tiếp tục coding.</span>
             </button>
-            <button type="button" class="amount-option" data-amount="100000" aria-pressed="false">
-              <strong>100.000đ</strong>
-              <span>Fan cứng HVL</span>
+            <button type="button" class="amount-option" data-amount="30000" aria-pressed="false">
+              <strong>30.000đ</strong>
+              <span>Tiếp sức dự án — hỗ trợ bảo trì và phát triển các cập nhật mới.</span>
             </button>
           </div>
-
-          <label class="field-label" for="custom-amount">Hoặc nhập số tiền khác</label>
-          <div class="amount-input-wrap">
-            <input
-              id="custom-amount"
-              type="text"
-              inputmode="numeric"
-              autocomplete="off"
-              placeholder="Ví dụ: 200.000"
-              aria-describedby="amount-hint"
-            />
-            <span>VND</span>
-          </div>
-          <p id="amount-hint" class="field-hint">Chỉ nhập chữ số, không cần nhập dấu chấm.</p>
-
-          <label class="field-label" for="donate-message">Lời nhắn cho Twot <span>(không bắt buộc)</span></label>
-          <textarea
-            id="donate-message"
-            rows="3"
-            maxlength="240"
-            placeholder="Viết vài lời động viên..."
-          ></textarea>
 
           <div class="donate-summary" aria-live="polite">
             <div>
               <span>Bạn đang chọn</span>
-              <strong id="selected-amount">50.000 ₫</strong>
+              <strong id="selected-amount">20.000 ₫</strong>
             </div>
             <span class="summary-heart" aria-hidden="true">♥</span>
           </div>
@@ -281,43 +300,87 @@
           <div class="section-heading">
             <span class="step">03</span>
             <div>
-              <h2>Thông tin chuyển khoản</h2>
-              <p>Dùng cho cả đăng ký dịch vụ và ủng hộ trực tiếp.</p>
+              <h2>Thông tin chuyển khoản ủng hộ</h2>
+              <p>Dành riêng cho các gói hỗ trợ 10k, 20k và 30k.</p>
             </div>
           </div>
 
-          <div class="payment-body">
-            <div class="qr-frame">
-              <img id="donate-qr" alt="Mã QR chuyển khoản" hidden />
-              <div id="qr-placeholder" class="qr-placeholder">
-                <svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <rect x="3" y="3" width="7" height="7" rx="1" />
-                  <rect x="14" y="3" width="7" height="7" rx="1" />
-                  <rect x="3" y="14" width="7" height="7" rx="1" />
-                  <path d="M14 14h3v3h-3zM18 18h3v3h-3zM18 14h3M14 18v3" />
-                </svg>
-                <strong>QR đang cập nhật</strong>
-                <span>Liên hệ Twot để nhận thông tin</span>
+          <div class="payment-tabs" role="tablist" aria-label="Phương thức thanh toán">
+            <button id="momo-tab" class="payment-tab active" type="button" role="tab" data-method="momo" aria-selected="true" aria-controls="momo-panel">
+              <span class="method-logo momo-logo" aria-hidden="true">M</span>
+              MoMo
+            </button>
+            <button id="bank-tab" class="payment-tab" type="button" role="tab" data-method="bank" aria-selected="false" aria-controls="bank-panel" tabindex="-1">
+              <span class="method-logo bank-logo" aria-hidden="true">₫</span>
+              Ngân hàng
+            </button>
+          </div>
+
+          <div id="momo-panel" class="payment-method-panel" role="tabpanel" aria-labelledby="momo-tab">
+            <div class="payment-body">
+              <div class="qr-frame momo-qr-frame">
+                <img id="momo-qr" alt="Mã QR MoMo theo gói ủng hộ" hidden />
+                <div id="momo-placeholder" class="qr-placeholder momo-placeholder">
+                  <svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="3" y="3" width="7" height="7" rx="1" />
+                    <rect x="14" y="3" width="7" height="7" rx="1" />
+                    <rect x="3" y="14" width="7" height="7" rx="1" />
+                    <path d="M14 14h3v3h-3zM18 18h3v3h-3zM18 14h3M14 18v3" />
+                  </svg>
+                  <strong id="momo-placeholder-title">QR dịch vụ đang cập nhật</strong>
+                  <span id="momo-placeholder-text">Liên hệ Twot để nhận QR đúng số tiền</span>
+                </div>
+              </div>
+
+              <div class="payment-details">
+                <div class="config-status ready momo-status">
+                  <span></span> Thanh toán nhanh qua ví MoMo
+                </div>
+                <dl class="bank-details">
+                  <div><dt>Phương thức</dt><dd>Ví điện tử MoMo</dd></div>
+                  <div><dt>Khoản thanh toán</dt><dd id="momo-amount">50.000 ₫</dd></div>
+                  <div><dt>Cho lựa chọn</dt><dd id="momo-choice">Google AI Pro — Tài khoản chính chủ</dd></div>
+                  <div><dt>Nội dung</dt><dd id="momo-note">HVL AIPRO1 GMAIL</dd></div>
+                </dl>
+                <a id="download-momo-qr" class="secondary-btn download-qr" href="#" download hidden>Tải mã QR MoMo</a>
               </div>
             </div>
+          </div>
 
-            <div class="bank-panel">
-              <div class="config-status" id="config-status">
-                <span></span> Chưa cấu hình tài khoản nhận donate
+          <div id="bank-panel" class="payment-method-panel" role="tabpanel" aria-labelledby="bank-tab" hidden>
+            <div class="payment-body">
+              <div class="qr-frame">
+                <img id="donate-qr" alt="Mã QR chuyển khoản ngân hàng" hidden />
+                <div id="qr-placeholder" class="qr-placeholder">
+                  <svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="3" y="3" width="7" height="7" rx="1" />
+                    <rect x="14" y="3" width="7" height="7" rx="1" />
+                    <rect x="3" y="14" width="7" height="7" rx="1" />
+                    <path d="M14 14h3v3h-3zM18 18h3v3h-3zM18 14h3M14 18v3" />
+                  </svg>
+                  <strong id="bank-placeholder-title">QR dịch vụ đang cập nhật</strong>
+                  <span id="bank-placeholder-text">Có thể chuyển khoản thủ công bằng thông tin bên cạnh</span>
+                </div>
               </div>
-              <dl class="bank-details">
-                <div><dt>Ngân hàng</dt><dd id="bank-name">Đang cập nhật</dd></div>
-                <div><dt>Số tài khoản</dt><dd id="bank-account">Đang cập nhật</dd></div>
-                <div><dt>Chủ tài khoản</dt><dd id="bank-holder">TWOT</dd></div>
-                <div><dt>Nội dung</dt><dd id="transfer-note">HVL MCK DONATE</dd></div>
-              </dl>
-              <button id="copy-account" class="secondary-btn" type="button" disabled>
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <rect x="9" y="9" width="11" height="11" rx="2" />
-                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
-                </svg>
-                Sao chép số tài khoản
-              </button>
+
+              <div class="payment-details">
+                <div class="config-status" id="config-status">
+                  <span></span> Tài khoản ACB đã sẵn sàng
+                </div>
+                <dl class="bank-details">
+                  <div><dt>Ngân hàng</dt><dd id="bank-name">ACB</dd></div>
+                  <div><dt>Số tài khoản</dt><dd id="bank-account">23992227</dd></div>
+                  <div><dt>Chủ tài khoản</dt><dd id="bank-holder">Nguyễn Ngọc Tình</dd></div>
+                </dl>
+                <button id="copy-account" class="secondary-btn" type="button" disabled>
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="9" y="9" width="11" height="11" rx="2" />
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                  </svg>
+                  Sao chép số tài khoản
+                </button>
+                <a id="download-bank-qr" class="secondary-btn download-qr bank-download" href="#" download hidden>Tải mã QR ngân hàng</a>
+              </div>
             </div>
           </div>
 

@@ -2,11 +2,31 @@
 
 // Điền thông tin thật tại đây để tự động bật QR và nút sao chép.
 const DONATE_CONFIG = {
-  bankName: '',
-  accountNumber: '',
-  accountHolder: 'TWOT',
+  bankName: 'ACB',
+  accountNumber: '23992227',
+  accountHolder: 'Nguyễn Ngọc Tình',
+  momoPhone: '0369861439',
   transferNote: 'HVL MCK DONATE',
-  qrImage: '', // Ví dụ: 'images/donate-qr.png'
+  bankQrByAmount: {
+    10000: 'images/10k_ACB.jpg',
+    20000: 'images/20k_ACB.jpg',
+    30000: 'images/30K_ACB.jpg',
+  },
+  momoQrByAmount: {
+    10000: 'images/10k_momo.jpg',
+    20000: 'images/20k-momo.jpg',
+    30000: 'images/30k_momo.jpg',
+  },
+  serviceQrByAmount: {
+    50000: {
+      momo: 'images/50k_momo.jpg',
+      bank: 'images/50k_ACB.jpg',
+    },
+    250000: {
+      momo: 'images/250k_momo.jpg',
+      bank: 'images/250k_ACB.jpg',
+    },
+  },
   contactEmail: 'nguyenngoctinh011258@gmail.com',
   zaloUrl: 'https://zalo.me/0369861439',
   facebookUrl: 'https://www.facebook.com/nguyen.tinh.754402',
@@ -14,21 +34,27 @@ const DONATE_CONFIG = {
 
 const serviceButtons = Array.from(document.querySelectorAll('.service-option'));
 const amountButtons = Array.from(document.querySelectorAll('.amount-option'));
-const customAmount = document.getElementById('custom-amount');
-const donateMessage = document.getElementById('donate-message');
-const customerEmail = document.getElementById('customer-email');
 const selectedAmountEl = document.getElementById('selected-amount');
 const selectedServiceName = document.getElementById('selected-service-name');
 const selectedServicePrice = document.getElementById('selected-service-price');
-const transferNoteEl = document.getElementById('transfer-note');
+const serviceOrderSection = document.getElementById('service-order-section');
 const contactDonate = document.getElementById('contact-donate');
 const copyAccount = document.getElementById('copy-account');
-const copyOrder = document.getElementById('copy-order');
 const toast = document.getElementById('donate-toast');
+const paymentTabs = Array.from(document.querySelectorAll('.payment-tab'));
+const paymentPanels = Array.from(document.querySelectorAll('.payment-method-panel'));
+const momoQr = document.getElementById('momo-qr');
+const momoPlaceholder = document.getElementById('momo-placeholder');
+const downloadMomoQr = document.getElementById('download-momo-qr');
+const bankQr = document.getElementById('donate-qr');
+const bankPlaceholder = document.getElementById('qr-placeholder');
+const downloadBankQr = document.getElementById('download-bank-qr');
+const copyServiceMomoPhone = document.getElementById('copy-service-momo-phone');
+const selectedPlanBenefit = document.getElementById('selected-plan-benefit');
 
-let selectedDonateAmount = 50000;
-let selectedService = serviceFromButton(serviceButtons[0]);
-let paymentMode = 'service';
+let selectedDonateAmount = 20000;
+let selectedService = null;
+let paymentMode = 'donate';
 let toastTimer = null;
 
 function formatVnd(value) {
@@ -37,10 +63,6 @@ function formatVnd(value) {
     currency: 'VND',
     maximumFractionDigits: 0,
   }).format(value || 0);
-}
-
-function digitsOnly(value) {
-  return value.replace(/\D/g, '').slice(0, 10);
 }
 
 function serviceFromButton(button) {
@@ -60,18 +82,43 @@ function showToast(message) {
   toastTimer = setTimeout(() => toast.classList.remove('show'), 2400);
 }
 
-function emailIsValid() {
-  return /^[^\s@]+@gmail\.com$/i.test(customerEmail.value.trim());
-}
-
 function transferNoteForCurrentChoice() {
   if (paymentMode !== 'service' || !selectedService) return DONATE_CONFIG.transferNote;
-  const username = customerEmail.value.trim().split('@')[0].replace(/[^a-z0-9]/gi, '').toUpperCase();
-  return `HVL ${selectedService.code} ${username || 'GMAIL'}`;
+  return `HVL ${selectedService.code}`;
 }
 
-function updateTransferNote() {
-  transferNoteEl.textContent = transferNoteForCurrentChoice();
+function updateMomoDetails() {
+  const amount = selectedDonateAmount;
+  const qrSrc = DONATE_CONFIG.momoQrByAmount[amount];
+
+  document.getElementById('momo-amount').textContent = formatVnd(amount);
+  document.getElementById('momo-choice').textContent = 'Ủng hộ trực tiếp cho dự án';
+  document.getElementById('momo-note').textContent = DONATE_CONFIG.transferNote;
+
+  if (qrSrc) {
+    momoQr.src = qrSrc;
+    momoQr.alt = `Mã QR MoMo cho gói ${formatVnd(amount)}`;
+    momoQr.hidden = false;
+    momoPlaceholder.hidden = true;
+    downloadMomoQr.href = qrSrc;
+    downloadMomoQr.download = `HVL-MoMo-${amount}.jpg`;
+    downloadMomoQr.hidden = false;
+  }
+}
+
+function updateBankDetails() {
+  const amount = selectedDonateAmount;
+  const qrSrc = DONATE_CONFIG.bankQrByAmount[amount];
+
+  if (qrSrc) {
+    bankQr.src = qrSrc;
+    bankQr.alt = `Mã QR ngân hàng ACB cho gói ${formatVnd(amount)}`;
+    bankQr.hidden = false;
+    bankPlaceholder.hidden = true;
+    downloadBankQr.href = qrSrc;
+    downloadBankQr.download = `HVL-ACB-${amount}.jpg`;
+    downloadBankQr.hidden = false;
+  }
 }
 
 function updateContactLink() {
@@ -85,7 +132,6 @@ function updateContactLink() {
       '',
       `Mình muốn đăng ký: ${selectedService.title}.`,
       `Giá ưu đãi: ${formatVnd(selectedService.price)}.`,
-      `Gmail cần nâng cấp: ${customerEmail.value.trim() || '[chưa nhập]'}.`,
       `Nội dung chuyển khoản: ${transferNoteForCurrentChoice()}.`,
       '',
       'Mình sẽ gửi minh chứng giao dịch để bạn xác nhận.',
@@ -97,22 +143,70 @@ function updateContactLink() {
       '',
       `Mình muốn ủng hộ HVL-MCK với số tiền: ${formatVnd(selectedDonateAmount)}.`,
     ];
-    const message = donateMessage.value.trim();
-    if (message) lines.push('', `Lời nhắn: ${message}`);
     lines.push('', 'Bạn gửi giúp mình thông tin để hoàn tất donate nhé.');
   }
 
   contactDonate.href = `mailto:${DONATE_CONFIG.contactEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join('\n'))}`;
 }
 
-function updateChoiceContext() {
-  updateTransferNote();
-  updateContactLink();
+function updateDirectPayment() {
+  updateMomoDetails();
+  updateBankDetails();
+}
+
+function updateServicePayment() {
+  if (!selectedService) return;
+  const price = formatVnd(selectedService.price);
+  const qrImages = DONATE_CONFIG.serviceQrByAmount[selectedService.price];
+  document.getElementById('service-momo-price').textContent = price;
+  document.getElementById('service-bank-price').textContent = price;
+  document.getElementById('service-momo-caption').textContent = price;
+  document.getElementById('service-bank-caption').textContent = price;
+
+  if (qrImages) {
+    const serviceMomoQr = document.getElementById('service-momo-qr');
+    const serviceBankQr = document.getElementById('service-bank-qr');
+    const downloadServiceMomoQr = document.getElementById('download-service-momo-qr');
+    const downloadServiceBankQr = document.getElementById('download-service-bank-qr');
+    serviceMomoQr.src = qrImages.momo;
+    serviceMomoQr.alt = `Mã QR MoMo thanh toán ${selectedService.title} với giá ${price}`;
+    serviceBankQr.src = qrImages.bank;
+    serviceBankQr.alt = `Mã QR ACB thanh toán ${selectedService.title} với giá ${price}`;
+    downloadServiceMomoQr.href = qrImages.momo;
+    downloadServiceMomoQr.download = `HVL-MoMo-${selectedService.price}.jpg`;
+    downloadServiceBankQr.href = qrImages.bank;
+    downloadServiceBankQr.download = `HVL-ACB-${selectedService.price}.jpg`;
+  }
+  const benefitTitle = selectedPlanBenefit.querySelector('strong');
+  const benefitText = selectedPlanBenefit.querySelector('span');
+  if (selectedService.id === 'family') {
+    benefitTitle.textContent = 'Chủ nhóm gia đình';
+    benefitText.textContent = 'Bạn là quản lý gói và có thể mời thêm tối đa 5 thành viên trong 1 năm.';
+  } else {
+    benefitTitle.textContent = 'Tài khoản chính chủ';
+    benefitText.textContent = 'Nâng cấp trực tiếp trên Gmail của bạn trong thời hạn 1 năm.';
+  }
 }
 
 function selectService(button) {
-  selectedService = serviceFromButton(button);
+  const nextService = serviceFromButton(button);
+  const isCurrentService = selectedService && selectedService.id === nextService.id;
+
+  if (isCurrentService) {
+    selectedService = null;
+    paymentMode = 'donate';
+    serviceOrderSection.hidden = true;
+    serviceButtons.forEach(item => {
+      item.classList.remove('active');
+      item.setAttribute('aria-pressed', 'false');
+    });
+    updateContactLink();
+    return;
+  }
+
+  selectedService = nextService;
   paymentMode = 'service';
+  serviceOrderSection.hidden = false;
   serviceButtons.forEach(item => {
     const active = item === button;
     item.classList.toggle('active', active);
@@ -120,7 +214,8 @@ function selectService(button) {
   });
   selectedServiceName.textContent = selectedService.title;
   selectedServicePrice.textContent = formatVnd(selectedService.price);
-  updateChoiceContext();
+  updateServicePayment();
+  updateContactLink();
 }
 
 function setDonateAmount(amount, sourceButton) {
@@ -132,19 +227,8 @@ function setDonateAmount(amount, sourceButton) {
     button.setAttribute('aria-pressed', String(active));
   });
   selectedAmountEl.textContent = formatVnd(selectedDonateAmount);
-  updateChoiceContext();
-}
-
-function buildOrderMessage() {
-  return [
-    'ĐĂNG KÝ DỊCH VỤ HVL',
-    `Dịch vụ: ${selectedService.title}`,
-    `Giá ưu đãi: ${formatVnd(selectedService.price)}`,
-    `Gmail cần nâng cấp: ${customerEmail.value.trim()}`,
-    `Nội dung chuyển khoản: ${transferNoteForCurrentChoice()}`,
-    '',
-    'Mình đã đọc lưu ý bảo mật và sẽ không cung cấp mật khẩu hoặc OTP.',
-  ].join('\n');
+  updateDirectPayment();
+  updateContactLink();
 }
 
 async function copyText(text, successMessage) {
@@ -167,15 +251,8 @@ function initPaymentDetails() {
   if (configured) {
     const status = document.getElementById('config-status');
     status.classList.add('ready');
-    status.lastChild.textContent = ' Sẵn sàng nhận chuyển khoản';
+    status.lastChild.textContent = ' Tài khoản ACB đã sẵn sàng';
     copyAccount.disabled = false;
-  }
-
-  if (configured && DONATE_CONFIG.qrImage) {
-    const qr = document.getElementById('donate-qr');
-    qr.src = DONATE_CONFIG.qrImage;
-    qr.hidden = false;
-    document.getElementById('qr-placeholder').hidden = true;
   }
 }
 
@@ -183,42 +260,45 @@ serviceButtons.forEach(button => button.addEventListener('click', () => selectSe
 
 amountButtons.forEach(button => {
   button.addEventListener('click', () => {
-    customAmount.value = '';
     setDonateAmount(button.dataset.amount, button);
   });
 });
 
-customAmount.addEventListener('input', () => {
-  const digits = digitsOnly(customAmount.value);
-  customAmount.value = digits ? new Intl.NumberFormat('vi-VN').format(Number(digits)) : '';
-  setDonateAmount(digits, null);
-});
-
-customerEmail.addEventListener('input', () => {
-  paymentMode = 'service';
-  customerEmail.setAttribute('aria-invalid', String(Boolean(customerEmail.value) && !emailIsValid()));
-  updateChoiceContext();
-});
-
-donateMessage.addEventListener('input', () => {
-  paymentMode = 'donate';
-  updateChoiceContext();
-});
-
-copyOrder.addEventListener('click', () => {
-  paymentMode = 'service';
-  updateChoiceContext();
-  if (!emailIsValid()) {
-    customerEmail.setAttribute('aria-invalid', 'true');
-    customerEmail.focus();
-    showToast('Hãy nhập đúng địa chỉ Gmail cần nâng cấp');
-    return;
-  }
-  copyText(buildOrderMessage(), 'Đã sao chép nội dung đơn hàng');
-});
-
 copyAccount.addEventListener('click', () => {
   if (DONATE_CONFIG.accountNumber) copyText(DONATE_CONFIG.accountNumber, 'Đã sao chép số tài khoản');
+});
+
+copyServiceMomoPhone.addEventListener('click', () => {
+  copyText(DONATE_CONFIG.momoPhone, 'Đã sao chép số điện thoại MoMo');
+});
+
+document.querySelectorAll('[data-copy-target]').forEach(button => {
+  button.addEventListener('click', () => {
+    const target = document.getElementById(button.dataset.copyTarget);
+    if (target) copyText(target.textContent.trim(), `Đã sao chép ${target.textContent.trim()}`);
+  });
+});
+
+paymentTabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    const method = tab.dataset.method;
+    paymentTabs.forEach(item => {
+      const active = item === tab;
+      item.classList.toggle('active', active);
+      item.setAttribute('aria-selected', String(active));
+      item.tabIndex = active ? 0 : -1;
+    });
+    paymentPanels.forEach(panel => { panel.hidden = panel.id !== `${method}-panel`; });
+  });
+  tab.addEventListener('keydown', event => {
+    if (!['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
+    event.preventDefault();
+    const currentIndex = paymentTabs.indexOf(tab);
+    const direction = event.key === 'ArrowRight' ? 1 : -1;
+    const nextTab = paymentTabs[(currentIndex + direction + paymentTabs.length) % paymentTabs.length];
+    nextTab.click();
+    nextTab.focus();
+  });
 });
 
 document.querySelectorAll('.contact-btn').forEach(link => {
@@ -228,7 +308,7 @@ document.querySelectorAll('.contact-btn').forEach(link => {
 
 document.getElementById('donate-year').textContent = new Date().getFullYear();
 initPaymentDetails();
-selectService(serviceButtons[0]);
+setDonateAmount(selectedDonateAmount, amountButtons.find(button => Number(button.dataset.amount) === selectedDonateAmount));
 
 if ('serviceWorker' in navigator && location.protocol.indexOf('http') === 0) {
   window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));

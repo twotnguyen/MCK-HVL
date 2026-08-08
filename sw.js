@@ -1,4 +1,4 @@
-const SHELL_CACHE = 'mck-shell-v16';
+const SHELL_CACHE = 'mck-shell-v30';
 
 const SHELL_ASSETS = [
   './',
@@ -14,6 +14,16 @@ const SHELL_ASSETS = [
   './js/donate.js',
   './manifest.json',
   './images/logo.jpg',
+  './images/10k_momo.jpg',
+  './images/20k-momo.jpg',
+  './images/30k_momo.jpg',
+  './images/10k_ACB.jpg',
+  './images/20k_ACB.jpg',
+  './images/30K_ACB.jpg',
+  './images/50k_momo.jpg',
+  './images/50k_ACB.jpg',
+  './images/250k_momo.jpg',
+  './images/250k_ACB.jpg',
 ];
 
 self.addEventListener('install', (event) => {

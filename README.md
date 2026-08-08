@@ -81,7 +81,7 @@ Không có bước cài dependency hoặc build.
 
 ## Cấu hình trang Donate
 
-Nút `Donate` trên header mở `donate.html` trong tab mới để trình phát nhạc hiện tại không bị gián đoạn. Trang ưu tiên hai dịch vụ nâng cấp Google AI Pro, hỗ trợ tạo nội dung đơn từ Gmail khách hàng và hướng dẫn gửi minh chứng qua Zalo/Facebook. Phía dưới vẫn có luồng ủng hộ trực tiếp với mức tiền tùy chỉnh.
+Nút `Donate` trên header mở `donate.html` trong tab mới để trình phát nhạc hiện tại không bị gián đoạn. Trang ưu tiên hai dịch vụ nâng cấp Google AI Pro, trình bày dịch vụ đã chọn, các tiện ích đi kèm và khối thanh toán riêng ngay trong phần đăng ký. Phía dưới là khu vực thanh toán độc lập chỉ dành cho ba gói ủng hộ trực tiếp 10k, 20k và 30k.
 
 Tên, giá và mã chuyển khoản của từng dịch vụ được khai báo bằng các thuộc tính `data-title`, `data-price` và `data-code` trên `.service-option` trong `donate.html`.
 
@@ -89,18 +89,27 @@ Thông tin nhận donate được khai báo tập trung trong `DONATE_CONFIG` �
 
 ```javascript
 const DONATE_CONFIG = {
-  bankName: 'Tên ngân hàng',
-  accountNumber: 'Số tài khoản',
-  accountHolder: 'TÊN CHỦ TÀI KHOẢN',
+  bankName: 'ACB',
+  accountNumber: '23992227',
+  accountHolder: 'Nguyễn Ngọc Tình',
   transferNote: 'HVL MCK DONATE',
-  qrImage: 'images/donate-qr.png',
+  bankQrByAmount: {
+    10000: 'images/10k_ACB.jpg',
+    20000: 'images/20k_ACB.jpg',
+    30000: 'images/30K_ACB.jpg',
+  },
+  momoQrByAmount: {
+    10000: 'images/10k_momo.jpg',
+    20000: 'images/20k-momo.jpg',
+    30000: 'images/30k_momo.jpg',
+  },
   contactEmail: 'email@example.com',
   zaloUrl: 'https://zalo.me/so-dien-thoai',
   facebookUrl: 'https://www.facebook.com/ten-tai-khoan',
 };
 ```
 
-Khi `bankName` và `accountNumber` còn trống, trang chủ động hiển thị trạng thái chưa cấu hình và hướng người dùng liên hệ qua email. Để bật QR, thêm ảnh QR vào thư mục `images/` rồi cập nhật `qrImage`; nếu muốn ảnh này có sẵn khi offline, thêm đường dẫn tương ứng vào `SHELL_ASSETS` trong `sw.js` và tăng phiên bản `SHELL_CACHE`.
+Hai tab MoMo và Ngân hàng dùng `momoQrByAmount` và `bankQrByAmount` để tự đổi QR theo gói 10k, 20k hoặc 30k. Phần thanh toán dịch vụ dùng `serviceQrByAmount` để đổi đồng thời QR MoMo và ACB theo gói 50k hoặc 250k đang chọn. Nếu thêm ảnh mới cần dùng offline, thêm đường dẫn tương ứng vào `SHELL_ASSETS` trong `sw.js` và tăng phiên bản `SHELL_CACHE`.
 
 ## Truy cập từ điện thoại
 
