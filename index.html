@@ -100,68 +100,27 @@
           <section id="view-watch" class="view view-watch" hidden>
             <div class="watch-cols">
               <div class="watch-player">
-                <div class="watch-top">
-                  <button
-                    id="btn-back"
-                    class="icon-btn"
-                    aria-label="Quay lại trang chủ"
+                <button
+                  id="btn-back"
+                  class="icon-btn"
+                  aria-label="Quay lại trang chủ"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    width="20"
+                    height="20"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
                   >
-                    <svg
-                      viewBox="0 0 24 24"
-                      width="20"
-                      height="20"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <path d="M15 18l-6-6 6-6" />
-                    </svg>
-                  </button>
-                  <div class="view-toggle" id="view-toggle">
-                    <button
-                      type="button"
-                      class="view-btn active"
-                      data-mode="image"
-                    >
-                      <svg
-                        viewBox="0 0 24 24"
-                        width="16"
-                        height="16"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      >
-                        <path d="M9 18V5l12-2v13" />
-                        <circle cx="6" cy="18" r="3" />
-                        <circle cx="18" cy="16" r="3" />
-                      </svg>
-                      <span>Audio</span>
-                    </button>
-                    <button
-                      type="button"
-                      class="view-btn"
-                      data-mode="mv"
-                      id="mv-toggle-btn"
-                      disabled
-                    >
-                      <svg
-                        viewBox="0 0 24 24"
-                        width="16"
-                        height="16"
-                        fill="currentColor"
-                      >
-                        <path d="M8 5.5v13l11-6.5-11-6.5z" />
-                      </svg>
-                      <span>MV</span>
-                    </button>
-                  </div>
-                </div>
-                <div class="stage-visual" id="stage-visual">
-                  <div class="stage-empty" id="stage-empty">
+                    <path d="M15 18l-6-6 6-6" />
+                  </svg>
+                </button>
+                <div class="watch-stage">
+                  <div class="stage-visual" id="stage-visual">
+                    <div class="stage-empty" id="stage-empty">
                     <svg
                       viewBox="0 0 24 24"
                       width="40"
@@ -314,15 +273,59 @@
                           <path d="m7 22-4-4 4-4" />
                           <path d="M21 13v2a4 4 0 0 1-4 4H3" />
                         </svg>
+                        <span id="repeat-one-badge" class="repeat-one-badge">1</span>
                       </button>
                     </div>
                   </div>
                 </div>
                 <div class="watch-top-info">
-                  <h2 id="stage-title" class="stage-title">
-                    Chưa phát bài nào
-                  </h2>
-                  <p id="stage-sub" class="stage-sub">MCK</p>
+                  <div class="watch-top-text">
+                    <h2 id="stage-title" class="stage-title">
+                      Chưa phát bài nào
+                    </h2>
+                    <p id="stage-sub" class="stage-sub">MCK</p>
+                  </div>
+                  <div class="view-toggle" id="view-toggle">
+                    <button
+                      type="button"
+                      class="view-btn active"
+                      data-mode="image"
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        width="16"
+                        height="16"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="M9 18V5l12-2v13" />
+                        <circle cx="6" cy="18" r="3" />
+                        <circle cx="18" cy="16" r="3" />
+                      </svg>
+                      <span>Audio</span>
+                    </button>
+                    <button
+                      type="button"
+                      class="view-btn"
+                      data-mode="mv"
+                      id="mv-toggle-btn"
+                      disabled
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                      >
+                        <path d="M8 5.5v13l11-6.5-11-6.5z" />
+                      </svg>
+                      <span>MV</span>
+                    </button>
+                  </div>
+                </div>
                 </div>
               </div>
               <aside class="watch-list" aria-label="Danh sách phát">

@@ -154,7 +154,10 @@ function syncPlayUI() {
   updatePlayingHighlight();
 }
 function updateShuffleUI() { els.shuffleBtn.classList.toggle('active', state.shuffle); }
-function updateRepeatUI() { els.repeatBtn.classList.toggle('active', state.repeat !== 'off'); }
+function updateRepeatUI() {
+  els.repeatBtn.classList.toggle('active', state.repeat !== 'off');
+  els.repeatBtn.classList.toggle('repeat-one', state.repeat === 'one');
+}
 
 function resetProgressUI() {
   els.progress.value = 0;

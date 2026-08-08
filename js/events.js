@@ -27,6 +27,19 @@ function onKeySong(e) {
   activateItem(li);
 }
 
+function toggleShuffle() {
+  state.shuffle = !state.shuffle;
+  updateShuffleUI();
+  saveState(true);
+}
+
+function cycleRepeat() {
+  const modes = ['off', 'all', 'one'];
+  state.repeat = modes[(modes.indexOf(state.repeat) + 1) % modes.length];
+  updateRepeatUI();
+  saveState(true);
+}
+
 function initEvents() {
   els.cardGrid.addEventListener('click', onPickSong);
   els.songList.addEventListener('click', onPickSong);
@@ -46,7 +59,7 @@ function initEvents() {
   els.btnBack.addEventListener('click', () => showView('home'));
 
   els.stageVisual.addEventListener('click', (e) => {
-    if (e.target.closest('.stage-overlay')) return;
+    if (e.target.closest('.stage-overlay') || e.target.closest('#btn-back')) return;
     els.stageVisual.classList.toggle('overlay-visible');
   });
   document.addEventListener('click', (e) => {
@@ -72,13 +85,8 @@ function initEvents() {
   els.playBtn.addEventListener('click', togglePlay);
   els.prevBtn.addEventListener('click', () => playPrev());
   els.nextBtn.addEventListener('click', () => playNext(true));
-  els.shuffleBtn.addEventListener('click', () => { state.shuffle = !state.shuffle; updateShuffleUI(); saveState(true); });
-  els.repeatBtn.addEventListener('click', () => {
-    const modes = ['off', 'all', 'one'];
-    state.repeat = modes[(modes.indexOf(state.repeat) + 1) % modes.length];
-    updateRepeatUI();
-    saveState(true);
-  });
+  els.shuffleBtn.addEventListener('click', toggleShuffle);
+  els.repeatBtn.addEventListener('click', cycleRepeat);
   els.progress.addEventListener('input', () => {
     if (isFinite(els.sound.duration)) seek((els.progress.value / 100) * els.sound.duration);
   });
@@ -92,6 +100,10 @@ function initEvents() {
       case 'ArrowUp': e.preventDefault(); setVolume(state.volume + 0.05); break;
       case 'ArrowDown': e.preventDefault(); setVolume(state.volume - 0.05); break;
       case 'Escape': if (state.view === 'watch') showView('home'); break;
+      case 'KeyN': playNext(true); break;
+      case 'KeyP': playPrev(); break;
+      case 'KeyS': toggleShuffle(); break;
+      case 'KeyR': cycleRepeat(); break;
     }
   });
 

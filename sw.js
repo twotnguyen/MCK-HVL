@@ -1,4 +1,4 @@
-const SHELL_CACHE = 'mck-shell-v4';
+const SHELL_CACHE = 'mck-shell-v5';
 const MEDIA_CACHE = 'mck-media-v1';
 
 const SHELL_ASSETS = [
