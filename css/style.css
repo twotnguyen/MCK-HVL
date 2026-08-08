@@ -719,6 +719,16 @@ body.playing .pb-play .icon-pause { display: block; }
   /* Short screens: slim down the mini player so it doesn't eat vertical
      space that landscape phones cannot spare. */
   :root { --playerbar-h: 46px; }
+  /* Keep the mini player a compact centered pill instead of a full-width
+     strip — landscape phones are long, so the bar must not stretch
+     across the whole screen. */
+  .player-bar {
+    left: 50%;
+    right: auto;
+    width: min(calc(100vw - 40px), 480px);
+    transform: translateX(-50%);
+    border-radius: var(--radius-lg);
+  }
   .player-bar { bottom: calc(8px + var(--safe-b)); }
   .pb-row { padding: 5px 10px; gap: 8px; }
   .pb-cover { width: 32px; height: 32px; }
