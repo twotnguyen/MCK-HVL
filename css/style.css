@@ -481,6 +481,38 @@ input[type="range"]::-moz-range-thumb { width: 14px; height: 14px; border-radius
 .stage-visual:-webkit-full-screen .icon-fs-expand { display: none; }
 .stage-visual:fullscreen .icon-fs-collapse,
 .stage-visual:-webkit-full-screen .icon-fs-collapse { display: block; }
+
+/* Back button shown only while the stage is fullscreen — the normal #btn-back
+   sits outside the frame, and browsers do not paint anything outside the
+   fullscreen element, so this twin lives inside the stage instead. */
+.fs-back-btn {
+  position: absolute;
+  top: calc(14px + env(safe-area-inset-top, 0px));
+  left: 14px;
+  z-index: 20;
+  display: none;
+  background: rgba(0,0,0,0.55);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #fff;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s ease;
+}
+.stage-visual:fullscreen .fs-back-btn,
+.stage-visual:-webkit-full-screen .fs-back-btn,
+.stage-visual.is-fullscreen .fs-back-btn { display: flex; }
+.stage-visual:hover .fs-back-btn,
+.stage-visual:focus-within .fs-back-btn,
+.stage-visual.overlay-visible .fs-back-btn {
+  opacity: 1;
+  pointer-events: auto;
+}
+.stage-visual.controls-idle .fs-back-btn {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
 .ctrl-btn { position: relative; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; color: #fff; transition: background .12s, color .12s, transform .1s; }
 .ctrl-btn:active { transform: scale(0.92); }
 .ctrl-btn:hover { background: rgba(255,255,255,0.15); color: #fff; }

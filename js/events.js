@@ -75,6 +75,7 @@ function handleStagePointerLeave() {
 function handleFullscreenChange() {
   clearTimeout(controlsIdleTimer);
   els.stageVisual.classList.remove('controls-idle');
+  els.stageVisual.classList.toggle('is-fullscreen', isFullscreen());
   if (isFullscreen()) armControlsIdleTimer();
 }
 
@@ -95,6 +96,7 @@ function initEvents() {
   }
 
   els.btnBack.addEventListener('click', () => showView('home'));
+  els.btnFsBack.addEventListener('click', () => toggleFullscreen());
   window.addEventListener('resize', () => positionBackButton());
 
   els.brandHome.addEventListener('click', () => showView('home'));
@@ -105,7 +107,7 @@ function initEvents() {
   });
 
   els.stageVisual.addEventListener('click', (e) => {
-    if (e.target.closest('.stage-overlay') || e.target.closest('#btn-back')) return;
+    if (e.target.closest('.stage-overlay') || e.target.closest('#btn-back') || e.target.closest('#btn-fs-back')) return;
     els.stageVisual.classList.toggle('overlay-visible');
     togglePlay();
   });
