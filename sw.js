@@ -1,4 +1,4 @@
-const SHELL_CACHE = 'mck-shell-v45';
+const SHELL_CACHE = 'mck-shell-v47';
 
 const COVER_IMAGES = [
   '1_Elegie.jpg',
@@ -37,7 +37,7 @@ const SHELL_ASSETS = [
   './',
   './index.html',
   './donate.html',
-  './css/style.css?v=42',
+  './css/style.css?v=47',
   './css/donate.css',
   './js/data.js',
   './js/state.js',
