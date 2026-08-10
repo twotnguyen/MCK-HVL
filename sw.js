@@ -1,21 +1,55 @@
-const SHELL_CACHE = 'mck-shell-v39';
+const SHELL_CACHE = 'mck-shell-v45';
+
+const COVER_IMAGES = [
+  '1_Elegie.jpg',
+  '2_IDK_-_MCK.jpg',
+  '3_Wtf_Bby_I_m_Lit_-_MCK.jpg',
+  '4_Anh_Khong_Muon_No_De_Dang_-_MCK.jpg',
+  '5_Baby_-_MCK_(ft_marzuz).jpg',
+  '6_Yeu_Anh_Giet_Anh_-_MCK.jpg',
+  '7_Mat_Moi_Tay_Chan_-_MCK_(ft_Tage).jpg',
+  '8_Dao_Cua_Anh_Vua_-_MCK.jpg',
+  '9_La_Gi_Cua_Nhau_-_MCK.jpg',
+  '10_Night_In_Prague_-_MCK.jpg',
+  '11_Mot_Cai_Om_-_MCK.jpg',
+  '12_Ai_Moi_La_Ke_Xau_Xa_-_MCK.jpg',
+  '13_Liem_-_MCK.jpg',
+  '14_Neu_Nhu_Ta_Chang_Con_-_MCK_(ft_A$AP_Uot_Mi).jpg',
+  '15_Slippery_-_MCK_(ft_TUNG_DUONG).jpg',
+  '16_Intenpol.jpg',
+  '17_Tay_Thi_-_MCK.jpg',
+  '18_Dua_Chua_-_MCK.jpg',
+  '19_Hut_va_Hut_-_MCK.jpg',
+  '20_Xa_Xoi_-_MCK_(ft_Obito).jpg',
+  '21_Che_Phu_-_MCK.jpg',
+  '22_Oanh_M_=_Thuoc_-_MCK.jpg',
+  '23_Ghet_Xog_Lai_Thik_-_MCK.jpg',
+  '24_Nhin_Ke_Thu_Cua_Tao_-_MCK.jpg',
+  '25_Envy_-_MCK_(ft_THANHDRAW).jpg',
+  '26_Cam_On_-_MCK.jpg',
+  '27_Huh_-_MCK_(ft_RPT_ORIJINN_&_THANHDRAW).jpg',
+  '28_Khong_Can_Lo_Cho_Tao_-_MCK.jpg',
+  '29_Nguyen_Van_Muoi_-_MCK.jpg',
+  '30_Thit_Lon_-_MCK.jpg',
+].map((name) => './images/' + encodeURIComponent(name));
 
 const SHELL_ASSETS = [
   './',
   './index.html',
   './donate.html',
-  './css/style.css',
+  './css/style.css?v=42',
   './css/donate.css',
   './js/data.js',
   './js/state.js',
   './js/render.js',
   './js/player.js',
-  './js/events.js',
+  './js/events.js?v=44',
   './js/donate.js',
   './manifest.json',
   './images/logo.jpg',
   './images/logo-192.png',
   './images/logo-512.png',
+  './images/my_avt.png',
   './images/10k_momo.jpg',
   './images/20k-momo.jpg',
   './images/30k_momo.jpg',
@@ -26,6 +60,7 @@ const SHELL_ASSETS = [
   './images/50k_ACB.jpg',
   './images/250k_momo.jpg',
   './images/250k_ACB.jpg',
+  ...COVER_IMAGES,
 ];
 
 self.addEventListener('install', (event) => {
@@ -48,9 +83,7 @@ self.addEventListener('activate', (event) => {
 });
 
 function isMediaRequest(url) {
-  const isContentAsset = /\/(images|MP4|MV)\//.test(url.pathname);
-  const isAppIcon = /\/images\/logo(?:-\d+)?\.(?:jpg|png)$/i.test(url.pathname);
-  return isContentAsset && !isAppIcon;
+  return /\/(MP4|MV)\//.test(url.pathname);
 }
 
 // Build a 206 Partial Content response for an HTTP Range header from a full body.

@@ -9,6 +9,7 @@ function activateItem(li) {
   if (idx === -1) return;
   if (idx !== state.current) { loadSong(idx, true); }
   showView('watch');
+  showStageControls();
 }
 
 function onPickSong(e) {
@@ -56,6 +57,21 @@ let controlsIdleTimer = null;
 function isFullscreen() {
   return !!(document.fullscreenElement || document.webkitFullscreenElement);
 }
+function isMobilePlayerLayout() {
+  return window.matchMedia(
+    '(max-width: 767px), (orientation: landscape) and (max-height: 500px)'
+  ).matches;
+}
+function showStageControls() {
+  els.stageVisual.classList.remove('controls-idle');
+  els.stageVisual.classList.add('overlay-visible');
+  els.btnBack.classList.add('controls-visible');
+  armControlsIdleTimer();
+}
+function hideStageControls() {
+  els.stageVisual.classList.remove('overlay-visible');
+  els.btnBack.classList.remove('controls-visible');
+}
 function setIosPip(active) {
   const el = visualEl();
   if (!el || !el.src) return;
@@ -67,16 +83,22 @@ function setIosPip(active) {
 }
 function armControlsIdleTimer() {
   clearTimeout(controlsIdleTimer);
-  controlsIdleTimer = setTimeout(() => els.stageVisual.classList.add('controls-idle'), 3000);
+  controlsIdleTimer = setTimeout(() => {
+    els.stageVisual.classList.add('controls-idle');
+    els.btnBack.classList.remove('controls-visible');
+  }, 3000);
 }
 function handleStagePointerActivity() {
+  if (isMobilePlayerLayout()) return;
   els.stageVisual.classList.remove('controls-idle');
+  els.btnBack.classList.add('controls-visible');
   armControlsIdleTimer();
 }
 function handleStagePointerLeave() {
+  if (isMobilePlayerLayout()) return;
   clearTimeout(controlsIdleTimer);
   els.stageVisual.classList.remove('controls-idle');
-  els.stageVisual.classList.remove('overlay-visible');
+  hideStageControls();
   if (els.stageVisual.contains(document.activeElement)) {
     document.activeElement.blur();
   }
@@ -119,15 +141,18 @@ function initEvents() {
   els.stageVisual.addEventListener('click', (e) => {
     if (e.target.closest('#btn-back') || e.target.closest('#btn-fs-back')) return;
     if (e.target.closest('button, input[type="range"], .view-toggle')) return;
-    els.stageVisual.classList.remove('controls-idle');
-    els.stageVisual.classList.add('overlay-visible');
+    const controlsWereHidden = !els.stageVisual.classList.contains('overlay-visible') ||
+      els.stageVisual.classList.contains('controls-idle');
+    showStageControls();
+    // On phones, the first tap on a hidden overlay only reveals the controls.
+    // This lets users check the current time without accidentally pausing.
+    if (isMobilePlayerLayout() && controlsWereHidden) return;
     togglePlay();
-    if (state.isPlaying) armControlsIdleTimer();
   });
   document.addEventListener('click', (e) => {
     if (!els.stageVisual.classList.contains('overlay-visible')) return;
     if (els.stageVisual.contains(e.target)) return;
-    els.stageVisual.classList.remove('overlay-visible');
+    hideStageControls();
   });
 
   els.stageVisual.addEventListener('mousemove', handleStagePointerActivity);
@@ -137,7 +162,10 @@ function initEvents() {
 
   els.playerBar.addEventListener('click', (e) => {
     if (e.target.closest('.pb-btn')) return;
-    if (state.current !== -1) showView('watch');
+    if (state.current !== -1) {
+      showView('watch');
+      showStageControls();
+    }
   });
   els.pbPlay.addEventListener('click', (e) => { e.stopPropagation(); togglePlay(); });
   els.pbPrev.addEventListener('click', (e) => { e.stopPropagation(); playPrev(); });
