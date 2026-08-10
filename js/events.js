@@ -107,7 +107,7 @@ function initEvents() {
 
   els.btnBack.addEventListener('click', () => showView('home'));
   els.btnFsBack.addEventListener('click', () => toggleFullscreen());
-  window.addEventListener('resize', () => positionBackButton());
+  window.addEventListener('resize', () => { positionBackButton(); syncFooterClone(); });
 
   els.brandHome.addEventListener('click', () => showView('home'));
   els.brandHome.addEventListener('keydown', (e) => {
@@ -163,11 +163,17 @@ function initEvents() {
   });
 
   document.addEventListener('keydown', (e) => {
-    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-    switch (e.code) {
+    const target = e.target;
+    const isTextInput = target instanceof HTMLTextAreaElement ||
+      (target instanceof HTMLInputElement && !['range', 'button', 'checkbox', 'radio'].includes(target.type)) ||
+      target.isContentEditable;
+    if (isTextInput) return;
+
+    const key = e.code || (e.key === ' ' ? 'Space' : e.key);
+    switch (key) {
       case 'Space': e.preventDefault(); togglePlay(); break;
-      case 'ArrowRight': seekBy(5); break;
-      case 'ArrowLeft': seekBy(-5); break;
+      case 'ArrowRight': e.preventDefault(); seekBy(5); break;
+      case 'ArrowLeft': e.preventDefault(); seekBy(-5); break;
       case 'ArrowUp': e.preventDefault(); setVolume(state.volume + 0.05); break;
       case 'ArrowDown': e.preventDefault(); setVolume(state.volume - 0.05); break;
       case 'Escape': if (state.view === 'watch') showView('home'); break;
@@ -223,11 +229,12 @@ function initFooterTabs() {
 // the scrollable column — so it is reachable at the very bottom.
 function syncFooterClone() {
   const list = document.querySelector('.watch-list');
-  if (!list || !window.matchMedia('(max-width: 767px)').matches) return;
+  if (!list) return;
   const original = document.querySelector('.site-footer');
   if (!original) return;
   let clone = list.querySelector('.site-footer-clone');
-  if (state.view === 'watch') {
+  const shouldClone = state.view === 'watch' && window.matchMedia('(max-width: 767px)').matches;
+  if (shouldClone) {
     if (!clone) {
       clone = original.cloneNode(true);
       clone.classList.add('site-footer-clone');
