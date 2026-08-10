@@ -47,8 +47,9 @@
           </p>
           <h1 id="donate-title">Ủng hộ dự án theo cách<br /><span>của riêng bạn</span></h1>
           <p class="hero-lead">
-            Chọn dịch vụ Google AI Pro đang ưu đãi hoặc gửi một khoản ủng hộ trực tiếp.
-            Mỗi lựa chọn đều giúp Twot có thêm nguồn lực để duy trì và hoàn thiện HVL-MCK.
+            Chọn gói Google AI Pro đang ưu đãi, đặt Twot code theo yêu cầu riêng, hoặc gửi
+            một khoản ủng hộ trực tiếp. Mỗi lựa chọn đều giúp Twot có thêm nguồn lực để duy
+            trì và hoàn thiện HVL-MCK.
           </p>
           <div class="hero-stats" aria-label="Thông tin ưu đãi">
             <div><strong>1 năm</strong><span>thời hạn dịch vụ</span></div>
@@ -68,14 +69,44 @@
         </div>
       </section>
 
-      <section class="services-section" aria-labelledby="services-title">
+      <nav class="methods-nav" aria-label="3 cách ủng hộ dự án">
+        <a class="method-card" href="#method-upgrade">
+          <span class="step">01</span>
+          <span class="method-body">
+            <strong>Nâng cấp tài khoản</strong>
+            <span>Google AI Pro ưu đãi qua Gmail của bạn</span>
+          </span>
+          <span class="method-arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="method-card" href="#method-coding">
+          <span class="step">02</span>
+          <span class="method-body">
+            <strong>Coding theo yêu cầu</strong>
+            <span>Thuê Twot làm web, sửa lỗi hoặc tool riêng</span>
+          </span>
+          <span class="method-arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="method-card" href="#method-direct">
+          <span class="step">03</span>
+          <span class="method-body">
+            <strong>Ủng hộ trực tiếp</strong>
+            <span>Gửi một khoản nhỏ, không cần lý do</span>
+          </span>
+          <span class="method-arrow" aria-hidden="true">→</span>
+        </a>
+      </nav>
+
+      <section class="services-section" id="method-upgrade" aria-labelledby="services-title">
         <div class="services-heading">
-          <p class="eyebrow">Ưu tiên hiển thị</p>
-          <h2 id="services-title">Nâng cấp Google AI Pro</h2>
-          <p>
-            Nâng cấp trực tiếp trên Gmail cá nhân của bạn. Chọn hình thức phù hợp,
-            chuyển khoản và gửi minh chứng để Twot liên hệ xử lý.
-          </p>
+          <span class="step">01</span>
+          <div class="services-heading-text">
+            <p class="eyebrow">Ưu đãi Google AI Pro</p>
+            <h2 id="services-title">Nâng cấp Google AI Pro</h2>
+            <p>
+              Nâng cấp trực tiếp trên Gmail cá nhân của bạn. Chọn hình thức phù hợp,
+              chuyển khoản và gửi minh chứng để Twot liên hệ xử lý.
+            </p>
+          </div>
         </div>
 
         <div class="service-plans" role="group" aria-label="Chọn dịch vụ Google AI Pro">
@@ -160,11 +191,8 @@
 
         <div id="service-order-section" class="order-card donate-card" hidden>
           <div class="section-heading">
-            <span class="step">01</span>
-            <div>
-              <h2>Đăng ký dịch vụ</h2>
-              <p>Kiểm tra dịch vụ, quyền lợi nhận được và thông tin thanh toán.</p>
-            </div>
+            <h2>Đăng ký dịch vụ</h2>
+            <p>Kiểm tra dịch vụ, quyền lợi nhận được và thông tin thanh toán.</p>
           </div>
 
           <div class="service-summary" aria-live="polite">
@@ -254,21 +282,137 @@
         </div>
       </section>
 
-      <section class="direct-section" aria-labelledby="direct-title">
+      <section class="coding-section" id="method-coding" aria-labelledby="coding-title">
+        <div class="services-heading">
+          <span class="step">02</span>
+          <div class="services-heading-text">
+            <p class="eyebrow">Theo yêu cầu riêng</p>
+            <h2 id="coding-title">Thuê Twot code dự án của bạn</h2>
+            <p>
+              Xây mới, sửa lỗi, viết tool hay tùy biến tính năng — chọn đúng nhu cầu của bạn
+              rồi nhắn cho Twot để trao đổi chi tiết. Giá được báo riêng theo từng yêu cầu,
+              không niêm yết sẵn trên trang.
+            </p>
+          </div>
+        </div>
+
+        <div class="coding-plans" role="group" aria-label="Chọn loại dịch vụ coding">
+          <button
+            type="button"
+            class="coding-option"
+            data-coding="new"
+            data-title="Website / Landing page mới"
+            aria-pressed="false"
+          >
+            <span class="benefit-icon">New</span>
+            <span class="coding-title">Website / Landing page mới</span>
+            <span class="coding-description">
+              Thiết kế và code giao diện mới hoàn toàn theo ý tưởng của bạn, tối ưu tốc độ
+              tải và hiển thị tốt trên mọi thiết bị.
+            </span>
+            <span class="coding-tags"><span>Giao diện mới</span><span>Responsive</span></span>
+            <span class="coding-cta"><span class="cta-label">Chọn dịch vụ này</span><span class="cta-check" aria-hidden="true">✓</span></span>
+          </button>
+
+          <button
+            type="button"
+            class="coding-option"
+            data-coding="fix"
+            data-title="Sửa lỗi &amp; tối ưu web có sẵn"
+            aria-pressed="false"
+          >
+            <span class="benefit-icon">Fix</span>
+            <span class="coding-title">Sửa lỗi &amp; tối ưu web có sẵn</span>
+            <span class="coding-description">
+              Rà soát, khắc phục lỗi giao diện, lỗi chức năng và cải thiện hiệu năng cho
+              website đang hoạt động.
+            </span>
+            <span class="coding-tags"><span>Debug</span><span>Tối ưu tốc độ</span></span>
+            <span class="coding-cta"><span class="cta-label">Chọn dịch vụ này</span><span class="cta-check" aria-hidden="true">✓</span></span>
+          </button>
+
+          <button
+            type="button"
+            class="coding-option"
+            data-coding="automation"
+            data-title="Tool &amp; script tự động hóa"
+            aria-pressed="false"
+          >
+            <span class="benefit-icon">Auto</span>
+            <span class="coding-title">Tool &amp; script tự động hóa</span>
+            <span class="coding-description">
+              Viết script xử lý dữ liệu, tự động hóa thao tác lặp lại hoặc tiện ích nhỏ
+              phục vụ công việc riêng của bạn.
+            </span>
+            <span class="coding-tags"><span>Script</span><span>Tự động hóa</span></span>
+            <span class="coding-cta"><span class="cta-label">Chọn dịch vụ này</span><span class="cta-check" aria-hidden="true">✓</span></span>
+          </button>
+
+          <button
+            type="button"
+            class="coding-option"
+            data-coding="custom"
+            data-title="Tính năng &amp; tích hợp tùy chỉnh"
+            aria-pressed="false"
+          >
+            <span class="benefit-icon">API</span>
+            <span class="coding-title">Tính năng &amp; tích hợp tùy chỉnh</span>
+            <span class="coding-description">
+              Thêm chức năng mới, kết nối API hoặc tùy biến sâu cho một dự án web đang có
+              sẵn của bạn.
+            </span>
+            <span class="coding-tags"><span>Custom feature</span><span>Tích hợp API</span></span>
+            <span class="coding-cta"><span class="cta-label">Chọn dịch vụ này</span><span class="cta-check" aria-hidden="true">✓</span></span>
+          </button>
+        </div>
+
+        <div id="coding-contact-section" class="order-card donate-card" hidden>
+          <div class="service-summary" aria-live="polite">
+            <div>
+              <span>Bạn đang quan tâm</span>
+              <strong id="selected-coding-name">Website / Landing page mới</strong>
+            </div>
+            <span class="summary-heart" aria-hidden="true">✦</span>
+          </div>
+
+          <section class="selected-benefits" aria-labelledby="coding-prep-title">
+            <div class="selected-benefits-head">
+              <span class="gemini-mark small" aria-hidden="true">✎</span>
+              <div><span class="eyebrow">Trước khi nhắn tin</span><h3 id="coding-prep-title">Chuẩn bị nhanh vài thông tin</h3></div>
+            </div>
+            <ul class="selected-benefits-list">
+              <li><strong>Mô tả yêu cầu</strong><span>Bạn muốn làm mới, sửa lỗi hay thêm tính năng gì — càng chi tiết càng dễ báo giá đúng.</span></li>
+              <li><strong>Đường dẫn tham khảo</strong><span>Link website hiện tại (nếu có) hoặc ví dụ giao diện bạn thích.</span></li>
+              <li><strong>Thời gian mong muốn</strong><span>Deadline dự kiến để Twot sắp xếp tiến độ phù hợp.</span></li>
+              <li><strong>Ngân sách dự kiến</strong><span>Không bắt buộc, nhưng giúp trao đổi phương án nhanh hơn.</span></li>
+            </ul>
+          </section>
+
+          <div class="contact-strip">
+            <div><strong>Nhắn trực tiếp cho Twot</strong><span>Trao đổi chi tiết yêu cầu, Twot sẽ báo giá và thời gian hoàn thành phù hợp.</span></div>
+            <a class="contact-btn zalo" href="https://zalo.me/0369861439" target="_blank" rel="noopener">Zalo · 0369 861 439</a>
+            <a class="contact-btn facebook" href="https://www.facebook.com/nguyen.tinh.754402" target="_blank" rel="noopener">Facebook</a>
+          </div>
+          <a id="contact-coding-email" class="email-contact" href="mailto:nguyenngoctinh011258@gmail.com">Hoặc liên hệ bằng email</a>
+          <p class="privacy-note">Không yêu cầu đặt cọc trước khi hai bên thống nhất phạm vi công việc và mức giá.</p>
+        </div>
+      </section>
+
+      <section class="direct-section" id="method-direct" aria-labelledby="direct-title">
         <div class="services-heading compact-heading">
-          <p class="eyebrow">Một lựa chọn khác</p>
-          <h2 id="direct-title">Ủng hộ trực tiếp cho dự án</h2>
-          <p>Nếu không cần dịch vụ, bạn vẫn có thể gửi một khoản ủng hộ tùy ý qua chuyển khoản.</p>
+          <span class="step">03</span>
+          <div class="services-heading-text">
+            <p class="eyebrow">Không cần lý do</p>
+            <h2 id="direct-title">Ủng hộ trực tiếp cho dự án</h2>
+            <p>Nếu không cần dịch vụ, bạn vẫn có thể gửi một khoản ủng hộ tùy ý qua chuyển khoản.</p>
+          </div>
         </div>
 
       <div class="donate-layout" aria-label="Ủng hộ trực tiếp">
         <div class="donate-card contribution-card">
           <div class="section-heading">
-            <span class="step">02</span>
-            <div>
-              <h2>Chọn một lời ủng hộ</h2>
-              <p>Không có mức tối thiểu — điều quan trọng nhất là sự đồng hành của bạn.</p>
-            </div>
+            <h2>Chọn một lời ủng hộ</h2>
+            <p>Không có mức tối thiểu — điều quan trọng nhất là sự đồng hành của bạn.</p>
           </div>
 
           <div class="amount-grid" role="group" aria-label="Chọn số tiền donate">
@@ -298,11 +442,8 @@
 
         <div class="donate-card payment-card" id="payment-card">
           <div class="section-heading">
-            <span class="step">03</span>
-            <div>
-              <h2>Thông tin chuyển khoản ủng hộ</h2>
-              <p>Dành riêng cho các gói hỗ trợ 10k, 20k và 30k.</p>
-            </div>
+            <h2>Thông tin chuyển khoản ủng hộ</h2>
+            <p>Dành riêng cho các gói hỗ trợ 10k, 20k và 30k.</p>
           </div>
 
           <div class="payment-tabs" role="tablist" aria-label="Phương thức thanh toán">

@@ -51,9 +51,14 @@ const bankPlaceholder = document.getElementById('qr-placeholder');
 const downloadBankQr = document.getElementById('download-bank-qr');
 const copyServiceMomoPhone = document.getElementById('copy-service-momo-phone');
 const selectedPlanBenefit = document.getElementById('selected-plan-benefit');
+const codingButtons = Array.from(document.querySelectorAll('.coding-option'));
+const codingContactSection = document.getElementById('coding-contact-section');
+const selectedCodingName = document.getElementById('selected-coding-name');
+const contactCodingEmail = document.getElementById('contact-coding-email');
 
 let selectedDonateAmount = 20000;
 let selectedService = null;
+let selectedCoding = null;
 let paymentMode = 'donate';
 let toastTimer = null;
 
@@ -218,6 +223,52 @@ function selectService(button) {
   updateContactLink();
 }
 
+function codingFromButton(button) {
+  if (!button) return null;
+  return { id: button.dataset.coding, title: button.dataset.title };
+}
+
+function updateCodingContactLink() {
+  if (!selectedCoding) return;
+  const subject = `Yêu cầu dịch vụ coding — ${selectedCoding.title}`;
+  const lines = [
+    'Chào Twot,',
+    '',
+    `Mình quan tâm dịch vụ: ${selectedCoding.title}.`,
+    'Mô tả yêu cầu: ',
+    'Đường dẫn tham khảo (nếu có): ',
+    'Thời gian mong muốn: ',
+    '',
+    'Bạn báo giúp mình phương án và thời gian nhé.',
+  ];
+  contactCodingEmail.href = `mailto:${DONATE_CONFIG.contactEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join('\n'))}`;
+}
+
+function selectCoding(button) {
+  const nextCoding = codingFromButton(button);
+  const isCurrentCoding = selectedCoding && selectedCoding.id === nextCoding.id;
+
+  if (isCurrentCoding) {
+    selectedCoding = null;
+    codingContactSection.hidden = true;
+    codingButtons.forEach(item => {
+      item.classList.remove('active');
+      item.setAttribute('aria-pressed', 'false');
+    });
+    return;
+  }
+
+  selectedCoding = nextCoding;
+  codingContactSection.hidden = false;
+  codingButtons.forEach(item => {
+    const active = item === button;
+    item.classList.toggle('active', active);
+    item.setAttribute('aria-pressed', String(active));
+  });
+  selectedCodingName.textContent = selectedCoding.title;
+  updateCodingContactLink();
+}
+
 function setDonateAmount(amount, sourceButton) {
   paymentMode = 'donate';
   selectedDonateAmount = Math.max(0, Number(amount) || 0);
@@ -257,6 +308,7 @@ function initPaymentDetails() {
 }
 
 serviceButtons.forEach(button => button.addEventListener('click', () => selectService(button)));
+codingButtons.forEach(button => button.addEventListener('click', () => selectCoding(button)));
 
 amountButtons.forEach(button => {
   button.addEventListener('click', () => {

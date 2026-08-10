@@ -20,9 +20,10 @@
 
 HVL-MCK là một ứng dụng nghe nhạc tĩnh, responsive và có khả năng cài đặt dưới dạng Progressive Web App (PWA) trên trình duyệt hỗ trợ. Dự án không sử dụng framework, backend, package manager hoặc quy trình build: chỉ cần một HTTP server là có thể chạy.
 
-Ngoài trình phát nhạc, dự án còn có trang Donate độc lập với hai hình thức hỗ trợ:
+Ngoài trình phát nhạc, dự án còn có trang Donate độc lập với ba hình thức hỗ trợ:
 
 - Đăng ký dịch vụ nâng cấp Google AI Pro theo gói cá nhân hoặc gia đình.
+- Đặt dịch vụ coding theo yêu cầu (web mới, sửa lỗi, tool tự động hóa, tích hợp tùy chỉnh) — không niêm yết giá, liên hệ trực tiếp để trao đổi và báo giá.
 - Ủng hộ trực tiếp qua MoMo hoặc ngân hàng ACB với QR thay đổi theo mệnh giá.
 
 ## Tính năng nổi bật
@@ -48,13 +49,25 @@ Ngoài trình phát nhạc, dự án còn có trang Donate độc lập với ha
 
 ### Trang Donate
 
-- Hai gói Google AI Pro: tài khoản chính chủ và chủ nhóm gia đình.
+- Thanh điều hướng "3 cách ủng hộ" ngay sau phần hero, liên kết nhanh tới từng phần bên dưới.
+- Cả ba phần đều theo cùng một cấu trúc: chọn lựa chọn → trang hiện khối hành động tương ứng (thanh toán hoặc liên hệ).
+
+**1. Nâng cấp Google AI Pro**
+- Hai gói: tài khoản chính chủ và chủ nhóm gia đình.
 - Không chọn sẵn dịch vụ khi mở trang; phần đăng ký chỉ hiện sau khi người dùng chọn gói.
 - Có thể bấm lại dịch vụ đang chọn để bỏ chọn và thu gọn trang.
 - Quyền lợi, giá, QR MoMo và QR ACB tự cập nhật theo gói 50.000đ hoặc 250.000đ.
 - Nút sao chép riêng cho số MoMo và từng trường thông tin chuyển khoản ACB.
-- Ba mức ủng hộ trực tiếp: 10.000đ, 20.000đ và 30.000đ.
-- QR MoMo/ACB thay đổi theo mệnh giá, kèm nút tải ảnh và kênh gửi minh chứng qua Zalo/Facebook.
+
+**2. Coding theo yêu cầu**
+- Bốn hạng mục: web/landing page mới, sửa lỗi & tối ưu, tool/script tự động hóa, tính năng & tích hợp tùy chỉnh.
+- Không niêm yết giá; chọn hạng mục để hiện danh sách thông tin nên chuẩn bị trước và các kênh liên hệ trực tiếp (Zalo, Facebook, Email).
+- Email liên hệ tự điền sẵn tiêu đề và nội dung theo hạng mục đã chọn.
+
+**3. Ủng hộ trực tiếp**
+- Ba mức ủng hộ: 10.000đ, 20.000đ và 30.000đ.
+- QR MoMo/ACB thay đổi theo mệnh giá, chuyển đổi bằng tab, kèm nút tải ảnh.
+- Kênh gửi minh chứng qua Zalo/Facebook, hoặc liên hệ email.
 
 ## Bắt đầu nhanh
 
@@ -250,7 +263,7 @@ Checklist kiểm tra thủ công:
 - Phát, tạm dừng, tua, đổi bài, shuffle và ba trạng thái repeat hoạt động đúng.
 - Chuyển Ảnh/MV không gây phát chồng âm thanh.
 - Tải lại trang vẫn khôi phục trạng thái phát đã lưu.
-- Chọn, đổi và bỏ chọn dịch vụ Donate hoạt động đúng.
+- Chọn, đổi và bỏ chọn dịch vụ Donate (nâng cấp tài khoản và coding theo yêu cầu) hoạt động đúng.
 - QR và số tiền đổi đúng theo từng gói; các nút sao chép và tải QR hoạt động.
 - Giao diện không tràn ở kích thước desktop và mobile phổ biến.
 

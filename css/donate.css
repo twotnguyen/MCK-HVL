@@ -94,6 +94,15 @@ a { color: inherit; }
 @keyframes spin { to { transform: rotate(360deg); } }
 @keyframes float { 50% { transform: translateY(-12px) rotate(8deg); } }
 
+.methods-nav { margin-top: 42px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.method-card { min-width: 0; padding: 18px; display: flex; align-items: center; gap: 14px; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--elevated); text-decoration: none; color: var(--text); transition: transform .15s, border-color .15s, background .15s; }
+.method-card:hover { transform: translateY(-2px); border-color: rgba(167,139,250,.42); background: var(--hover); }
+.method-body { min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.method-body strong { font-size: 12px; }
+.method-body span { overflow: hidden; color: var(--faint); font-size: 9.5px; line-height: 1.5; white-space: nowrap; text-overflow: ellipsis; }
+.method-arrow { flex: 0 0 auto; margin-left: auto; color: var(--faint); font-size: 15px; transition: transform .15s, color .15s; }
+.method-card:hover .method-arrow { color: var(--pink); transform: translateX(3px); }
+
 .donate-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; align-items: stretch; }
 .donate-card {
   padding: 30px; border: 1px solid var(--border); border-radius: var(--radius-lg);
@@ -108,9 +117,11 @@ a { color: inherit; }
 
 /* Services — intentionally placed before direct donations. */
 .services-section { padding-top: 10px; scroll-margin-top: 85px; }
-.services-heading { max-width: 720px; margin-bottom: 27px; }
-.services-heading h2 { margin-top: 10px; font-size: clamp(28px, 4vw, 42px); letter-spacing: -1.4px; }
-.services-heading > p:last-child { margin-top: 11px; color: var(--dim); font-size: 13px; line-height: 1.75; }
+.services-heading { max-width: 760px; margin-bottom: 27px; display: flex; align-items: flex-start; gap: 16px; }
+.services-heading .step { margin-top: 5px; }
+.services-heading-text { min-width: 0; }
+.services-heading-text h2 { margin-top: 10px; font-size: clamp(28px, 4vw, 42px); letter-spacing: -1.4px; }
+.services-heading-text > p:last-child { margin-top: 11px; color: var(--dim); font-size: 13px; line-height: 1.75; }
 .service-plans { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
 .service-option {
   min-width: 0; min-height: 315px; padding: 30px; position: relative; overflow: hidden;
@@ -232,8 +243,30 @@ a { color: inherit; }
 .contact-btn.facebook { background: #3559a5; }
 .security-notice { margin-top: 12px; padding: 12px 14px; border: 1px solid rgba(231,182,103,.18); border-radius: 12px; color: #bea978; background: rgba(231,182,103,.055); font-size: 9px; line-height: 1.6; }
 .security-notice strong { color: #e7c583; }
+
+.coding-section { padding-top: 100px; scroll-margin-top: 85px; }
+.coding-plans { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.coding-option {
+  min-width: 0; padding: 28px; position: relative;
+  display: flex; flex-direction: column; align-items: flex-start; text-align: left; cursor: pointer;
+  border: 1px solid var(--border); border-radius: var(--radius-lg);
+  background: linear-gradient(145deg, rgba(255,255,255,.055), rgba(255,255,255,.02)), var(--panel);
+  box-shadow: 0 28px 70px -38px rgba(0,0,0,.95);
+  transition: border-color .2s, transform .2s, box-shadow .2s, background .2s;
+}
+.coding-option:hover { border-color: rgba(167,139,250,.42); transform: translateY(-3px); }
+.coding-option.active { border-color: rgba(244,114,182,.62); background: linear-gradient(145deg, rgba(167,139,250,.12), rgba(244,114,182,.08)), var(--panel); box-shadow: 0 30px 75px -38px rgba(244,114,182,.65); }
+.coding-title { display: block; margin-top: 14px; font-size: 16px; font-weight: 800; letter-spacing: -.3px; }
+.coding-description { display: block; margin-top: 8px; color: var(--dim); font-size: 12px; line-height: 1.7; }
+.coding-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+.coding-tags span { padding: 5px 9px; border: 1px solid var(--border); border-radius: 999px; color: var(--dim); background: var(--elevated); font-size: 9px; font-weight: 700; }
+.coding-cta { display: flex; align-items: center; gap: 6px; margin-top: auto; padding-top: 18px; color: var(--purple); font-size: 9.5px; font-weight: 800; letter-spacing: .3px; }
+.coding-option.active .cta-label { color: var(--pink); }
+.cta-check { display: none; color: var(--pink); }
+.coding-option.active .cta-check { display: inline; }
+
 .direct-section { padding-top: 100px; scroll-margin-top: 85px; }
-.compact-heading { margin-left: auto; margin-right: auto; text-align: center; }
+.compact-heading { justify-content: center; margin-left: auto; margin-right: auto; }
 .payment-card { scroll-margin-top: 85px; }
 .email-contact { display: block; margin-top: 20px; color: var(--purple); font-size: 10px; text-align: center; text-underline-offset: 3px; }
 
@@ -321,6 +354,7 @@ a { color: inherit; }
   .contact-strip { grid-template-columns: 1fr 1fr; }
   .contact-strip > div { grid-column: 1 / -1; }
   .donate-layout { grid-template-columns: 1fr; align-items: start; }
+  .methods-nav { grid-template-columns: 1fr; }
 }
 @media (max-width: 600px) {
   .donate-main { width: min(100% - 24px, 1180px); }
@@ -334,7 +368,9 @@ a { color: inherit; }
   .hero-stats div { padding-left: 10px; }
   .hero-art { min-height: 245px; }
   .vinyl { width: 210px; }
-  .services-heading { text-align: center; }
+  .methods-nav { margin-top: 28px; }
+  .services-heading { flex-direction: column; align-items: center; text-align: center; }
+  .services-heading-text { text-align: center; }
   .service-plans { grid-template-columns: 1fr; }
   .service-option { min-height: 300px; padding: 25px 22px; }
   .service-option.featured { padding-top: 42px; }
@@ -356,6 +392,9 @@ a { color: inherit; }
   .contact-strip { grid-template-columns: 1fr; }
   .contact-strip > div { grid-column: auto; }
   .contact-btn { width: 100%; }
+  .coding-section { padding-top: 72px; }
+  .coding-plans { grid-template-columns: 1fr; }
+  .coding-option { padding: 22px; }
   .direct-section { padding-top: 72px; }
   .amount-grid { grid-template-columns: 1fr; }
   .amount-option { min-height: 72px; }
