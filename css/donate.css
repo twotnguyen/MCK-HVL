@@ -94,7 +94,7 @@ a { color: inherit; }
 @keyframes spin { to { transform: rotate(360deg); } }
 @keyframes float { 50% { transform: translateY(-12px) rotate(8deg); } }
 
-.methods-nav { margin-top: 42px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.methods-nav { margin-top: 42px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; transform: translateY(-56px); }
 .method-card { min-width: 0; padding: 18px; display: flex; align-items: center; gap: 14px; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--elevated); text-decoration: none; color: var(--text); transition: transform .15s, border-color .15s, background .15s; }
 .method-card:hover { transform: translateY(-2px); border-color: rgba(167,139,250,.42); background: var(--hover); }
 .method-body { min-width: 0; display: flex; flex-direction: column; gap: 3px; }
@@ -104,16 +104,18 @@ a { color: inherit; }
 .method-card:hover .method-arrow { color: var(--pink); transform: translateX(3px); }
 
 .donate-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; align-items: stretch; }
+.contribution-card { display: flex; flex-direction: column; }
+.contribution-card .donate-summary { margin-top: auto; }
 .donate-card {
   padding: 30px; border: 1px solid var(--border); border-radius: var(--radius-lg);
   background: linear-gradient(145deg, rgba(255,255,255,.055), rgba(255,255,255,.025)), var(--panel);
   box-shadow: 0 28px 70px -38px rgba(0,0,0,.95);
   backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
 }
-.section-heading { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 25px; }
+.section-heading { margin-bottom: 25px; }
 .step { flex: 0 0 auto; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 11px; color: #fff; background: var(--gradient); font-size: 10px; font-weight: 800; box-shadow: 0 7px 20px -10px rgba(244,114,182,.9); }
 .section-heading h2 { font-size: 18px; }
-.section-heading p { margin-top: 5px; color: var(--faint); font-size: 11.5px; line-height: 1.55; }
+.section-heading p { margin-top: 6px; color: var(--faint); font-size: 11.5px; line-height: 1.55; }
 
 /* Services — intentionally placed before direct donations. */
 .services-section { padding-top: 10px; scroll-margin-top: 85px; }
@@ -266,22 +268,35 @@ a { color: inherit; }
 .coding-option.active .cta-check { display: inline; }
 
 .direct-section { padding-top: 100px; scroll-margin-top: 85px; }
-.compact-heading { justify-content: center; margin-left: auto; margin-right: auto; }
+.compact-heading {
+  max-width: 680px;
+  margin: 0 auto 34px;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+}
+.compact-heading .step { width: 40px; height: 40px; margin-top: 0; border-radius: 13px; }
+.compact-heading .services-heading-text { text-align: center; }
+.compact-heading .services-heading-text h2 { margin-top: 8px; }
+.compact-heading .services-heading-text > p:last-child { max-width: 560px; margin: 12px auto 0; }
 .payment-card { scroll-margin-top: 85px; }
 .email-contact { display: block; margin-top: 20px; color: var(--purple); font-size: 10px; text-align: center; text-underline-offset: 3px; }
 
 .amount-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
 .amount-option {
-  min-height: 94px; padding: 17px 10px 13px; position: relative;
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px;
+  min-height: 68px; padding: 16px 10px; position: relative;
+  display: flex; align-items: center; justify-content: center;
   border: 1px solid var(--border); border-radius: var(--radius-md); cursor: pointer;
   background: var(--elevated); transition: border-color .15s, background .15s, transform .15s, box-shadow .15s;
 }
 .amount-option strong { font-size: 16px; }
-.amount-option > span:not(.popular) { max-width: 175px; color: var(--faint); font-size: 10px; line-height: 1.5; text-align: center; }
 .amount-option:hover { transform: translateY(-2px); border-color: rgba(167,139,250,.45); background: var(--hover); }
 .amount-option.active { border-color: rgba(244,114,182,.65); background: linear-gradient(145deg, rgba(167,139,250,.16), rgba(244,114,182,.13)); box-shadow: 0 10px 30px -18px rgba(244,114,182,.9); }
 .popular { position: absolute; top: -8px; padding: 3px 8px; border-radius: 999px; background: var(--gradient); color: #fff; font-size: 8px; font-weight: 800; letter-spacing: .5px; text-transform: uppercase; }
+.amount-note { margin-top: 14px; padding: 15px 16px; border: 1px solid var(--border); border-radius: 14px; background: rgba(167,139,250,.055); }
+.amount-note strong { display: block; font-size: 12px; }
+.amount-note span { display: block; margin-top: 4px; color: var(--faint); font-size: 10.5px; line-height: 1.6; }
 .donate-summary { margin-top: 22px; padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; border: 1px solid rgba(244,114,182,.18); border-radius: 14px; background: rgba(244,114,182,.055); }
 .donate-summary div { display: flex; flex-direction: column; gap: 3px; }
 .donate-summary div span { color: var(--faint); font-size: 10px; }
@@ -354,6 +369,7 @@ a { color: inherit; }
   .contact-strip { grid-template-columns: 1fr 1fr; }
   .contact-strip > div { grid-column: 1 / -1; }
   .donate-layout { grid-template-columns: 1fr; align-items: start; }
+  .contribution-card .donate-summary { margin-top: 16px; }
   .methods-nav { grid-template-columns: 1fr; }
 }
 @media (max-width: 600px) {
@@ -368,7 +384,7 @@ a { color: inherit; }
   .hero-stats div { padding-left: 10px; }
   .hero-art { min-height: 245px; }
   .vinyl { width: 210px; }
-  .methods-nav { margin-top: 28px; }
+  .methods-nav { margin-top: 28px; transform: translateY(-48px); }
   .services-heading { flex-direction: column; align-items: center; text-align: center; }
   .services-heading-text { text-align: center; }
   .service-plans { grid-template-columns: 1fr; }
@@ -396,8 +412,8 @@ a { color: inherit; }
   .coding-plans { grid-template-columns: 1fr; }
   .coding-option { padding: 22px; }
   .direct-section { padding-top: 72px; }
-  .amount-grid { grid-template-columns: 1fr; }
-  .amount-option { min-height: 72px; }
+  .amount-option { min-height: 60px; padding: 12px 6px; }
+  .amount-option strong { font-size: 14px; }
   .payment-body { grid-template-columns: 1fr; }
   .qr-frame { width: min(230px, 100%); margin: 0 auto; }
   .impact-section { padding: 70px 0 60px; }

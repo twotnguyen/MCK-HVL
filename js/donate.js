@@ -32,9 +32,26 @@ const DONATE_CONFIG = {
   facebookUrl: 'https://www.facebook.com/nguyen.tinh.754402',
 };
 
+const AMOUNT_NOTES = {
+  10000: {
+    title: 'Một lời cảm ơn',
+    desc: 'Góp một phần nhỏ vào chi phí duy trì dự án — số tiền không quan trọng bằng tấm lòng bạn dành cho HVL-MCK.',
+  },
+  20000: {
+    title: 'Một ly cà phê',
+    desc: 'Tiếp thêm năng lượng để duy trì máy chủ, tên miền và tiếp tục hoàn thiện HVL-MCK mỗi ngày.',
+  },
+  30000: {
+    title: 'Tiếp sức dự án',
+    desc: 'Hỗ trợ bảo trì hệ thống, tối ưu trải nghiệm nghe nhạc và phát triển thêm tính năng mới trong thời gian tới.',
+  },
+};
+
 const serviceButtons = Array.from(document.querySelectorAll('.service-option'));
 const amountButtons = Array.from(document.querySelectorAll('.amount-option'));
 const selectedAmountEl = document.getElementById('selected-amount');
+const amountNoteTitle = document.getElementById('amount-note-title');
+const amountNoteDesc = document.getElementById('amount-note-desc');
 const selectedServiceName = document.getElementById('selected-service-name');
 const selectedServicePrice = document.getElementById('selected-service-price');
 const serviceOrderSection = document.getElementById('service-order-section');
@@ -278,6 +295,11 @@ function setDonateAmount(amount, sourceButton) {
     button.setAttribute('aria-pressed', String(active));
   });
   selectedAmountEl.textContent = formatVnd(selectedDonateAmount);
+  const note = AMOUNT_NOTES[selectedDonateAmount];
+  if (note) {
+    amountNoteTitle.textContent = note.title;
+    amountNoteDesc.textContent = note.desc;
+  }
   updateDirectPayment();
   updateContactLink();
 }
