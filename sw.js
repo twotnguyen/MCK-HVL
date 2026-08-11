@@ -1,4 +1,4 @@
-const SHELL_CACHE = 'mck-shell-v47';
+const SHELL_CACHE = 'mck-shell-v48';
 
 const COVER_IMAGES = [
   '1_Elegie.jpg',
